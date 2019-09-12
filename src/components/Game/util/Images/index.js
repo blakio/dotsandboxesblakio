@@ -7,6 +7,7 @@ const gold = require("../../../../imgs/gold.png");
 const rhino = require("../../../../imgs/asset_rhino.png");
 const foot = require("../../../../imgs/foot.png");
 const io = require("../../../../imgs/io.png");
+const aim = require("../../../../imgs/aim.png");
 
 export const images = {
   cheetahImg,
@@ -17,5 +18,6 @@ export const images = {
   rhino,
   foot,
   gold,
-  io
+  io,
+  aim
 }

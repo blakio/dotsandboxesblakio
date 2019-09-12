@@ -92,6 +92,8 @@ const PlayGame = (props) => {
   const [waitTime, setWaitTime] = useState(0);
   const [turnText, setTurnText] = useState("your turn");
   const [turns, setTurns] = useState(0);
+  const [aimBoxes, setAimBoxes] = useState([]);
+  const [circleFlash, setCircleFlash] = useState({});
 
   const checkComputerMove = () => {
     const move = computerMove(borders, connectedBoxes, board, footIndexes);
@@ -120,10 +122,11 @@ const PlayGame = (props) => {
   useEffect(() => {
     setTimeout(() => {
       const restriction = training && training.yourMoves && training.yourMoves[0];
+      setAimBoxes(restriction.aimBoxes || []);
       if(restriction && restriction.type === "explosionClick"){
         setBombToClick(restriction.bomb);
       } else {
-        setBombToClick(null)
+        setBombToClick(null);
       }
     }, waitTime);
   }, [training])
@@ -387,6 +390,27 @@ const PlayGame = (props) => {
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play()
     }
+
+    const trainingBoxesSidesClick = {};
+    if(playerTurn === "first"){
+      const corner = util.getCornersFromSide(side);
+      const boxCornerData = connectedCorners[index];
+      corner.map(data => {
+        if(trainingBoxesSidesClick[`box${index}`]){
+          trainingBoxesSidesClick[`box${index}`].push(data);
+        } else {
+          trainingBoxesSidesClick[`box${index}`] = [data];
+        }
+        boxCornerData[data].map(d => {
+          if(trainingBoxesSidesClick[`box${d.box}`]){
+            trainingBoxesSidesClick[`box${d.box}`].push(d.corner);
+          } else {
+            trainingBoxesSidesClick[`box${d.box}`] = [d.corner];
+          }
+        })
+      })
+    }
+    setCircleFlash(trainingBoxesSidesClick);
 
     const boxName = boxInfo.getBoxNameByIndex(index);
     const boxObj = boxInfo.getBoxObjByBoxName(board, boxName);
@@ -663,17 +687,17 @@ const PlayGame = (props) => {
           blinkingBox = true;
         }
 
-        let startingLeft = false;
-        let startingBottom = false;
+        let side = false;
         if(blinkingEdge === "top"){
-          startingLeft = 35;
-          startingBottom = 60;
-        } else if (blinkingEdge === "left" || blinkingBox) {
-          startingLeft = blinkingBox ? 60 : 10;
-          startingBottom = 20;
+          side = "top";
+        } else if (blinkingEdge === "left") {
+          side = "right";
+        } else if (blinkingBox) {
+          side = "box";
         }
 
         return (<GameBlock
+          key={index}
           isDisabledBox={isDisabledBox}
           borders={borders}
           clickBorder={clickBorder}
@@ -696,11 +720,12 @@ const PlayGame = (props) => {
           footIndexes={footIndexes}
           blinkingEdge={blinkingEdge}
           blinkingBox={blinkingBox}
-          startingLeft={startingLeft}
-          startingBottom={startingBottom}
+          side={side}
           navigation={props.navigation}
           trainingBoxesSidesClick={trainingBoxesSidesClick}
-          key={index} />)})}
+          aimBoxes={aimBoxes}
+          circleFlash={circleFlash}
+          currentLevel={currentLevel}/>)})}
     </View>
 
     <View style={styles.bombSection} >
@@ -724,9 +749,7 @@ const PlayGame = (props) => {
               style={style}
               source={image}
             />
-            {(bombToClick === data) && <Pointer
-                              startingLeft={50}
-                              startingBottom={50}/>}
+            {(bombToClick === data) && <Pointer bomb={true}/>}
           </Animated.View>
         </TouchableOpacity>)
       })}
@@ -775,6 +798,8 @@ const PlayGame = (props) => {
         close={closeInformationScreen}
       />}
 
+    <View style={styles.buttomPadding}></View>
+
   </View>)
 
 }
@@ -789,6 +814,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: config.height,
     width: config.width
+  },
+  buttomPadding: {
+    height: 100,
+    width: 50
   },
   imgStyle: {
     width: config.width,

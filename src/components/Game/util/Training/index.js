@@ -50,7 +50,8 @@ export const trainRestrictions = {
       type: "boxClick",
       clickBox: 16,
       text: "Click the box",
-      text2: "it explodes right and left"
+      text2: "it explodes right and left",
+      aimBoxes: ["box13", "box14", "box15", "box16"]
     }, {
       type: "explosionClick",
       bomb: "panther",
@@ -58,9 +59,10 @@ export const trainRestrictions = {
     }, {
       type: "boxClick",
       clickBox: 10,
-      text: "It explodes up and down"
+      text: "It explodes up and down",
+      aimBoxes: ["box10", "box16", "box22", "box28"]
     }, {
-      text: "Remove the",
+      text: "Destroy",
       text2: "Foot of Oppression",
       text3: "or lose!"
     }, {

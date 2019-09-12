@@ -33,6 +33,19 @@ const GameBlock = (props) => {
     }
   }, [props.explodingBoxes]);
 
+  let fadeIn = new Animated.Value(0.5);
+  useEffect(() => {
+    setTimeout(() => {
+      Animated.timing(
+        fadeIn,
+        {
+          toValue: 1,
+          duration: 1000,
+        }
+      ).start();
+    }, 1000)
+  }, []);
+
   const {
     isDisabledBox,
     borders,
@@ -52,12 +65,13 @@ const GameBlock = (props) => {
     isBottomSideRow,
     isLeftSideRow,
     footIndexes,
+    aimBoxes,
     blinkingEdge,
     blinkingBox,
     navigation,
-    startingLeft,
-    startingBottom,
-    trainingBoxesSidesClick
+    trainingBoxesSidesClick,
+    side,
+    currentLevel
   } = props;
 
   let stopAnimation;
@@ -118,6 +132,18 @@ const GameBlock = (props) => {
 
   let cornerHighlights = trainingBoxesSidesClick[boxName] || [];
 
+  const [topLeftCornerColor, setTopLeftCornerColor] = useState(false);
+  const [topRightCornerColor, setTopRightCornerColor] = useState(false);
+  const [bottomLeftCornerColor, setBottomLeftCornerColor] = useState(false);
+  const [bottomRightCornerColor, setBottomRightCornerColor] = useState(false);
+
+  useEffect(() => {
+    setTopLeftCornerColor(cornerHighlights.includes("topLeft") ? "#b57800" : "#270038");
+    setTopRightCornerColor(cornerHighlights.includes("topRight") ? "#b57800" : "#270038");
+    setBottomLeftCornerColor(cornerHighlights.includes("bottomLeft") ? "#b57800" : "#270038");
+    setBottomRightCornerColor(cornerHighlights.includes("bottomRight") ? "#b57800" : "#270038");
+  }, [cornerHighlights, currentLevel])
+
   const styles = {
     box: { // replace #F9A600 with letter when ok to animate
       backgroundColor: blinkingBox ? letterColor : (scoreColor || 'transparent'),
@@ -135,26 +161,26 @@ const GameBlock = (props) => {
       borderLeftColor: leftBorderColor
     },
     top: {
-      height: "40%",
+      height: "60%",
       width: "100%",
       position: "absolute",
       top: "-18%"
     },
     right: {
       height: "100%",
-      width: "40%",
+      width: "60%",
       position: "absolute",
       right: "-18%"
     },
     bottom: {
-      height: "40%",
+      height: "60%",
       width: "100%",
       position: "absolute",
       bottom: "-18%"
     },
     left: {
       height: "100%",
-      width: "40%",
+      width: "60%",
       left: "-18%",
       position: "absolute",
       top: 0
@@ -165,8 +191,8 @@ const GameBlock = (props) => {
       left: -6,
       height: 10,
       width: 10,
-      backgroundColor: (cornerHighlights.includes("topLeft")) ? "#b57800" : "#270038",
-      borderRadius: 2
+      backgroundColor: topLeftCornerColor || "#270038",
+      borderRadius: 200
     },
     topRight: {
       position: "absolute",
@@ -174,8 +200,8 @@ const GameBlock = (props) => {
       right: -6,
       height: 10,
       width: 10,
-      backgroundColor: (cornerHighlights.includes("topRight")) ? "#b57800" : "#270038",
-      borderRadius: 2
+      backgroundColor: topRightCornerColor || "#270038",
+      borderRadius: 200
     },
     bottomLeft: {
       position: "absolute",
@@ -183,8 +209,8 @@ const GameBlock = (props) => {
       left: -6,
       height: 10,
       width: 10,
-      backgroundColor: (cornerHighlights.includes("bottomLeft")) ? "#b57800" : "#270038",
-      borderRadius: 2
+      backgroundColor: bottomLeftCornerColor || "#270038",
+      borderRadius: 200
     },
     bottomRight: {
       position: "absolute",
@@ -192,8 +218,8 @@ const GameBlock = (props) => {
       bottom: -6,
       height: 10,
       width: 10,
-      backgroundColor: (cornerHighlights.includes("bottomRight")) ? "#b57800" : "#270038",
-      borderRadius: 2
+      backgroundColor: bottomRightCornerColor || "#270038",
+      borderRadius: 200
     },
     yourScore: {
       height: "100%",
@@ -209,6 +235,15 @@ const GameBlock = (props) => {
       position: "absolute",
       justifyContent: "center",
       alignItems: "center"
+    },
+    aim: {
+      height: "130%",
+      width: "100%",
+      top: "-10%",
+      position: "absolute",
+      justifyContent: "center",
+      alignItems: "center",
+      opacity: 0.2
     }
   }
 
@@ -257,15 +292,21 @@ const GameBlock = (props) => {
 
       {(footIndexes.includes(index)) && <View style={styles.foot}>
         <Image
-          style={{flex:1, height: 50, width: 50}}
+          style={{height: 42, width: 32, top: -4}}
           source={images.foot}
         />
       </View>}
 
+      {(aimBoxes.includes(boxName)) && <Animated.View style={styles.aim}>
+        <Image
+          style={{flex:1, height: 50, width: 50, position: "absolute"}}
+          source={images.aim}
+        />
+      </Animated.View>}
+
     </Animated.View>
     <Pointer
-      startingLeft={startingLeft}
-      startingBottom={startingBottom}/>
+      side={side}/>
   </TouchableOpacity>)
 
 }

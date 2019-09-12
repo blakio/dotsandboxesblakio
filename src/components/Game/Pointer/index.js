@@ -9,12 +9,27 @@ const pointer = require("../../../imgs/pointer.png");
 const Pointer = (props) => {
 
   const {
-    startingLeft,
-    startingBottom
+    side,
+    bomb
   } = props;
 
-  if(!startingLeft && !startingBottom){
+  if(!side && !bomb){
     return <View></View>
+  }
+
+  let rotate, bottom, left;
+  if(side === "right"){
+    rotate = "-90deg";
+    bottom = -16;
+    left = 10;
+  } else if (side === "top" || bomb){
+    rotate = "180deg";
+    bottom = 60;
+    left = -30;
+  } else if (side === "box"){
+    rotate = "-90deg";
+    bottom = -16;
+    left = 40;
   }
 
   return (<View
@@ -22,15 +37,15 @@ const Pointer = (props) => {
     pointerEvents="none"
     style={{
       position: "absolute",
-      bottom: startingBottom - 8,
-      left: startingLeft - 20,
+      bottom,
+      left,
       height: 100,
       width: 100,
       justifyContent: "center",
       alignItems: "center"
     }}>
     <Image
-      style={{flex: 1, transform: [{ rotate: '-135deg' }]}}
+      style={{flex: 1, transform: [{ rotate }]}}
       source={pointer}
       resizeMode="contain"
     />
