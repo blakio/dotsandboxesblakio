@@ -15,12 +15,23 @@ const Game = (props) => {
     <Image style={styles.imgStyle} source={images.background} />
 
     <HomeScreen
+      navigationOptions={props.navigationOptions}
       navigation={props.navigation}
       startGame={startGame}
       motivationPage={motivationPage}
       storePage={storePage}/>
   </View>)
 }
+
+Game.navigationOptions = {
+  headerStyle: {
+    backgroundColor: 'rgb(39, 0, 56)',
+  },
+  headerTintColor: '#b57800',
+  headerTitleStyle: {
+    fontFamily: 'Raleway',
+  }
+};
 
 export default Game;
 

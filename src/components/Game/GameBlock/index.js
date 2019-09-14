@@ -9,6 +9,7 @@ import {
 import Pointer from "../Pointer";
 import { boxInfo } from "../util/BoxInfo";
 import { images } from "../util/Images";
+import { sounds } from "../Sounds";
 
 const GameBlock = (props) => {
 
@@ -99,10 +100,10 @@ const GameBlock = (props) => {
   }
 
   const scoreColor = (scored === "second") && "#2b0938";
-  let topBorderColor = (borderColors[0] === "first") ? "#b57800" : (borderColors[0] === "second") ? "#980000" : "rgb(73, 17, 94)";
-  let rightBorderColor = (borderColors[1] === "first") ? "#b57800" : (borderColors[1] === "second") ? "#980000" : "rgb(73, 17, 94)";
-  let bottomBorderColor = (borderColors[2] === "first") ? "#b57800" : (borderColors[2] === "second") ? "#980000" : "rgb(73, 17, 94)";
-  let leftBorderColor = (borderColors[3] === "first") ? "#b57800" : (borderColors[3] === "second") ? "#980000" : "rgb(73, 17, 94)";
+  let topBorderColor = (borderColors[0] === "first") ? "#b57800" : (borderColors[0] === "second") ? "#980000" : "#4B1160";
+  let rightBorderColor = (borderColors[1] === "first") ? "#b57800" : (borderColors[1] === "second") ? "#980000" : "#4B1160";
+  let bottomBorderColor = (borderColors[2] === "first") ? "#b57800" : (borderColors[2] === "second") ? "#980000" : "#4B1160";
+  let leftBorderColor = (borderColors[3] === "first") ? "#b57800" : (borderColors[3] === "second") ? "#980000" : "#4B1160";
 
   const computerCurrentMove = computerLastLineClick && computerLastLineClick.boxes.includes(boxName);
   if(computerCurrentMove){
@@ -145,8 +146,9 @@ const GameBlock = (props) => {
   }, [cornerHighlights, currentLevel])
 
   const styles = {
-    box: { // replace #F9A600 with letter when ok to animate
-      backgroundColor: blinkingBox ? letterColor : (scoreColor || 'transparent'),
+    box: {
+      backgroundColor: blinkingBox ? letterColor :
+       footIndexes.includes(index) ? "#2b0938" : (scoreColor || '#490e5f'),
       height: 53,
       width: 53,
       position: "relative",
@@ -161,26 +163,26 @@ const GameBlock = (props) => {
       borderLeftColor: leftBorderColor
     },
     top: {
-      height: "60%",
+      height: "45%",
       width: "100%",
       position: "absolute",
       top: "-18%"
     },
     right: {
       height: "100%",
-      width: "60%",
+      width: "45%",
       position: "absolute",
       right: "-18%"
     },
     bottom: {
-      height: "60%",
+      height: "45%",
       width: "100%",
       position: "absolute",
       bottom: "-18%"
     },
     left: {
       height: "100%",
-      width: "60%",
+      width: "45%",
       left: "-18%",
       position: "absolute",
       top: 0
@@ -243,11 +245,15 @@ const GameBlock = (props) => {
       position: "absolute",
       justifyContent: "center",
       alignItems: "center",
-      opacity: 0.2
+      opacity: 0.4
     }
   }
 
   const clickGameBox = () => {
+    if(footIndexes.includes(index)){
+      sounds.wrong.setCurrentTime(0);
+      return sounds.wrong.play();
+    }
     props.setExplosionBoxes(props.index);
   }
 
@@ -290,7 +296,7 @@ const GameBlock = (props) => {
         <View />
       </TouchableOpacity>
 
-      {(footIndexes.includes(index)) && <View style={styles.foot}>
+      {footIndexes.includes(index) && <View style={styles.foot}>
         <Image
           style={{height: 42, width: 32, top: -4}}
           source={images.foot}

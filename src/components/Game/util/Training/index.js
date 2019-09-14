@@ -20,22 +20,19 @@ export const trainRestrictions = {
       type: "clickSide",
       boxes: [9, 15],
       sides: ["bottom", "top"],
-      text: "Draw more boxes than",
-      text2: "your opponent",
-      text3: "to win"
+      text: ""
     }, {
       type: "clickSide",
       boxes: [15, 21],
-      sides: ["bottom", "top"],
-      text: "Your turn"
+      sides: ["bottom", "top"]
     }, {
       type: "clickSide",
       boxes: [10, 11],
       sides: ["right", "left"],
-      text: "Your turn again",
-      text2: "because you scored"
+      text: "score to take",
+      text2: "another turn"
     }, {
-      text: "Your turn!"
+      text: "Draw more boxes to win"
     }, {
       text: ""
     }]

@@ -69,13 +69,13 @@ const GameScoreBoard = (props) => {
     <Animated.View style={opacityStyles.computerScoreBoard(playerTurn, turnOpacityAnimation)}  removeClippedSubviews={true}/>
 
     <View style={styles.scoreBoxStyle}>
-      <Text style={styles.scoreTextStyle}>your score</Text>
       <Text style={styles.yourScoreStyle}>{yourScore}</Text>
+      <Text style={styles.scoreTextStyle}>YOU</Text>
     </View>
 
     <View style={styles.scoreBoxStyle}>
-      <Text style={styles.scoreTextStyle}>computer</Text>
       <Text style={styles.computerScoreStyle}>{computerScore}</Text>
+      <Text style={styles.scoreTextStyle}>COMPUTER</Text>
     </View>
 
   </View>)
@@ -99,17 +99,22 @@ const styles = StyleSheet.create({
   },
   scoreTextStyle: {
     color: "#b142da",
-    fontSize: 18,
-    fontFamily: "Raleway-Italic"
+    fontSize: 14,
+    fontFamily: "Raleway-ExtraBold",
+    margin: 0,
+    position: "relative",
+    top: -4
   },
   yourScoreStyle: {
     color: "#b57800",
-    fontSize: 30,
-    fontFamily: "Raleway-ExtraBold"
+    fontSize: 40,
+    fontFamily: "Raleway-ExtraBold",
+    margin: 0
   },
   computerScoreStyle: {
     color: "#980000",
-    fontSize: 30,
-    fontFamily: "Raleway-ExtraBold"
+    fontSize: 40,
+    fontFamily: "Raleway-ExtraBold",
+    margin: 0
   }
 });

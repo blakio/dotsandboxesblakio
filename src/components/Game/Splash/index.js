@@ -9,7 +9,10 @@ import {
 import { images } from "../util/Images";
 import { config } from "../util/Settings";
 
+
 const Splash = (props) => {
+
+  props.navigationOptions = { header: null }
 
   const { navigate } = props.navigation;
   const goHome = () => navigate("HomePage");
@@ -46,5 +49,9 @@ const Splash = (props) => {
     </View>
   </TouchableOpacity>)
 }
+
+Splash.navigationOptions = {
+  header: null
+};
 
 export default Splash;

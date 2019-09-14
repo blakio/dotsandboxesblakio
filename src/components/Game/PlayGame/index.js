@@ -192,7 +192,7 @@ const PlayGame = (props) => {
           return setGameIsOver(true);
         }
       }
-    })
+    }, 250)
   }, [playerTurn, whoScored]); // this is only used if borders or connectedBoxes change
 
   useEffect(() => {
@@ -652,6 +652,16 @@ const PlayGame = (props) => {
       navigation={props.navigation}
     />
 
+    <View style={{
+      height: config.height,
+      width: config.width,
+      backgroundColor: "#000",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      opacity: activeBomb.length ? 0.4 : 0
+    }}></View>
+
     <View style={{width: 318, height: 380, flexDirection: "row", flexWrap: "wrap", paddingTop: 40}}>
       {keys.map((data, index) => {
         const {
@@ -744,7 +754,13 @@ const PlayGame = (props) => {
         }
 
         return (<TouchableOpacity key={index} onPress={() => selectBomb(data, index)}>
-          <Animated.View style={((activeBomb === data + index) || (bombToClick === data)) ? explosionStlyes.selectedBomb(letterColor) : {}} removeClippedSubviews={true}>
+          <Animated.View
+            style={
+              ((activeBomb === data + index) || (bombToClick === data)) ?
+              // explosionStlyes.selectedBomb(letterColor) : {}
+              explosionStlyes.selectedBomb("#b57800") : {}
+            }
+            removeClippedSubviews={true}>
             <Image
               style={style}
               source={image}
@@ -790,8 +806,7 @@ const PlayGame = (props) => {
         isLastBoard={currentLevel === config.finalLevel}
       />}
 
-    {/*screenText.length !== 0 && <ScreenText text={screenText} />*/}
-    {helpText.length !== 0 && <ScreenText text={helpText} font={26} />}
+    {(helpText.length !== 0) && <ScreenText text={helpText} font={26} />}
 
     {showInformativeScreen && <InformativeScreen
         facts={informationType}
@@ -803,6 +818,16 @@ const PlayGame = (props) => {
   </View>)
 
 }
+
+PlayGame.navigationOptions = {
+  headerStyle: {
+    backgroundColor: 'rgb(39, 0, 56)',
+  },
+  headerTintColor: '#b57800',
+  headerTitleStyle: {
+    fontFamily: 'Raleway',
+  }
+};
 
 export default PlayGame;
 

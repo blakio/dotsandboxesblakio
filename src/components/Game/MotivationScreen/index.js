@@ -66,6 +66,16 @@ const StoreScreen = (props) => {
   </View>)
 }
 
+StoreScreen.navigationOptions = {
+  headerStyle: {
+    backgroundColor: 'rgb(39, 0, 56)',
+  },
+  headerTintColor: '#b57800',
+  headerTitleStyle: {
+    fontFamily: 'Raleway',
+  }
+};
+
 export default StoreScreen;
 
 const styles = StyleSheet.create({

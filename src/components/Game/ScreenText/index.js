@@ -11,6 +11,10 @@ const ScreenText = (props) => {
 
   const { text, font } = props;
 
+  if(text.text.length === 0){
+    return <View></View>
+  }
+
   let t1;
   let t2;
   let t3;
@@ -60,9 +64,9 @@ const ScreenText = (props) => {
       fontFamily: "Raleway-Light",
       fontSize: 26,
       textAlign: "center",
-      opacity: 0.8,
-      backgroundColor: "rgba(39,0,56, 0.9)",
-      borderRadius: 10
+      backgroundColor: "rgba(39,0,56, 0.8)",
+      borderRadius: 10,
+      padding: 4
     }
   };
 
