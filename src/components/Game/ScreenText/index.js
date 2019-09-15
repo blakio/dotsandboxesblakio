@@ -64,7 +64,6 @@ const ScreenText = (props) => {
       fontFamily: "Raleway-Light",
       fontSize: 26,
       textAlign: "center",
-      backgroundColor: "rgba(39,0,56, 0.8)",
       borderRadius: 10,
       padding: 4
     }
@@ -73,12 +72,11 @@ const ScreenText = (props) => {
   const gameOverStyle = (top, opacity) => {
     return {
       width: config.width,
-      height: config.height,
       position: "absolute",
-      height: 40,
       top: 50,
       left: 0,
-      opacity: 1
+      opacity: 1,
+      backgroundColor: "rgba(39,0,56, 0.5)"
     }
   }
 

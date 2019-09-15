@@ -659,7 +659,7 @@ const PlayGame = (props) => {
       position: "absolute",
       top: 0,
       left: 0,
-      opacity: activeBomb.length ? 0.4 : 0
+      opacity: activeBomb.length ? 0.2 : 0
     }}></View>
 
     <View style={{width: 318, height: 380, flexDirection: "row", flexWrap: "wrap", paddingTop: 40}}>

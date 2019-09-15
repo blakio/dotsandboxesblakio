@@ -100,10 +100,10 @@ const GameBlock = (props) => {
   }
 
   const scoreColor = (scored === "second") && "#2b0938";
-  let topBorderColor = (borderColors[0] === "first") ? "#b57800" : (borderColors[0] === "second") ? "#980000" : "#4B1160";
-  let rightBorderColor = (borderColors[1] === "first") ? "#b57800" : (borderColors[1] === "second") ? "#980000" : "#4B1160";
-  let bottomBorderColor = (borderColors[2] === "first") ? "#b57800" : (borderColors[2] === "second") ? "#980000" : "#4B1160";
-  let leftBorderColor = (borderColors[3] === "first") ? "#b57800" : (borderColors[3] === "second") ? "#980000" : "#4B1160";
+  let topBorderColor = (borderColors[0] === "first") ? "#b57800" : (borderColors[0] === "second") ? "#980000" : "transparent";
+  let rightBorderColor = (borderColors[1] === "first") ? "#b57800" : (borderColors[1] === "second") ? "#980000" : "transparent";
+  let bottomBorderColor = (borderColors[2] === "first") ? "#b57800" : (borderColors[2] === "second") ? "#980000" : "transparent";
+  let leftBorderColor = (borderColors[3] === "first") ? "#b57800" : (borderColors[3] === "second") ? "#980000" : "transparent";
 
   const computerCurrentMove = computerLastLineClick && computerLastLineClick.boxes.includes(boxName);
   if(computerCurrentMove){
@@ -148,7 +148,7 @@ const GameBlock = (props) => {
   const styles = {
     box: {
       backgroundColor: blinkingBox ? letterColor :
-       footIndexes.includes(index) ? "#2b0938" : (scoreColor || '#490e5f'),
+       footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
       height: 53,
       width: 53,
       position: "relative",
