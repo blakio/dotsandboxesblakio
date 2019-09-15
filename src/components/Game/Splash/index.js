@@ -21,7 +21,7 @@ const Splash = (props) => {
     goHome();
   }, 1500)
 
-  return (<TouchableOpacity onPress={() => goHome()}>
+  return (<TouchableOpacity>
     <View style={{
       height: config.height,
       width: config.width,

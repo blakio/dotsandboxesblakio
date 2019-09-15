@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   informationPageBackground: {
     width: config.width,
     height: config.height,
-    backgroundColor: "rgb(39, 0, 53)"
+    backgroundColor: "rgb(39, 0, 53)",
+    paddingTop: 100
   },
   imgContainer: {
     width: "100%",

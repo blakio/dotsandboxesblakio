@@ -53,6 +53,9 @@ const PlayGame = (props) => {
     sounds.inGameMusic.setVolume(0.4);
   }
 
+  const { navigate } = props.navigation;
+  const goHome = () => navigate("HomePage");
+
   props.navigation.addListener('willFocus', () => {
     playGameMusic();
   })
@@ -808,6 +811,20 @@ const PlayGame = (props) => {
 
     {(helpText.length !== 0) && <ScreenText text={helpText} font={26} />}
 
+    <View
+      onPress={() => goHome()}
+      style={{
+        position: "absolute",
+        bottom: 0,
+        width: config.width,
+        height: 80,
+        backgroundColor: "rgb(39,0,56)"
+      }}>
+      <Text
+        onPress={() => goHome()}
+        style={styles.text}>back</Text>
+    </View>
+
     {showInformativeScreen && <InformativeScreen
         facts={informationType}
         close={closeInformationScreen}
@@ -820,13 +837,7 @@ const PlayGame = (props) => {
 }
 
 PlayGame.navigationOptions = {
-  headerStyle: {
-    backgroundColor: 'rgb(39, 0, 56)',
-  },
-  headerTintColor: '#b57800',
-  headerTitleStyle: {
-    fontFamily: 'Raleway',
-  }
+  header: null
 };
 
 export default PlayGame;
@@ -838,7 +849,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: config.height,
-    width: config.width
+    width: config.width,
+    paddingTop: 50
   },
   buttomPadding: {
     height: 100,
@@ -876,7 +888,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    position: "absolute",
+    bottom: 100
   },
   levelBox: {
     height: 40,
@@ -899,12 +913,21 @@ const styles = StyleSheet.create({
   goldSection: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    width: config.width
   },
   goldText: {
     fontSize: 20,
     letterSpacing: 5,
     fontFamily: "Raleway-Bold"
+  },
+  text: {
+    color: "#fff",
+    fontFamily: "Raleway-ExtraLight",
+    fontSize: 26,
+    textAlign: "center",
+    opacity: 0.8,
+    margin: 10
   },
   gold: {
     height: 60,

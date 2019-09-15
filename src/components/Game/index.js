@@ -24,13 +24,7 @@ const Game = (props) => {
 }
 
 Game.navigationOptions = {
-  headerStyle: {
-    backgroundColor: 'rgb(39, 0, 56)',
-  },
-  headerTintColor: '#b57800',
-  headerTitleStyle: {
-    fontFamily: 'Raleway',
-  }
+  header: null
 };
 
 export default Game;

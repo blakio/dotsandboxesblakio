@@ -12,6 +12,9 @@ import { images } from "../util/Images";
 
 const StoreScreen = (props) => {
 
+  const { navigate } = props.navigation;
+  const goHome = () => navigate("HomePage");
+
   let colorAnimation = new Animated.Value(0);
 
   const startAnimation = () => {
@@ -64,17 +67,24 @@ const StoreScreen = (props) => {
       <Text style={styles.text}>Thanks for playing</Text>
     </View>
 
+    <View
+      onPress={() => goHome()}
+      style={{
+        position: "absolute",
+        bottom: 0,
+        width: config.width,
+        height: 80,
+        backgroundColor: "rgb(39,0,56)"
+      }}>
+      <Text
+        onPress={() => goHome()}
+        style={styles.text}>back</Text>
+    </View>
   </View>)
 }
 
 StoreScreen.navigationOptions = {
-  headerStyle: {
-    backgroundColor: 'rgb(39, 0, 56)',
-  },
-  headerTintColor: '#b57800',
-  headerTitleStyle: {
-    fontFamily: 'Raleway',
-  }
+  header: null
 };
 
 export default StoreScreen;
@@ -89,7 +99,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-    width: config.width
+    width: config.width,
+    paddingTop: 100
   },
   textSection: {
     width: config.width * 0.9,

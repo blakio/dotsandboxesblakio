@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   textSectionStlye: {
     backgroundColor: "#270038",
-    height: "88%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center"
   },
