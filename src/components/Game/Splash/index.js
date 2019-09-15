@@ -3,7 +3,8 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image
+  Image,
+  StatusBar
 } from "react-native";
 
 import { images } from "../util/Images";
@@ -22,6 +23,8 @@ const Splash = (props) => {
   }, 1500)
 
   return (<TouchableOpacity>
+    <StatusBar hidden />
+    
     <View style={{
       height: config.height,
       width: config.width,

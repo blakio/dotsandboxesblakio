@@ -4,7 +4,8 @@ import {
   Text,
   Image,
   Animated,
-  StyleSheet
+  StyleSheet,
+  StatusBar
 } from "react-native";
 
 import { config } from "../util/Settings";
@@ -57,6 +58,8 @@ const StoreScreen = (props) => {
   }
 
   return (<View style={styles.motivationPage}>
+    <StatusBar hidden />
+    
     <Image style={styles.imgStyle} source={images.background} />
 
     <View style={styles.title}>
@@ -73,7 +76,7 @@ const StoreScreen = (props) => {
         position: "absolute",
         bottom: 0,
         width: config.width,
-        height: 80,
+        height: 70,
         backgroundColor: "rgb(39,0,56)"
       }}>
       <Text

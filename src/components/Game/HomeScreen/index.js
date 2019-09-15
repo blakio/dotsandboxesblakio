@@ -6,7 +6,8 @@ import {
   Image,
   Animated,
   StyleSheet,
-  AppState
+  AppState,
+  StatusBar
 } from "react-native";
 
 import { images } from "../util/Images";
@@ -96,6 +97,7 @@ const HomeScreen = (props) => {
   });
 
   return (<View style={styles.fullPage}>
+    <StatusBar hidden />
     <View style={styles.menuArea}>
       <View style={styles.textSectionStlye}>
         <TouchableOpacity onPress={startTheGame}>

@@ -6,7 +6,8 @@ import {
   Image,
   Animated,
   StyleSheet,
-  AppState
+  AppState,
+  StatusBar
 } from "react-native";
 
 import GameScoreBoard from "../GameScoreBoard";
@@ -394,6 +395,10 @@ const PlayGame = (props) => {
       return sounds.wrong.play()
     }
 
+    if(activeBomb.length){
+      return setExplosionBoxes(index);
+    }
+
     const trainingBoxesSidesClick = {};
     if(playerTurn === "first"){
       const corner = util.getCornersFromSide(side);
@@ -429,7 +434,7 @@ const PlayGame = (props) => {
     const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(board, side, index);
     const adjBoxName = boxInfo.getBoxNameByIndex(adjacentBoxIndex);
 
-    if(boxInfo.hasFootRestriction(footIndexes, index, adjacentBoxIndex)){
+    if(boxInfo.hasFootRestriction(footIndexes, index, adjacentBoxIndex) || disabled){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     };
@@ -646,6 +651,8 @@ const PlayGame = (props) => {
   }
 
   return (<View style={styles.boardStyle}>
+    <StatusBar hidden />
+
     <Image style={styles.imgStyle} source={images.background} />
 
     <GameScoreBoard
@@ -817,7 +824,7 @@ const PlayGame = (props) => {
         position: "absolute",
         bottom: 0,
         width: config.width,
-        height: 80,
+        height: 70,
         backgroundColor: "rgb(39,0,56)"
       }}>
       <Text
@@ -849,8 +856,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: config.height,
-    width: config.width,
-    paddingTop: 50
+    width: config.width
   },
   buttomPadding: {
     height: 100,
