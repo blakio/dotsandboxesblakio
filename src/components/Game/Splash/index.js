@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   Image,
   StatusBar
 } from "react-native";
@@ -22,9 +21,9 @@ const Splash = (props) => {
     goHome();
   }, 1500)
 
-  return (<TouchableOpacity>
+  return (<View>
     <StatusBar hidden />
-    
+
     <View style={{
       height: config.height,
       width: config.width,
@@ -50,7 +49,7 @@ const Splash = (props) => {
       >blakio</Text>
 
     </View>
-  </TouchableOpacity>)
+  </View>)
 }
 
 Splash.navigationOptions = {

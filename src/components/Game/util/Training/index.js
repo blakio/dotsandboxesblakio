@@ -14,8 +14,8 @@ export const trainRestrictions = {
       type: "clickSide",
       boxes: [15, 16],
       sides: ["right", "left"],
-      text: "Tap between",
-      text2: "two dots"
+      text: " ",
+      text2: "Tap between dots"
     }, {
       type: "clickSide",
       boxes: [9, 15],
@@ -42,7 +42,8 @@ export const trainRestrictions = {
       type: "explosionClick",
       bomb: "cheetah",
       text: "Use bombs to remove",
-      text2: "Foot Of Oppression"
+      text2: "Foot Of Oppression",
+      text3: "Click the cheetah"
     }, {
       type: "boxClick",
       clickBox: 16,

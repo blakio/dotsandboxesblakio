@@ -98,6 +98,7 @@ const PlayGame = (props) => {
   const [turns, setTurns] = useState(0);
   const [aimBoxes, setAimBoxes] = useState([]);
   const [circleFlash, setCircleFlash] = useState({});
+  const [direction, setDirection] = useState(false);
 
   const checkComputerMove = () => {
     const move = computerMove(borders, connectedBoxes, board, footIndexes);
@@ -151,6 +152,7 @@ const PlayGame = (props) => {
   }, [training, playerTurn])
 
   useEffect(() => {
+    const additionalTimeout = (currentLevel === "level1") ? 500 : 0
     setTimeout(() => {
       // only use logic if it is the computer turn. ex: "second" player
       if(playerTurn === "second"){
@@ -196,7 +198,7 @@ const PlayGame = (props) => {
           return setGameIsOver(true);
         }
       }
-    }, 250)
+    }, 250 + additionalTimeout)
   }, [playerTurn, whoScored]); // this is only used if borders or connectedBoxes change
 
   useEffect(() => {
@@ -434,7 +436,7 @@ const PlayGame = (props) => {
     const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(board, side, index);
     const adjBoxName = boxInfo.getBoxNameByIndex(adjacentBoxIndex);
 
-    if(boxInfo.hasFootRestriction(footIndexes, index, adjacentBoxIndex) || disabled){
+    if(boxInfo.hasFootRestriction(footIndexes, index, adjacentBoxIndex)){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     };
@@ -473,6 +475,8 @@ const PlayGame = (props) => {
     if(!activeBomb.length || (playerTurn !== "first")) return;
 
     setWaitTime(500);
+
+    setDirection(false);
 
     if(!passedMoveRestrictions(boxIndex, null, activeBomb)){
       sounds.wrong.setCurrentTime(0);
@@ -539,18 +543,35 @@ const PlayGame = (props) => {
     setActiveBomb("");
   }
 
+  const setDirectionText = (type, bomb) => {
+    if(type === "bomb"){
+      if(!bomb){
+        setDirection(false);
+      } else if (bomb === "panther") {
+        setDirection("explodes up and down");
+      } else if (bomb === "cheetah") {
+        setDirection("explodes left and right");
+      } else if (bomb === "makeda") {
+        setDirection("explodes in a cross");
+      }
+    }
+  }
+
   const selectBomb = (bomb, index) => {
     if(!passedMoveRestrictions(null, null, bomb)){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     }
     if(activeBomb === bomb + index){
+      setDirectionText("bomb", false);
       return setActiveBomb("")
     }
-    setActiveBomb(`${bomb}${index}`)
+    setActiveBomb(`${bomb}${index}`);
+    setDirectionText("bomb", bomb);
   }
 
   const changeLevel = (level, levelText) => {
+    setDirection(false);
     setScreenText("")
     if((levelText !== "x" || !levelText)){
       setBoard(util.breakRefAndCopy(gameBoards[level]));
@@ -745,6 +766,7 @@ const PlayGame = (props) => {
           trainingBoxesSidesClick={trainingBoxesSidesClick}
           aimBoxes={aimBoxes}
           circleFlash={circleFlash}
+          setDirectionText={setDirection}
           currentLevel={currentLevel}/>)})}
     </View>
 
@@ -784,10 +806,7 @@ const PlayGame = (props) => {
     <TouchableOpacity
       style={styles.goldSection}
       onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
-      <Text style={{
-        ...styles.goldText,
-        color: "rgba(255, 255, 255, 0.2)"
-      }}>{turnText}</Text>
+      <Text style={styles.text}>{direction || turnText}</Text>
     </TouchableOpacity>
 
     <View style={styles.levelSelectSection}>

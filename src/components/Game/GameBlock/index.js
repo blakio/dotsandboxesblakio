@@ -68,7 +68,6 @@ const GameBlock = (props) => {
     footIndexes,
     aimBoxes,
     blinkingEdge,
-    blinkingBox,
     navigation,
     trainingBoxesSidesClick,
     side,
@@ -79,25 +78,6 @@ const GameBlock = (props) => {
   let startingColor;
   let endingColor;
   let colorAnimation;
-  let letterColor;
-
-  if(blinkingBox){
-    stopAnimation = false;
-    startingColor = 0;
-    endingColor = 1;
-    colorAnimation = new Animated.Value(startingColor);
-    letterColor = colorAnimation.interpolate({
-      inputRange: [ 0, 1 ],
-      outputRange: [ '#49115e', '#F9A600' ]
-    });
-    const animateScoreBoard = (obj) => {
-      Animated.timing(
-        colorAnimation,
-        { toValue: endingColor, duration: 500, delay: 500 }
-      ).start();
-    }
-    animateScoreBoard();
-  }
 
   const scoreColor = (scored === "second") && "#2b0938";
   let topBorderColor = (borderColors[0] === "first") ? "#b57800" : (borderColors[0] === "second") ? "#980000" : "transparent";
@@ -147,8 +127,7 @@ const GameBlock = (props) => {
 
   const styles = {
     box: {
-      backgroundColor: blinkingBox ? letterColor :
-       footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
+      backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
       height: 53,
       width: 53,
       position: "relative",
@@ -245,12 +224,13 @@ const GameBlock = (props) => {
       position: "absolute",
       justifyContent: "center",
       alignItems: "center",
-      opacity: 0.4
+      opacity: 0.2
     }
   }
 
   const clickGameBox = () => {
     if(footIndexes.includes(index)){
+      props.setDirectionText("uses bomb to remove");
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     }
