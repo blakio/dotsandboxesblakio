@@ -99,6 +99,7 @@ const PlayGame = (props) => {
   const [aimBoxes, setAimBoxes] = useState([]);
   const [circleFlash, setCircleFlash] = useState({});
   const [direction, setDirection] = useState(false);
+  const [computerTurn, setComputerTurn] = useState(false);
 
   const checkComputerMove = () => {
     const move = computerMove(borders, connectedBoxes, board, footIndexes);
@@ -156,6 +157,7 @@ const PlayGame = (props) => {
     setTimeout(() => {
       // only use logic if it is the computer turn. ex: "second" player
       if(playerTurn === "second"){
+        setComputerTurn(true);
         setConsecutiveTurns(0)
 
         if(training && training.computerMoves && training.computerMoves.length){
@@ -387,6 +389,8 @@ const PlayGame = (props) => {
   }
 
   const clickBorder = (side, index, player) => {
+    if(player === "first" && computerTurn) return;
+
     if(!passedMoveRestrictions(index, side)){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
@@ -466,6 +470,13 @@ const PlayGame = (props) => {
       (board[adjBoxName] && !boxInfo.isDisabled(board, adjBoxName))){
       setLineColor([index, adjacentBoxIndex], [side, adjBoxSide]);
       setTurnPlayer(hasScored, [index, adjacentBoxIndex]);
+    }
+
+    if(player === "second"){
+      const additionalTimeout = (currentLevel === "level1") ? 500 : 0
+      setTimeout(() => {
+        setComputerTurn(false);
+      }, 250 + additionalTimeout)
     }
   }
 
