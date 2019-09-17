@@ -4,10 +4,12 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 
 import { config } from "../util/Settings";
+import { images } from "../util/Images";
 
 const GameOver = (props) => {
 
@@ -31,7 +33,7 @@ const GameOver = (props) => {
       width: config.width,
       height: config.height,
       position: "absolute",
-      top ,
+      top,
       left: 0,
       backgroundColor: "rgba(39, 0, 56, 0.6)",
       opacity
@@ -40,6 +42,7 @@ const GameOver = (props) => {
 
   return (<Animated.View style={youWinStyle(top, opacity)}>
     <View style={styles.textSectionStlye}>
+      <Image style={styles.imgStyle} source={images.confetti} />
       <Text style={styles.youWin}>YOU WIN!</Text>
       <TouchableOpacity onPress={restartGame}>
         <Text style={styles.retry}>RETRY</Text>
@@ -79,5 +82,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 40,
     opacity: 0.6
+  },
+  imgStyle: {
+    position: "absolute",
+    top: 100,
+    height: 400,
+    width: 400
   }
 });

@@ -4,10 +4,12 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 
 import { config } from "../util/Settings";
+import { images } from "../util/Images";
 
 const GameOver = (props) => {
 
@@ -39,6 +41,7 @@ const GameOver = (props) => {
 
   return (<Animated.View style={gameOverStyle(top, opacity)}>
     <View style={styles.textSectionStlye}>
+      <Image style={styles.imgStyle} source={images.sad} />
       <Text style={styles.gameOver}>GAME OVER</Text>
       <TouchableOpacity onPress={restartGame}>
         <Text style={styles.retry}>RETRY</Text>
@@ -68,5 +71,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 40,
     opacity: 0.6
+  },
+  imgStyle: {
+    position: "absolute",
+    top: 100,
+    height: 100,
+    width: 100
   }
 });
