@@ -33,39 +33,6 @@ import { sounds } from "../Sounds";
 
 const PlayGame = (props) => {
 
-  const [appState] = useState(AppState.currentState)
-
-  useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange)
-  }, []);
-
-  const handleAppStateChange = (nextAppState) => {
-    if(nextAppState === 'active'){
-      sounds.inGameMusic.setVolume(0.4);
-    } else {
-      sounds.inGameMusic.setVolume(0);
-    }
-  };
-
-  const playGameMusic = () => {
-    sounds.inGameMusic.setCurrentTime(0);
-    sounds.inGameMusic.play();
-    sounds.inGameMusic.setNumberOfLoops(-1);
-    sounds.inGameMusic.setVolume(0.4);
-  }
-
-  const { navigate } = props.navigation;
-  const goHome = () => navigate("HomePage");
-
-  props.navigation.addListener('willFocus', () => {
-    playGameMusic();
-  })
-
-  props.navigation.addListener('willBlur', () => {
-    sounds.inGameMusic.setCurrentTime(0);
-    sounds.inGameMusic.pause();
-  })
-
   const [currentLevel, setCurrentLevel] = useState("level1");
   const [board, setBoard] = useState(util.breakRefAndCopy(gameBoards[currentLevel]));
   const [playerTurn, setPlayerTurn] = useState("first");
@@ -89,7 +56,7 @@ const PlayGame = (props) => {
   const [showBoard, setShowBoard] = useState(false);
   const [currentLevelBombs, setCurrentLevelBombs] = useState([]);
   const [consecutiveTurns, setConsecutiveTurns] = useState(0);
-  const [screenText, setScreenText] = useState("");
+  const [screenText, setScreenText] = useState(screenText || "");
   const [helpText, setHelpText] = useState("");
   const [training, setTraining] = useState("");
   const [bombToClick, setBombToClick] = useState(null);
@@ -101,15 +68,40 @@ const PlayGame = (props) => {
   const [direction, setDirection] = useState(false);
   const [computerTurn, setComputerTurn] = useState(false);
 
+  // the game music is turned down when closing the app
+  useEffect(() => {
+    AppState.addEventListener('change', nextAppState => {
+      (nextAppState === 'active') ? sounds.inGameMusic.setVolume(0.4) : sounds.inGameMusic.setVolume(0);
+    })
+  }, []);
+
+  // play the game music
+  const playGameMusic = () => {
+    sounds.inGameMusic.setCurrentTime(0);
+    // sounds.inGameMusic.play();
+    sounds.inGameMusic.setNumberOfLoops(-1);
+    sounds.inGameMusic.setVolume(0.4);
+  }
+  props.navigation.addListener('willFocus', () => { playGameMusic() });
+
+  // navigate to the home page
+  const goHome = () => props.navigation.navigate("HomePage");
+
+  // stop the music when navigating away from the game page
+  props.navigation.addListener('willBlur', () => {
+    sounds.inGameMusic.setCurrentTime(0);
+    sounds.inGameMusic.pause();
+  })
+
+  // used during debugging mode to see which move the computer will make
   const checkComputerMove = () => {
     const move = computerMove(borders, connectedBoxes, board, footIndexes);
   }
 
+  // set the text that shows on the screen when reaching a consectutive boxes per turn
   const showScreenText = (text) => {
     setScreenText(text)
-    setTimeout(() => {
-      setScreenText("")
-    }, 1000)
+    setTimeout(() => { setScreenText("") }, 2000);
   }
 
   useEffect(() => {
@@ -686,6 +678,23 @@ const PlayGame = (props) => {
     <StatusBar hidden />
 
     <Image style={styles.imgStyle} source={images.background} />
+
+    <View style={{
+      position: "absolute",
+      top: 100,
+      zIndex: 100,
+      width: config.width,
+      justifyContent: "center",
+      alignItems: "center",
+      opacity: 0.8
+    }} pointerEvents="none">
+      <Text style={{
+        color: "#b57800",
+        fontSize: 120,
+        fontFamily: "Raleway-ExtraBold",
+        textAlign: "center"
+      }}>{screenText}</Text>
+    </View>
 
     <GameScoreBoard
       yourScore={yourScore}
