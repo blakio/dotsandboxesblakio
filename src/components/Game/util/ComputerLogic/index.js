@@ -8,7 +8,7 @@ export const computerMove = (borders, connectedBoxes, board, footIndexes, showSc
   if(threeBorderOptions.length){
     choice = threeBorderOptions[0];
     if(boxInfo.getNoBorderOptions(borders, connectedBoxes, board, footIndexes).length > 0){
-      showScreenText("HA! GOT EM")
+      showScreenText("GOT EM!")
       sounds.gotem.play();
     }
   } else {

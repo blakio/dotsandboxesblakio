@@ -41,7 +41,7 @@ const HomeScreen = (props) => {
 
   const playGameMusic = () => {
     sounds.introMusic.setCurrentTime(0);
-    // sounds.introMusic.play();
+    sounds.introMusic.play();
     sounds.introMusic.setNumberOfLoops(-1);
   }
 
@@ -130,11 +130,10 @@ const styles = StyleSheet.create({
   },
   menuArea: {
     width: config.width,
-    height: (config.height * 0.8),
+    height: (config.height),
     position: "absolute",
     left: 0,
-    bottom: 0,
-    backgroundColor: "rgba(39, 0, 56, 0.6)"
+    bottom: 0
   },
   imgStyle: {
     width: config.width,

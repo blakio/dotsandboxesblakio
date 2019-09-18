@@ -78,7 +78,7 @@ const PlayGame = (props) => {
   // play the game music
   const playGameMusic = () => {
     sounds.inGameMusic.setCurrentTime(0);
-    // sounds.inGameMusic.play();
+    sounds.inGameMusic.play();
     sounds.inGameMusic.setNumberOfLoops(-1);
     sounds.inGameMusic.setVolume(0.4);
   }
@@ -101,15 +101,11 @@ const PlayGame = (props) => {
   // set the text that shows on the screen when reaching a consectutive boxes per turn
   const showScreenText = (text) => {
     setScreenText(text)
-    setTimeout(() => { setScreenText("") }, 2000);
+    setTimeout(() => { setScreenText("") }, 1000);
   }
 
   useEffect(() => {
-    if(playerTurn === "first"){
-      setTurnText("your turn")
-    } else {
-      setTurnText("computer turn")
-    }
+    (playerTurn === "first") ? setTurnText("your turn") : setTurnText("computer turn");
     if(turns !== 0){
       sounds.lineClick.setCurrentTime(0);
       sounds.lineClick.play();
@@ -465,10 +461,10 @@ const PlayGame = (props) => {
     }
 
     if(player === "second"){
-      const additionalTimeout = (currentLevel === "level1") ? 500 : 0
+      // prevent first player from making a move on the computer's turn
       setTimeout(() => {
         setComputerTurn(false);
-      }, 250 + additionalTimeout)
+      }, 250)
     }
   }
 

@@ -13,23 +13,27 @@ import { sounds } from "../Sounds";
 
 const GameBlock = (props) => {
 
+  const [showExplosionBox, setShowExplosionBox] = useState(true);
+
   let opacity = new Animated.Value(0);
   useEffect(() => {
     if(props.explodingBoxes[props.index]){
       Animated.timing(
-        opacity,
-        {
-          toValue: 1,
-          duration: 100,
-        }
+        opacity, { toValue: 1, duration: 100 }
       ).start(() => {
         Animated.timing(
-          opacity,
-          {
-            toValue: 0,
-            duration: 400,
+          opacity, { toValue: 0, duration: 400 }
+        ).start(obj => {
+          // prevent the bomb from remaining on the screen
+          if(!obj.finished){
+            setTimeout(() => {
+              setShowExplosionBox(false);
+              setTimeout(() => {
+                setShowExplosionBox(true);
+              })
+            }, 250)
           }
-        ).start();
+        });
       });
     }
   }, [props.explodingBoxes]);
@@ -247,13 +251,13 @@ const GameBlock = (props) => {
         />
       </View>}
 
-      <Animated.View
+      {showExplosionBox && <Animated.View
         style={{
           height: "100%",
           width: "100%",
           backgroundColor: "#980000",
           opacity: opacity}}>
-      </ Animated.View>
+      </ Animated.View>}
 
       <View style={styles.topLeft} />
       <View style={styles.topRight} />
