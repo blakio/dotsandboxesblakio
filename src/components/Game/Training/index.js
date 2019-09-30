@@ -1,0 +1,58 @@
+import React, { useState } from "react"
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  Animated,
+  StyleSheet,
+  Image
+} from "react-native";
+
+import { config } from "../util/Settings";
+
+const Training = ({text, openTraining}) => {
+
+  const [index, setIndex] = useState(0);
+  const [screenText, setScreenText] = useState(text[index]);
+  const [removeScreen, setRemoveScreen] = useState(false)
+
+  const nextPage = () => {
+    if(text[index + 1]){
+      setScreenText(text[index + 1])
+      setIndex(index + 1)
+    } else {
+      openTraining(false)
+    }
+  }
+
+  const otherStlyes = removeScreen ? {
+    display: "none"
+  } : {};
+
+  return (<TouchableHighlight
+    style={{...styles.background, ...otherStlyes}}
+    onPress={() => nextPage()}>
+      <Text style={styles.text}>{text[index]}</Text>
+  </TouchableHighlight>)
+}
+
+const styles = {
+  background: {
+    backgroundColor: "rgb(39, 0, 53)",
+    height: config.height,
+    width: config.width,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  text: {
+    color: "#fff",
+    fontSize: 20,
+    width: "90%",
+    textAlign: "center"
+  }
+}
+
+export default Training;

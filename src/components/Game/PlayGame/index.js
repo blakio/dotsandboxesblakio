@@ -17,6 +17,8 @@ import YouWin from "../YouWin";
 import InformativeScreen from "../InformativeScreen";
 import ScreenText from "../ScreenText";
 import Pointer from "../Pointer";
+import Training from "../Training";
+
 import { gameBoards } from "../util/GameBoards";
 import { boxInfo } from "../util/BoxInfo";
 import { computerMove } from "../util/ComputerLogic";
@@ -67,6 +69,7 @@ const PlayGame = (props) => {
   const [circleFlash, setCircleFlash] = useState({});
   const [direction, setDirection] = useState(false);
   const [computerTurn, setComputerTurn] = useState(false);
+  const [openTraining, setOpenTraining] = useState(trainRestrictions[currentLevel].preText ? true : false);
 
   // the game music is turned down when closing the app
   useEffect(() => {
@@ -590,6 +593,7 @@ const PlayGame = (props) => {
       setYouWin(false);
       setBoardTotalScore(util.getBoardScore(gameBoards[level]));
       setCurrentLevel(level);
+      setOpenTraining(trainRestrictions[currentLevel].preText ? true : false);
       if(config.informationBoard.includes(levelText)){
         setShowInformativeScreen(true);
         const type = config.informationText[`${levelText}`];
@@ -866,6 +870,11 @@ const PlayGame = (props) => {
         onPress={() => goHome()}
         style={styles.text}>back</Text>
     </View>
+
+    { openTraining &&
+      <Training
+        text={trainRestrictions[currentLevel].preText}
+        openTraining={setOpenTraining}/>}
 
     {showInformativeScreen && <InformativeScreen
         facts={informationType}

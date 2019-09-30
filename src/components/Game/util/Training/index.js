@@ -1,5 +1,11 @@
 export const trainRestrictions = {
   level1: {
+    preText: [
+`
+You vs. Computer
+Create more boxes. That's it!
+Tap when ready`
+    ],
     computerMoves: [{
         type: "clickSide",
         box: 19,
@@ -14,8 +20,7 @@ export const trainRestrictions = {
       type: "clickSide",
       boxes: [15, 16],
       sides: ["right", "left"],
-      text: " ",
-      text2: "Tap between dots"
+      text: "Tap between dots"
     }, {
       type: "clickSide",
       boxes: [9, 15],
@@ -29,8 +34,7 @@ export const trainRestrictions = {
       type: "clickSide",
       boxes: [10, 11],
       sides: ["right", "left"],
-      text: "score to take",
-      text2: "another turn"
+      text: "score to take another turn"
     }, {
       text: "Draw more boxes to win"
     }, {
@@ -38,6 +42,10 @@ export const trainRestrictions = {
     }]
   },
   level2: {
+    preText: [
+`Use animal bombs to remove obstacles
+Tap when ready`
+    ],
     yourMoves: [{
       type: "explosionClick",
       bomb: "cheetah",

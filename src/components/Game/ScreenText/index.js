@@ -55,6 +55,7 @@ const ScreenText = (props) => {
 
   const styles = {
     textSectionStlye: {
+      minHeight: 50,
       width: config.width,
       justifyContent: "center",
       alignItems: "center"
@@ -76,7 +77,7 @@ const ScreenText = (props) => {
       top: 50,
       left: 0,
       opacity: 1,
-      backgroundColor: "rgba(39,0,56, 0.5)"
+      backgroundColor: "rgba(39,0,56, 1)"
     }
   }
 
