@@ -18,6 +18,7 @@ import InformativeScreen from "../InformativeScreen";
 import ScreenText from "../ScreenText";
 import Pointer from "../Pointer";
 import Training from "../Training";
+import BackBtn from "../BackBtn";
 
 import { gameBoards } from "../util/GameBoards";
 import { boxInfo } from "../util/BoxInfo";
@@ -86,9 +87,6 @@ const PlayGame = (props) => {
     sounds.inGameMusic.setVolume(0.4);
   }
   props.navigation.addListener('willFocus', () => { playGameMusic() });
-
-  // navigate to the home page
-  const goHome = () => props.navigation.navigate("HomePage");
 
   // stop the music when navigating away from the game page
   props.navigation.addListener('willBlur', () => {
@@ -857,19 +855,7 @@ const PlayGame = (props) => {
 
     {(helpText.length !== 0) && <ScreenText text={helpText} font={26} />}
 
-    <View
-      onPress={() => goHome()}
-      style={{
-        position: "absolute",
-        bottom: 0,
-        width: config.width,
-        height: 70,
-        backgroundColor: "rgb(39,0,56)"
-      }}>
-      <Text
-        onPress={() => goHome()}
-        style={styles.text}>back</Text>
-    </View>
+    <BackBtn {...props} />
 
     { openTraining &&
       <Training
@@ -993,5 +979,9 @@ const styles = StyleSheet.create({
   space: {
     height: 20,
     width: config.width
+  },
+  home: {
+    width: config.width * 0.08,
+    height:  config.width * 0.08
   }
 });

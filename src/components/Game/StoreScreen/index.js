@@ -5,16 +5,16 @@ import {
   Image,
   Animated,
   StyleSheet,
-  StatusBar
+  StatusBar,
+  TouchableHighlight
 } from "react-native";
+
+import BackBtn from "../BackBtn";
 
 import { config } from "../util/Settings";
 import { images } from "../util/Images";
 
 const StoreScreen = (props) => {
-
-  const { navigate } = props.navigation;
-  const goHome = () => navigate("HomePage");
 
   let colorAnimation = new Animated.Value(0);
 
@@ -59,7 +59,7 @@ const StoreScreen = (props) => {
 
   return (<View style={styles.motivationPage}>
     <StatusBar hidden />
-    
+
     <Image style={styles.imgStyle} source={images.background} />
 
     <View style={styles.title}>
@@ -70,19 +70,8 @@ const StoreScreen = (props) => {
       <Text style={styles.text}>Thanks for playing</Text>
     </View>
 
-    <View
-      onPress={() => goHome()}
-      style={{
-        position: "absolute",
-        bottom: 0,
-        width: config.width,
-        height: 70,
-        backgroundColor: "rgb(39,0,56)"
-      }}>
-      <Text
-        onPress={() => goHome()}
-        style={styles.text}>back</Text>
-    </View>
+    <BackBtn {...props} />
+
   </View>)
 }
 
@@ -112,7 +101,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: "Raleway-ExtraLight",
-    fontSize: 26,
+    fontSize: config.width * 0.068,
     textAlign: "center",
     opacity: 0.8,
     margin: 10
