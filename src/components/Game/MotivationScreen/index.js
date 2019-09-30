@@ -87,9 +87,8 @@ const styles = StyleSheet.create({
   title: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
-    width: config.width,
-    paddingTop: 100
+    marginTop: config.height * 0.15,
+    width: config.width
   },
   textSection: {
     width: config.width * 0.9,
