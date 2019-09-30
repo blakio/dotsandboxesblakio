@@ -2,8 +2,8 @@ export const trainRestrictions = {
   level1: {
     preText: [
 `
-You vs. Computer
 Create more boxes. That's it!
+You vs. Computer
 Tap when ready`
     ],
     computerMoves: [{
