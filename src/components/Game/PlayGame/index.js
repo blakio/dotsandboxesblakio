@@ -711,81 +711,83 @@ const PlayGame = (props) => {
       opacity: activeBomb.length ? 0.2 : 0
     }}></View>
 
-    <View style={{width: 318, height: 380, flexDirection: "row", flexWrap: "wrap", paddingTop: 40}}>
-      {keys.map((data, index) => {
-        const {
-          disabled,
-          borders
-        } = board[data];
-        const {
-          isTopRightCornerBox,
-          isTopLeftCornerBox,
-          isBottomRightCornerBox,
-          isBottomLeftCornerBox,
-          isTopSideRow,
-          isRightSideRow,
-          isBottomSideRow,
-          isLeftSideRow
-        } = boxInfo.getSidesInfo(board, index);
-        const box = boxInfo.getBoxNameByIndex(index)
-        const isDisabledBox = disabled || false;
-        const hasScored = borders.top && borders.right && borders.bottom && borders.left;
-        const borderColors = boxInfo.getBorderColors(box, whoClickedTheLineTracker);
+    <View style={{width: config.width, height: config.width, justifyContent: "center", alignItems: "center", paddingTop: 40}}>
+      <View style={{width: config.width * 0.84, height: config.width * 0.8, flexDirection: "row", flexWrap: "wrap"}}>
+        {keys.map((data, index) => {
+          const {
+            disabled,
+            borders
+          } = board[data];
+          const {
+            isTopRightCornerBox,
+            isTopLeftCornerBox,
+            isBottomRightCornerBox,
+            isBottomLeftCornerBox,
+            isTopSideRow,
+            isRightSideRow,
+            isBottomSideRow,
+            isLeftSideRow
+          } = boxInfo.getSidesInfo(board, index);
+          const box = boxInfo.getBoxNameByIndex(index)
+          const isDisabledBox = disabled || false;
+          const hasScored = borders.top && borders.right && borders.bottom && borders.left;
+          const borderColors = boxInfo.getBorderColors(box, whoClickedTheLineTracker);
 
-        const restriction = training && training.yourMoves && training.yourMoves[0];
+          const restriction = training && training.yourMoves && training.yourMoves[0];
 
-        let blinkingEdge = false;
-        let blinkingBox = false;
+          let blinkingEdge = false;
+          let blinkingBox = false;
 
-        if (restriction && restriction.type === "clickSide" && playerTurn === "first"){
-          const restrictionIndex = restriction.boxes.indexOf(index);
-          blinkingEdge = (restrictionIndex !== -1) && restriction.sides[restrictionIndex];
-        }
+          if (restriction && restriction.type === "clickSide" && playerTurn === "first"){
+            const restrictionIndex = restriction.boxes.indexOf(index);
+            blinkingEdge = (restrictionIndex !== -1) && restriction.sides[restrictionIndex];
+          }
 
-        if(restriction && (restriction.type === "boxClick") && (playerTurn === "first") && (index === restriction.clickBox)){
-          blinkingBox = true;
-        }
+          if(restriction && (restriction.type === "boxClick") && (playerTurn === "first") && (index === restriction.clickBox)){
+            blinkingBox = true;
+          }
 
-        let side = false;
-        if(blinkingEdge === "top"){
-          side = "top";
-        } else if (blinkingEdge === "left") {
-          side = "right";
-        } else if (blinkingBox) {
-          side = "box";
-        }
+          let side = false;
+          if(blinkingEdge === "top"){
+            side = "top";
+          } else if (blinkingEdge === "left") {
+            side = "right";
+          } else if (blinkingBox) {
+            side = "box";
+          }
 
-        return (<GameBlock
-          key={index}
-          isDisabledBox={isDisabledBox}
-          borders={borders}
-          clickBorder={clickBorder}
-          index={index}
-          hasScored={hasScored}
-          scored={whoScored[box]}
-          borderColors={borderColors}
-          computerLastLineClick={computerLastLineClick}
-          boxName={box}
-          isTopRightCornerBox={isTopRightCornerBox}
-          isTopLeftCornerBox={isTopLeftCornerBox}
-          isBottomRightCornerBox={isBottomRightCornerBox}
-          isBottomLeftCornerBox={isBottomLeftCornerBox}
-          isTopSideRow={isTopSideRow}
-          isRightSideRow={isRightSideRow}
-          isBottomSideRow={isBottomSideRow}
-          isLeftSideRow={isLeftSideRow}
-          explodingBoxes={explodingBoxes}
-          setExplosionBoxes={setExplosionBoxes}
-          footIndexes={footIndexes}
-          blinkingEdge={blinkingEdge}
-          blinkingBox={blinkingBox}
-          side={side}
-          navigation={props.navigation}
-          trainingBoxesSidesClick={trainingBoxesSidesClick}
-          aimBoxes={aimBoxes}
-          circleFlash={circleFlash}
-          setDirectionText={setDirection}
-          currentLevel={currentLevel}/>)})}
+          return (<GameBlock
+            key={index}
+            isDisabledBox={isDisabledBox}
+            borders={borders}
+            clickBorder={clickBorder}
+            index={index}
+            hasScored={hasScored}
+            scored={whoScored[box]}
+            borderColors={borderColors}
+            computerLastLineClick={computerLastLineClick}
+            boxName={box}
+            isTopRightCornerBox={isTopRightCornerBox}
+            isTopLeftCornerBox={isTopLeftCornerBox}
+            isBottomRightCornerBox={isBottomRightCornerBox}
+            isBottomLeftCornerBox={isBottomLeftCornerBox}
+            isTopSideRow={isTopSideRow}
+            isRightSideRow={isRightSideRow}
+            isBottomSideRow={isBottomSideRow}
+            isLeftSideRow={isLeftSideRow}
+            explodingBoxes={explodingBoxes}
+            setExplosionBoxes={setExplosionBoxes}
+            footIndexes={footIndexes}
+            blinkingEdge={blinkingEdge}
+            blinkingBox={blinkingBox}
+            side={side}
+            navigation={props.navigation}
+            trainingBoxesSidesClick={trainingBoxesSidesClick}
+            aimBoxes={aimBoxes}
+            circleFlash={circleFlash}
+            setDirectionText={setDirection}
+            currentLevel={currentLevel}/>)})}
+      </View>
     </View>
 
     <View style={styles.bombSection} >
@@ -857,7 +859,7 @@ const PlayGame = (props) => {
 
     <BackBtn {...props} />
 
-    { openTraining &&
+    { openTraining && trainRestrictions[currentLevel].preText &&
       <Training
         text={trainRestrictions[currentLevel].preText}
         openTraining={setOpenTraining}/>}
