@@ -10,6 +10,7 @@ import Pointer from "../Pointer";
 import { boxInfo } from "../util/BoxInfo";
 import { images } from "../util/Images";
 import { sounds } from "../Sounds";
+import { config } from "../util/Settings";
 
 const GameBlock = (props) => {
 
@@ -132,8 +133,8 @@ const GameBlock = (props) => {
   const styles = {
     box: {
       backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
-      height: 53,
-      width: 53,
+      height: config.width * 0.14,
+      width: config.width * 0.14,
       position: "relative",
       opacity: isDisabledBox ? 0 : 1,
       borderTopWidth: borderTopWidth,
@@ -146,27 +147,27 @@ const GameBlock = (props) => {
       borderLeftColor: leftBorderColor
     },
     top: {
-      height: "45%",
+      height: "50%",
       width: "100%",
       position: "absolute",
-      top: "-18%"
+      top: "-25%"
     },
     right: {
       height: "100%",
-      width: "45%",
+      width: "50%",
       position: "absolute",
-      right: "-18%"
+      right: "-25%"
     },
     bottom: {
-      height: "45%",
+      height: "50%",
       width: "100%",
       position: "absolute",
-      bottom: "-18%"
+      bottom: "-25%"
     },
     left: {
       height: "100%",
-      width: "45%",
-      left: "-18%",
+      width: "50%",
+      left: "-25%",
       position: "absolute",
       top: 0
     },

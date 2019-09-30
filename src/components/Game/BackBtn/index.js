@@ -10,7 +10,7 @@ import { images } from "../util/Images";
 import { config } from "../util/Settings";
 
 const BackBtn = (props) => {
-  
+
   // navigate to the home page
   const goHome = () => props.navigation.navigate("HomePage");
 
