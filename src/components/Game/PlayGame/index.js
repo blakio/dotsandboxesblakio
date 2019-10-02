@@ -711,7 +711,14 @@ const PlayGame = (props) => {
       opacity: activeBomb.length ? 0.2 : 0
     }}></View>
 
-    <View style={{width: config.width, height: config.width, justifyContent: "center", alignItems: "center", paddingTop: 40}}>
+    <View style={{
+      width: config.width,
+      height: config.width,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 40,
+      marginBottom: config.height * 0.03
+    }}>
       <View style={{width: config.width * 0.84, height: config.width * 0.8, flexDirection: "row", flexWrap: "wrap"}}>
         {keys.map((data, index) => {
           const {
@@ -824,7 +831,6 @@ const PlayGame = (props) => {
     </View>
 
     <TouchableOpacity
-      style={styles.goldSection}
       onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
       <Text style={styles.text}>{direction || turnText}</Text>
     </TouchableOpacity>
@@ -833,7 +839,10 @@ const PlayGame = (props) => {
       {config.levels.map((data, index) => {
         const levelStyle = (data === "x") ? styles.lockedLevel : styles.openLevel;
         const levelText = (data === "x") ? "x" : (index + 1);
-        return (<TouchableOpacity key={index} onPress={changeLevel.bind(this, `level${index + 1}`, levelText)}>
+        return (<TouchableOpacity key={index} onPress={
+          (currentLevel === `level${levelText}`) ? null :
+          changeLevel.bind(this, `level${index + 1}`, levelText)
+        }>
           <View style={styles.levelBox}>
             <View style={levelStyle}>
               <Text style={levelStyle}>{levelText}</Text>
@@ -855,7 +864,7 @@ const PlayGame = (props) => {
         isLastBoard={currentLevel === config.finalLevel}
       />}
 
-    {(helpText.length !== 0) && <ScreenText text={helpText} font={26} />}
+    {/*(helpText.length !== 0) && <ScreenText text={helpText} font={26} />*/}
 
     <BackBtn {...props} />
 
@@ -868,8 +877,6 @@ const PlayGame = (props) => {
         facts={informationType}
         close={closeInformationScreen}
       />}
-
-    <View style={styles.buttomPadding}></View>
 
   </View>)
 
@@ -889,10 +896,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: config.height,
     width: config.width
-  },
-  buttomPadding: {
-    height: 100,
-    width: 50
   },
   imgStyle: {
     width: config.width,
@@ -914,12 +917,11 @@ const styles = StyleSheet.create({
     fontFamily: "Raleway-ExtraBold"
   },
   bombSection: {
-    height: 40,
+    height: 60,
     width: config.width,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10
+    alignItems: "flex-end"
   },
   levelSelectSection: {
     width: config.width,
@@ -939,51 +941,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 2
   },
-  homeBox: {
-    height: 50,
-    width: 100,
-    backgroundColor: "#270038",
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 5
-  },
-  goldSection: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: config.width
-  },
-  goldText: {
-    fontSize: 20,
-    letterSpacing: 5,
-    fontFamily: "Raleway-Bold"
-  },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-ExtraLight",
+    fontFamily: "Raleway-Bold",
     fontSize: 26,
     textAlign: "center",
     opacity: 0.8,
     margin: 10
-  },
-  gold: {
-    height: 60,
-    width: 60,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  goldImg: {
-    flex:1,
-    height: "100%",
-    width: "100%"
-  },
-  space: {
-    height: 20,
-    width: config.width
-  },
-  home: {
-    width: config.width * 0.08,
-    height:  config.width * 0.08
   }
 });

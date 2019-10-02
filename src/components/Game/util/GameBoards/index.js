@@ -70,7 +70,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopLeftCornerBox: true
+      disabled: true
     },
     box8: {
       borders: {
@@ -79,7 +79,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopSideRow: true
+      disabled: true
     },
     box9: {
       borders: {
@@ -88,7 +88,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopSideRow: true
+      disabled: true
     },
     box10: {
       borders: {
@@ -97,7 +97,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopRightCornerBox: true
+      disabled: true
     },
     box11: {
       borders: {
@@ -124,7 +124,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isLeftSideRow: true
+      disabled: true
     },
     box14: {
       borders: {
@@ -132,7 +132,8 @@ export const gameBoards = {
         right: null,
         bottom: null,
         left: null
-      }
+      },
+      isTopLeftCornerBox: true
     },
     box15: {
       borders: {
@@ -140,7 +141,8 @@ export const gameBoards = {
         right: null,
         bottom: null,
         left: null
-      }
+      },
+      isTopRightCornerBox: true
     },
     box16: {
       borders: {
@@ -149,7 +151,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isRightSideRow: true
+      disabled: true
     },
     box17: {
       borders: {
@@ -176,7 +178,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isLeftSideRow: true
+      disabled: true
     },
     box20: {
       borders: {
@@ -184,7 +186,8 @@ export const gameBoards = {
         right: null,
         bottom: null,
         left: null
-      }
+      },
+      isBottomLeftCornerBox: true
     },
     box21: {
       borders: {
@@ -192,7 +195,8 @@ export const gameBoards = {
         right: null,
         bottom: null,
         left: null
-      }
+      },
+      isBottomRightCornerBox: true
     },
     box22: {
       borders: {
@@ -201,7 +205,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isRightSideRow: true
+      disabled: true
     },
     box23: {
       borders: {
@@ -228,7 +232,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isBottomLeftCornerBox: true
+      disabled: true
     },
     box26: {
       borders: {
@@ -237,7 +241,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isBottomSideRow: true
+      disabled: true
     },
     box27: {
       borders: {
@@ -246,7 +250,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isBottomSideRow: true
+      disabled: true
     },
     box28: {
       borders: {
@@ -255,7 +259,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isBottomRightCornerBox: true
+      disabled: true
     },
     box29: {
       borders: {
@@ -329,10 +333,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopRightCornerBox: true,
-      isTopLeftCornerBox: true,
-      isBottomRightCornerBox: true,
-      isBottomLeftCornerBox: true
+      disabled: true
     },
     box1: {
       borders: {
@@ -377,10 +378,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopRightCornerBox: true,
-      isTopLeftCornerBox: true,
-      isBottomRightCornerBox: true,
-      isBottomLeftCornerBox: true
+      disabled: true
     },
     box6: {
       borders: {
@@ -601,10 +599,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopRightCornerBox: true,
-      isTopLeftCornerBox: true,
-      isBottomRightCornerBox: true,
-      isBottomLeftCornerBox: true
+      disabled: true
     },
     box31: {
       borders: {
@@ -649,10 +644,7 @@ export const gameBoards = {
         bottom: null,
         left: null
       },
-      isTopRightCornerBox: true,
-      isTopLeftCornerBox: true,
-      isBottomRightCornerBox: true,
-      isBottomLeftCornerBox: true
+      disabled: true
     }
   },
   level3: {
@@ -2570,3 +2562,326 @@ export const gameBoards = {
     }
   }
 }
+
+// level1: {
+//   box0: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box1: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box2: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box3: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box4: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box5: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box6: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box7: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isTopLeftCornerBox: true
+//   },
+//   box8: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isTopSideRow: true
+//   },
+//   box9: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isTopSideRow: true
+//   },
+//   box10: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isTopRightCornerBox: true
+//   },
+//   box11: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box12: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box13: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isLeftSideRow: true
+//   },
+//   box14: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     }
+//   },
+//   box15: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     }
+//   },
+//   box16: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isRightSideRow: true
+//   },
+//   box17: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box18: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box19: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isLeftSideRow: true
+//   },
+//   box20: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     }
+//   },
+//   box21: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     }
+//   },
+//   box22: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isRightSideRow: true
+//   },
+//   box23: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box24: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box25: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isBottomLeftCornerBox: true
+//   },
+//   box26: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isBottomSideRow: true
+//   },
+//   box27: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isBottomSideRow: true
+//   },
+//   box28: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     isBottomRightCornerBox: true
+//   },
+//   box29: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box30: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box31: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box32: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box33: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box34: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   },
+//   box35: {
+//     borders: {
+//       top: null,
+//       right: null,
+//       bottom: null,
+//       left: null
+//     },
+//     disabled: true
+//   }
+// },
