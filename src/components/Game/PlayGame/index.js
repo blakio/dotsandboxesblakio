@@ -719,7 +719,7 @@ const PlayGame = (props) => {
       marginTop: 40,
       marginBottom: config.height * 0.03
     }}>
-      <View style={{width: config.width * 0.84, height: config.width * 0.8, flexDirection: "row", flexWrap: "wrap"}}>
+      <View style={{width: config.width * 0.84, height: config.width * 0.84, flexDirection: "row", flexWrap: "wrap"}}>
         {keys.map((data, index) => {
           const {
             disabled,
