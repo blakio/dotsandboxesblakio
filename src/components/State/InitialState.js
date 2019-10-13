@@ -3,16 +3,10 @@ export default InitialState = {
     yourScore: 0,
     computerScore: 0
   },
-  currentLevel: "level1"
+  currentLevel: "level1",
+  playerTurn: "first"
 }
 
-// const [, setCurrentLevel] = useState("level1");
-// const [board, setBoard] = useState(util.breakRefAndCopy(gameBoards[currentLevel]));
-// const [playerTurn, setPlayerTurn] = useState("first");
-// const [borders, setBorders] = useState(util.breakRefAndCopy(boxInfo.borderCount));
-// const [connectedBoxes, setConnectedBoxes] = useState(util.breakRefAndCopy(boxInfo.connectedBoxesObj));
-// const [whoScored, setWhoScored] = useState(util.breakRefAndCopy(whoScoredObj));
-// const [whoClickedTheLineTracker, setWhoClickedTheLineTracker] = useState(util.breakRefAndCopy(whoClickedTheLine));
 // const [computerLastLineClick, setComputerLastLineClick] = useState(false);
 // const [yourScore, setYourScore] = useState(0);
 // const [computerScore, setComputerScore] = useState(0);

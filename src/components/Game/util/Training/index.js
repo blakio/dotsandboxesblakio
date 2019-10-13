@@ -2,18 +2,15 @@ export const trainRestrictions = {
   level1: {
     preText: [
 `
-Create more boxes than you opponent. That's it!
+Create more boxes to win
 You vs. Computer
----------------------------------
+
 Directions
 
-Tap between two vertical or horozontal dots to make a line
+Take turns tapping between two vertical or horozontal dots to make a line
 
-Two players take turns making lines
-
-The player to complete a box scores and takes another turn
-
-Tap when ready`
+Complete a box to score
+AND take another turn`
     ],
     computerMoves: [{
         type: "clickSide",
@@ -51,15 +48,6 @@ Tap when ready`
     }]
   },
   level2: {
-    preText: [
-`Use animal bombs to remove obstacles
----------------------------------
-Directions
-
-Select an animal bomb and then select a box that does not contain an obstacle
-
-The bomb will remove everything in it's blasting path`
-    ],
     yourMoves: [{
       type: "explosionClick",
       bomb: "cheetah",

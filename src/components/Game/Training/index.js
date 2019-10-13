@@ -51,7 +51,8 @@ const styles = {
     color: "#fff",
     fontSize: 20,
     width: "90%",
-    textAlign: "center"
+    textAlign: "center",
+    width: "80%",
   }
 }
 

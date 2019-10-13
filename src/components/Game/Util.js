@@ -1,5 +1,5 @@
 export default {
-  getValueFromState: (state, values) => {
+  get: (state, values) => {
     if(values.length === 1){
       return state[values[0]]
     } else if (values.length === 2) {
