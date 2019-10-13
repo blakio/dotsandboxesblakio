@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -6,11 +6,17 @@ import {
   StyleSheet
 } from "react-native";
 
+import StateContext from "../../State/State";
+
 import { config } from "../util/Settings";
 
 const GameScoreBoard = (props) => {
 
-  const { yourScore, computerScore, playerTurn, navigation } = props;
+  const {
+    ...state
+  } = useContext(StateContext);
+
+  const { playerTurn, navigation } = props;
 
   let turnOpacityAnimation = new Animated.Value(0.5);
 
@@ -69,12 +75,12 @@ const GameScoreBoard = (props) => {
     <Animated.View style={opacityStyles.computerScoreBoard(playerTurn, turnOpacityAnimation)}  removeClippedSubviews={true}/>
 
     <View style={styles.scoreBoxStyle}>
-      <Text style={styles.yourScoreStyle}>{yourScore}</Text>
+      <Text style={styles.yourScoreStyle}>{state.scores && state.scores.yourScore}</Text>
       <Text style={styles.scoreTextStyle}>YOU</Text>
     </View>
 
     <View style={styles.scoreBoxStyle}>
-      <Text style={styles.computerScoreStyle}>{computerScore}</Text>
+      <Text style={styles.computerScoreStyle}>{state.scores && state.scores.computerScore}</Text>
       <Text style={styles.scoreTextStyle}>COMPUTER</Text>
     </View>
 
