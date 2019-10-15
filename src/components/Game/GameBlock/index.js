@@ -283,7 +283,7 @@ const GameBlock = (props) => {
 
       {footIndexes.includes(index) && <View style={styles.foot}>
         <Image
-          style={{height: 42, width: 32, top: -4}}
+          style={{height: 36, width: 28, top: -4}}
           source={images.foot}
         />
       </View>}

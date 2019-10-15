@@ -20,15 +20,15 @@ const BackBtn = (props) => {
       position: "absolute",
       bottom: 0,
       width: config.width,
-      height: 70,
+      height: 50,
       backgroundColor: "rgb(39,0,56)",
       justifyContent: "center",
       alignItems: "center"
     }}>
     <TouchableHighlight onPress={goHome}>
       <Image style={{
-        width: config.width * 0.08,
-        height:  config.width * 0.08
+        width: 30,
+        height:  30
       }} source={images.home} />
     </TouchableHighlight>
   </View>)

@@ -48,11 +48,13 @@ const styles = {
     alignItems: "center"
   },
   text: {
-    color: "#fff",
-    fontSize: 20,
-    width: "90%",
-    textAlign: "center",
     width: "80%",
+    color: "#fff",
+    fontFamily: "Raleway-Light",
+    fontSize: config.width * 0.068,
+    textAlign: "center",
+    opacity: 0.8,
+    margin: 10
   }
 }
 

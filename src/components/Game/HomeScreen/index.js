@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   menuArea: {
     width: config.width,
-    height: (config.height),
+    height: (config.height * 0.5),
     position: "absolute",
     left: 0,
     bottom: 0

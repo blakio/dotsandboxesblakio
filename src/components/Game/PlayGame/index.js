@@ -731,13 +731,6 @@ const PlayGame = (props) => {
         }}>{screenText}</Text>
       </View>
 
-      <GameScoreBoard
-        yourScore={Util.get(appState, ["scores", ["yourScore"]])}
-        computerScore={Util.get(appState, ["scores", ["computerScore"]])}
-        playerTurn={Util.get(appState, ["playerTurn"])}
-        navigation={props.navigation}
-      />
-
       <View style={{
         height: config.height,
         width: config.width,
@@ -880,59 +873,73 @@ const PlayGame = (props) => {
         </View>
       </View>
 
-      <View style={styles.bombSection} >
-        {currentLevelBombs.map((data, index) => {
-          let image;
-          let style;
-          if(data === "cheetah"){
-            image = images.cheetahImg;
-            style = explosionStlyes.generalBombStlyes();
-          } else if (data === "panther") {
-            image = images.pantherImg
-            style = explosionStlyes.generalBombStlyes();
-          } else if (data === "makeda") {
-            image = images.makedaImg;
-            style = explosionStlyes.makedaBombStyle();
-          }
+      <View style={{
+        backgroundColor: "rgb(39,0,56)",
+        position: "absolute",
+        bottom: 0,
+        paddingTop: 20,
+        paddingBottom: 50
+      }}>
+        <View style={styles.bombSection} >
+          {currentLevelBombs.map((data, index) => {
+            let image;
+            let style;
+            if(data === "cheetah"){
+              image = images.cheetahImg;
+              style = explosionStlyes.generalBombStlyes();
+            } else if (data === "panther") {
+              image = images.pantherImg
+              style = explosionStlyes.generalBombStlyes();
+            } else if (data === "makeda") {
+              image = images.makedaImg;
+              style = explosionStlyes.makedaBombStyle();
+            }
 
-          return (<TouchableOpacity key={index} onPress={() => selectBomb(data, index)}>
-            <Animated.View
-              style={
-                ((activeBomb === data + index) || (bombToClick === data)) ?
-                // explosionStlyes.selectedBomb(letterColor) : {}
-                explosionStlyes.selectedBomb("#b57800") : {}
-              }
-              removeClippedSubviews={true}>
-              <Image
-                style={style}
-                source={image}
-              />
-              {(bombToClick === data) && <Pointer bomb={true}/>}
-            </Animated.View>
-          </TouchableOpacity>)
-        })}
-      </View>
+            return (<TouchableOpacity key={index} onPress={() => selectBomb(data, index)}>
+              <Animated.View
+                style={
+                  ((activeBomb === data + index) || (bombToClick === data)) ?
+                  explosionStlyes.selectedBomb("#b57800") : {}
+                }
+                removeClippedSubviews={true}>
+                <Image
+                  style={style}
+                  source={image}
+                />
+                {(bombToClick === data) && <Pointer bomb={true}/>}
+              </Animated.View>
+            </TouchableOpacity>)
+          })}
+        </View>
 
-      <TouchableOpacity
-        onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
-        <Text style={styles.text}>{direction || turnText}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
+          <Text style={styles.text}>{direction || "make more boxes to win"}</Text>
+        </TouchableOpacity>
 
-      <View style={styles.levelSelectSection}>
-        {config.levels.map((data, index) => {
-          const levelStyle = (data === "x") ? styles.lockedLevel : styles.openLevel;
-          const levelText = (data === "x") ? "x" : (index + 1);
-          return (<TouchableOpacity key={index} onPress={
-            (Util.get(appState, ["currentLevel"]) === `level${levelText}`) ? null :
-            changeLevel.bind(this, `level${index + 1}`, levelText)
-          }>
-            <View style={styles.levelBox}>
-              <View style={levelStyle}>
-                <Text style={levelStyle}>{levelText}</Text>
+        <View style={styles.levelSelectSection}>
+          {config.levels.map((data, index) => {
+            const levelStyle = (data === "x") ? styles.lockedLevel : styles.openLevel;
+            const levelText = (data === "x") ? "x" : (index + 1);
+            return (<TouchableOpacity key={index} onPress={
+              (Util.get(appState, ["currentLevel"]) === `level${levelText}`) ? null :
+              changeLevel.bind(this, `level${index + 1}`, levelText)
+            }>
+              <View style={styles.levelBox}>
+                <View style={levelStyle}>
+                  <Text style={levelStyle}>{levelText}</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>)
-        })}
+            </TouchableOpacity>)
+          })}
+        </View>
+
+        <GameScoreBoard
+          yourScore={Util.get(appState, ["scores", ["yourScore"]])}
+          computerScore={Util.get(appState, ["scores", ["computerScore"]])}
+          playerTurn={Util.get(appState, ["playerTurn"])}
+          navigation={props.navigation}
+        />
       </View>
 
       {gameIsOver && !youWin &&
@@ -946,8 +953,6 @@ const PlayGame = (props) => {
           nextLevel={nextLevel}
           isLastBoard={Util.get(appState, ["currentLevel"]) === config.finalLevel}
         />}
-
-      {/*(helpText.length !== 0) && <ScreenText text={helpText} font={26} />*/}
 
       <BackBtn {...props} />
 
@@ -1013,7 +1018,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
-    bottom: 100
   },
   levelBox: {
     height: 40,
@@ -1026,10 +1030,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-Bold",
-    fontSize: 26,
+    fontFamily: "Raleway-Light",
+    textAlign: "center",
+    fontSize: config.width * 0.068,
     textAlign: "center",
     opacity: 0.8,
-    margin: 10
+    margin: 0
   }
 });

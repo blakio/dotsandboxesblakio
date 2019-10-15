@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-ExtraLight",
+    fontFamily: "Raleway-Light",
     fontSize: config.width * 0.068,
     textAlign: "center",
     opacity: 0.8,
