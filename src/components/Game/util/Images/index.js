@@ -10,6 +10,11 @@ const aim =        require("../../../../imgs/aim.png");
 const confetti =   require("../../../../imgs/confetti.png");
 const sad =        require("../../../../imgs/sad.png");
 const home =       require("../../../../imgs/home.png");
+const top =        require("../../../../imgs/top.png");
+const right =      require("../../../../imgs/right.png");
+const bottom =     require("../../../../imgs/bottom.png");
+const left =       require("../../../../imgs/left.png");
+const question =   require("../../../../imgs/question.png");
 
 export const images = {
   cheetahImg,
@@ -23,5 +28,10 @@ export const images = {
   aim,
   confetti,
   sad,
-  home
+  home,
+  top,
+  right,
+  bottom,
+  left,
+  question
 }

@@ -4,6 +4,8 @@ import StateFunctions from "./StateFunctions"
 export default (state, action) => {
   const { payload, type } = action;
 
+  console.table(payload, type)
+
   switch (type) {
     case Types.SET_YOUR_SCORE:
       return StateFunctions.setScores(payload, state);

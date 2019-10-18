@@ -17,7 +17,7 @@ const StateFunctions = {
   },
   setLevel: (payload, state) => {
     const currentState = setFieldToPayload(payload, state, "currentLevel");
-    return { ...state, currentLevel: currentState.currentLevel }
+    return { ...state, currentLevel: currentState.currentLevel, pastLevelScreen: true }
   },
   setPlayerTurn: (payload, state) => {
     const currentState = setFieldToPayload(payload, state, "playerTurn");

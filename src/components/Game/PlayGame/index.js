@@ -16,6 +16,7 @@ import {
   AppState,
   StatusBar
 } from "react-native";
+import SpriteSheet from "rn-sprite-sheet";
 
 import GameScoreBoard from "../GameScoreBoard";
 import GameBlock from "../GameBlock";
@@ -26,7 +27,8 @@ import ScreenText from "../ScreenText";
 import Pointer from "../Pointer";
 import Training from "../Training";
 import BackBtn from "../BackBtn";
-import SpriteSheet from "rn-sprite-sheet";
+import BombSelector from "../BombSelector"
+import LevelScreen from "../LevelScreen"
 
 import Util from "../Util";
 
@@ -36,7 +38,6 @@ import { computerMove } from "../util/ComputerLogic";
 import { whoClickedTheLine } from "../util/WhoClicked";
 import { whoScoredObj } from "../util/WhoScored";
 import { explosions, explosionSides } from "../util/ExplosionPattern";
-import { explosionStlyes } from "../util/ExplosionStlyes";
 import { config } from "../util/Settings";
 import { images } from "../util/Images";
 import { util } from "../util/Util";
@@ -271,11 +272,7 @@ const PlayGame = (props) => {
     });
   }
 
-  const passedMoveRestrictions = (
-    clickBox = null,
-    side = null,
-    bomb = null
-  ) => {
+  const passedMoveRestrictions = ( clickBox = null, side = null, bomb = null ) => {
     if(Util.get(appState, ["playerTurn"]) !== "first") return true;
 
     let passedRestrictions = true;
@@ -705,7 +702,9 @@ const PlayGame = (props) => {
     }
   }
 
-
+  // if(!state.pastLevelScreen){
+  //   return <LevelScreen {...props} dispatch={dispatch} />
+  // }
 
   ///////////////////// render /////////////////////
   return (<StateContext.Provider value={{ ...state, dispatch }}>
@@ -734,11 +733,11 @@ const PlayGame = (props) => {
       <View style={{
         height: config.height,
         width: config.width,
-        backgroundColor: "#000",
+        backgroundColor: util.darkPurple,
         position: "absolute",
         top: 0,
         left: 0,
-        opacity: activeBomb.length ? 0.2 : 0
+        opacity: activeBomb.length ? 0.6 : 0
       }}></View>
 
       <View style={{
@@ -880,37 +879,13 @@ const PlayGame = (props) => {
         paddingTop: 20,
         paddingBottom: 50
       }}>
-        <View style={styles.bombSection} >
-          {currentLevelBombs.map((data, index) => {
-            let image;
-            let style;
-            if(data === "cheetah"){
-              image = images.cheetahImg;
-              style = explosionStlyes.generalBombStlyes();
-            } else if (data === "panther") {
-              image = images.pantherImg
-              style = explosionStlyes.generalBombStlyes();
-            } else if (data === "makeda") {
-              image = images.makedaImg;
-              style = explosionStlyes.makedaBombStyle();
-            }
 
-            return (<TouchableOpacity key={index} onPress={() => selectBomb(data, index)}>
-              <Animated.View
-                style={
-                  ((activeBomb === data + index) || (bombToClick === data)) ?
-                  explosionStlyes.selectedBomb("#b57800") : {}
-                }
-                removeClippedSubviews={true}>
-                <Image
-                  style={style}
-                  source={image}
-                />
-                {(bombToClick === data) && <Pointer bomb={true}/>}
-              </Animated.View>
-            </TouchableOpacity>)
-          })}
-        </View>
+        <BombSelector
+          currentLevelBombs={currentLevelBombs}
+          selectBomb={selectBomb}
+          activeBomb={activeBomb}
+          bombToClick={bombToClick}
+        />
 
         <TouchableOpacity
           onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
@@ -1004,13 +979,6 @@ const styles = StyleSheet.create({
     padding: 2,
     opacity: 0.6,
     fontFamily: "Raleway-ExtraBold"
-  },
-  bombSection: {
-    height: 60,
-    width: config.width,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-end"
   },
   levelSelectSection: {
     width: config.width,

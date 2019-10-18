@@ -23,5 +23,8 @@ export const util = {
     } else if (side === "left") {
       return ["topLeft", "bottomLeft"]
     }
-  }
+  },
+
+  darkPurple: "rgb(39,0,56)",
+  darkPurple50: "rgba(39,0,56, 0.8)"
 }

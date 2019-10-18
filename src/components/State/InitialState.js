@@ -4,6 +4,7 @@ export default InitialState = {
     computerScore: 0
   },
   currentLevel: "level1",
+  pastLevelScreen: false,
   playerTurn: "first"
 }
 
