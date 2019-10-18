@@ -16,6 +16,7 @@ import {
   AppState,
   StatusBar
 } from "react-native";
+
 import SpriteSheet from "rn-sprite-sheet";
 
 import GameScoreBoard from "../GameScoreBoard";
