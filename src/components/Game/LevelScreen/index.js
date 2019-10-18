@@ -12,7 +12,7 @@ import {
   Animated
 } from "react-native";
 
-import BackBtn from "../BackBtn";
+import BackBtn from "../components/BackBtn";
 
 import { images } from "../util/Images";
 import { sounds } from "../Sounds";

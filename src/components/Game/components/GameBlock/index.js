@@ -7,10 +7,10 @@ import {
 } from "react-native";
 
 import Pointer from "../Pointer";
-import { boxInfo } from "../util/BoxInfo";
-import { images } from "../util/Images";
-import { sounds } from "../Sounds";
-import { config } from "../util/Settings";
+import { boxInfo } from "../../util/BoxInfo";
+import { images } from "../../util/Images";
+import { sounds } from "../../Sounds";
+import { config } from "../../util/Settings";
 
 const GameBlock = (props) => {
 

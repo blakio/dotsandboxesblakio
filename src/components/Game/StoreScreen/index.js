@@ -9,7 +9,7 @@ import {
   TouchableHighlight
 } from "react-native";
 
-import BackBtn from "../BackBtn";
+import BackBtn from "../components/BackBtn";
 
 import { config } from "../util/Settings";
 import { images } from "../util/Images";

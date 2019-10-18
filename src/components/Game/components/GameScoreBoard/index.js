@@ -6,9 +6,9 @@ import {
   StyleSheet
 } from "react-native";
 
-import StateContext from "../../State/State";
+import StateContext from "../../../State/State";
 
-import { config } from "../util/Settings";
+import { config } from "../../util/Settings";
 
 const GameScoreBoard = (props) => {
 

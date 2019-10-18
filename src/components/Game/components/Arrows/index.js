@@ -4,7 +4,7 @@ import {
   Image
 } from "react-native";
 
-import { images } from "../util/Images";
+import { images } from "../../util/Images";
 
 const Arrows = (options) => {
   const {

@@ -19,16 +19,15 @@ import {
 
 import SpriteSheet from "rn-sprite-sheet";
 
-import GameScoreBoard from "../GameScoreBoard";
-import GameBlock from "../GameBlock";
-import GameOver from "../GameOver";
-import YouWin from "../YouWin";
-import InformativeScreen from "../InformativeScreen";
-import ScreenText from "../ScreenText";
-import Pointer from "../Pointer";
+import GameScoreBoard from "../components/GameScoreBoard";
+import GameBlock from "../components/GameBlock";
+import GameOver from "../components/GameOver";
+import YouWin from "../components/YouWin";
+import InformativeScreen from "../components/InformativeScreen";
+import Pointer from "../components/Pointer";
 import Training from "../Training";
-import BackBtn from "../BackBtn";
-import BombSelector from "../BombSelector"
+import BackBtn from "../components/BackBtn";
+import BombSelector from "../components/BombSelector"
 import LevelScreen from "../LevelScreen"
 
 import Util from "../Util";

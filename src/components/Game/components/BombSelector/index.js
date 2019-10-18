@@ -1,10 +1,10 @@
 import React from "react";
 
 //state setup
-import StateContext from "../../State/State";
-import Reducer from "../../State/Reducer";
-import InitialState from "../../State/InitialState";
-import Types from "../../State/Types"
+import StateContext from "../../../State/State";
+import Reducer from "../../../State/Reducer";
+import InitialState from "../../../State/InitialState";
+import Types from "../../../State/Types"
 
 import {
   View,
@@ -16,10 +16,10 @@ import {
 import Pointer from "../Pointer";
 import Arrows from "../Arrows";
 
-import { config } from "../util/Settings";
-import { images } from "../util/Images";
-import { util } from "../util/Util";
-import { sounds } from "../Sounds";
+import { config } from "../../util/Settings";
+import { images } from "../../util/Images";
+import { util } from "../../util/Util";
+import { sounds } from "../../Sounds";
 
 const BombSelector = (props) => {
 

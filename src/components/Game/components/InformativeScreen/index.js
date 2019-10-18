@@ -7,8 +7,8 @@ import {
   StyleSheet
 } from "react-native";
 
-import { images } from "../util/Images";
-import { config } from "../util/Settings";
+import { images } from "../../util/Images";
+import { config } from "../../util/Settings";
 
 const information = {
   foot: {

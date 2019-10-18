@@ -8,14 +8,15 @@ import {
   Image
 } from "react-native";
 
-import { config } from "../util/Settings";
-import { images } from "../util/Images";
+import { config } from "../../util/Settings";
+import { images } from "../../util/Images";
 
 const GameOver = (props) => {
 
-  const {restartGame} = props;
+  const {restartGame, nextLevel, isLastBoard} = props;
 
   let top = new Animated.Value(200);
+
   let opacity = new Animated.Value(0);
 
   Animated.timing(
@@ -27,25 +28,30 @@ const GameOver = (props) => {
     { toValue: 0, duration: 500 }
   ).start();
 
-  const gameOverStyle = (top, opacity) => {
+  const youWinStyle = (top, opacity) => {
     return {
       width: config.width,
       height: config.height,
       position: "absolute",
-      top ,
+      top,
       left: 0,
       backgroundColor: "rgba(39, 0, 56, 0.6)",
       opacity
     }
   }
 
-  return (<Animated.View style={gameOverStyle(top, opacity)}>
+  return (<Animated.View style={youWinStyle(top, opacity)}>
     <View style={styles.textSectionStlye}>
-      <Image style={styles.imgStyle} source={images.sad} />
-      <Text style={styles.gameOver}>GAME OVER</Text>
+      <Image style={styles.imgStyle} source={images.confetti} />
+      <Text style={styles.youWin}>YOU WIN!</Text>
       <TouchableOpacity onPress={restartGame}>
         <Text style={styles.retry}>RETRY</Text>
       </TouchableOpacity>
+      { !isLastBoard &&
+        <TouchableOpacity onPress={nextLevel}>
+          <Text style={styles.nextLevel}>NEXT LEVEL</Text>
+        </TouchableOpacity>
+      }
     </View>
   </Animated.View>)
 }
@@ -56,14 +62,14 @@ const styles = StyleSheet.create({
   textSectionStlye: {
     backgroundColor: "#270038",
     width: config.width,
-    height: 120,
+    height: 220,
     position: "absolute",
     top: "20%",
     justifyContent: "center",
     alignItems: "center"
   },
-  gameOver: {
-    color: "#980000",
+  youWin: {
+    color: "#2e8b57",
     fontSize: 20,
     opacity: 1
   },
@@ -72,10 +78,15 @@ const styles = StyleSheet.create({
     fontSize: 40,
     opacity: 0.6
   },
+  nextLevel: {
+    color: "#fff",
+    fontSize: 40,
+    opacity: 0.6
+  },
   imgStyle: {
     position: "absolute",
     top: 100,
-    height: 100,
-    width: 100
+    height: 400,
+    width: 400
   }
 });

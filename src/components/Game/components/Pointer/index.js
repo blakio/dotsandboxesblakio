@@ -5,7 +5,7 @@ import {
   Animated
 } from "react-native";
 
-const pointer = require("../../../imgs/pointer.png");
+const pointer = require("../../../../imgs/pointer.png");
 
 const Pointer = (props) => {
 
