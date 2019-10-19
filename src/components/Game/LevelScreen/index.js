@@ -23,7 +23,10 @@ const LevelScreen = (props) => {
 
   const { navigate } = props.navigation;
   const startGame = (level) => {
-    props.dispatch({ type: Types.SET_LEVEL, payload: `level${level}` });
+    sounds.introMusic.setCurrentTime(0);
+    sounds.introMusic.pause();
+    
+    navigate("Game", { level: `level${level}` })
   }
 
   useEffect(() => {
@@ -79,7 +82,7 @@ const LevelScreen = (props) => {
     }
   }
 
-  const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const levels = [1, 2, 3, 4, 5, 6, 7, 8];
 
   return (<View style={styles.fullPage}>
     <Image style={styles.imgStyle} source={images.background} />

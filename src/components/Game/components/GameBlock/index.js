@@ -82,8 +82,7 @@ const GameBlock = (props) => {
     blinkingEdge,
     navigation,
     trainingBoxesSidesClick,
-    side,
-    currentLevel
+    side
   } = props;
 
   const scored = whoScored[boxName];
@@ -137,7 +136,7 @@ const GameBlock = (props) => {
     setTopRightCornerColor(cornerHighlights.includes("topRight") ? "#b57800" : "#270038");
     setBottomLeftCornerColor(cornerHighlights.includes("bottomLeft") ? "#b57800" : "#270038");
     setBottomRightCornerColor(cornerHighlights.includes("bottomRight") ? "#b57800" : "#270038");
-  }, [cornerHighlights, currentLevel])
+  }, [cornerHighlights])
 
   const styles = {
     box: {

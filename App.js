@@ -15,13 +15,15 @@ import Game from "./src/components/Game";
 import MotivationScreen from "./src/components/Game/MotivationScreen";
 import StoreScreen from "./src/components/Game/StoreScreen";
 import PlayGame from "./src/components/Game/PlayGame";
+import LevelScreen from "./src/components/Game/LevelScreen";
 
 const MainNavigator = createStackNavigator({
   Home: { screen: Splash },
   HomePage: { screen: Game },
   Motivation: { screen: MotivationScreen },
   Store: { screen: StoreScreen },
-  Game: { screen: PlayGame }
+  Game: { screen: PlayGame },
+  LevelScreen: { screen: LevelScreen }
 });
 
 export default createAppContainer(MainNavigator);

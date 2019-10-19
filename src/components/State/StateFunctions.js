@@ -1,6 +1,7 @@
 import { gameBoards } from "../Game/util/GameBoards";
 import { boxInfo } from "../Game/util/BoxInfo";
 import { sounds } from "../Game/Sounds";
+import InitialState from "./InitialState";
 
 const breakRefAndCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
@@ -13,6 +14,9 @@ const setFieldToPayload = (payload, state, field) => {
 }
 
 const StateFunctions = {
+  resetState: (payload, state) => {
+    return { ...breakRefAndCopy(InitialState) }
+  },
   setScores: (payload, state) => {
     const currentState = breakRefAndCopy(state);
     currentState.scores.yourScore = payload.playerOneScore;

@@ -47,6 +47,8 @@ import { sounds } from "../Sounds";
 
 const PlayGame = (props) => {
 
+  const levelParam = props.navigation.getParam("level");
+
   const [state, dispatch] = useReducer(Reducer, InitialState);
 
   const {
@@ -61,10 +63,10 @@ const PlayGame = (props) => {
   const [gameOver, setGameOver] = useState(false);
   const [explodingBoxes, setExplodingBoxes] = useState({});
   const [activeBomb, setActiveBomb] = useState("");
-  const [footIndexes, setFootIndexes] = useState(config.footSquares[Util.get(appState, ["currentLevel"])]);
+  const [footIndexes, setFootIndexes] = useState(config.footSquares[levelParam]);
   const [gameIsOver, setGameIsOver] = useState(false);
   const [youWin, setYouWin] = useState(false);
-  const [boardTotalScore, setBoardTotalScore] = useState(util.getBoardScore(gameBoards[Util.get(appState, ["currentLevel"])]))
+  const [boardTotalScore, setBoardTotalScore] = useState(util.getBoardScore(gameBoards[levelParam]))
   const [showInformativeScreen, setShowInformativeScreen] = useState(false)
   const [informationType, setInformationType] = useState(null)
   const [viewPointer, setViewPointer] = useState(false);
@@ -72,7 +74,6 @@ const PlayGame = (props) => {
   const [currentLevelBombs, setCurrentLevelBombs] = useState([]);
   const [consecutiveTurns, setConsecutiveTurns] = useState(0);
   const [screenText, setScreenText] = useState(screenText || "");
-  const [helpText, setHelpText] = useState("");
   const [training, setTraining] = useState("");
   const [bombToClick, setBombToClick] = useState(null);
   const [waitTime, setWaitTime] = useState(0);
@@ -82,7 +83,7 @@ const PlayGame = (props) => {
   const [circleFlash, setCircleFlash] = useState({});
   const [direction, setDirection] = useState(false);
   const [computerTurn, setComputerTurn] = useState(false);
-  const [openTraining, setOpenTraining] = useState(trainRestrictions[Util.get(appState, ["currentLevel"])].preText ? true : false);
+  const [openTraining, setOpenTraining] = useState(trainRestrictions[levelParam].preText ? true : false);
   const [explosionSprites, setExplosionSprites] = useState([]);
 
   // the game music is turned down when closing the app
@@ -109,7 +110,7 @@ const PlayGame = (props) => {
 
   // used during debugging mode to see which move the computer will make
   const checkComputerMove = () => {
-    const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, Util.get(appState, ["board"]), footIndexes);
+    const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, gameBoards[levelParam], footIndexes);
   }
 
   // set the text that shows on the screen when reaching a consectutive boxes per turn
@@ -121,10 +122,6 @@ const PlayGame = (props) => {
 
 
   ///////////////////// life cycle /////////////////////
-
-  useEffect(() => {
-    console.log("hey")
-  }, [turns]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -139,22 +136,7 @@ const PlayGame = (props) => {
   }, [training])
 
   useEffect(() => {
-    setTimeout(() => {
-      const restriction = training && training.yourMoves && training.yourMoves[0];
-      if (restriction && Util.get(appState, ["playerTurn"]) === "first"){
-        if(restriction.text || restriction.text === ""){
-          setHelpText({
-            text: restriction.text,
-            text2: restriction.text2,
-            text3: restriction.text3
-          });
-        }
-      }
-    }, waitTime)
-  }, [training, Util.get(appState, ["playerTurn"])])
-
-  useEffect(() => {
-    const additionalTimeout = (Util.get(appState, ["currentLevel"]) === "level1") ? 500 : 0
+    const additionalTimeout = (levelParam === "level1") ? 500 : 0;
     setTimeout(() => {
       // only use logic if it is the computer turn. ex: "second" player
       if(Util.get(appState, ["playerTurn"]) === "second"){
@@ -170,7 +152,7 @@ const PlayGame = (props) => {
         }
 
         // get a move for the computer to make
-        const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, Util.get(appState, ["board"]), footIndexes, showScreenText);
+        const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, gameBoards[levelParam], footIndexes, showScreenText);
         // if the move is empty the computer has no moves
         if(!move && !footIndexes.length){
           setYouWin(Util.get(appState, ["scores", ["yourScore"]]) > Util.get(appState, ["scores", ["computerScore"]]));
@@ -207,12 +189,12 @@ const PlayGame = (props) => {
   useEffect(() => {
     setTimeout(() => {
       const setDefaultBombs = async () => {
-        setCurrentLevelBombs(config.levelDefaultBombs[Util.get(appState, ["currentLevel"])])
+        setCurrentLevelBombs(config.levelDefaultBombs[levelParam])
       }
       setDefaultBombs();
-      setTraining(util.breakRefAndCopy(trainRestrictions[Util.get(appState, ["currentLevel"])]));
+      setTraining(util.breakRefAndCopy(trainRestrictions[levelParam]));
     }, waitTime)
-  }, [Util.get(appState, ["currentLevel"])])
+  }, [levelParam])
 
 
 
@@ -276,11 +258,6 @@ const PlayGame = (props) => {
     }
 
     return passedRestrictions;
-  }
-
-  const adjustBorderCount = () => {
-    const temp = boxInfo.getBorderCounts(Util.get(appState, ["board"]));
-    // setBorders({ ...temp });
   }
 
   const adjustConnectedBoxes = (index) => {
@@ -367,7 +344,7 @@ const PlayGame = (props) => {
     setCircleFlash(trainingBoxesSidesClick);
 
     const boxName = boxInfo.getBoxNameByIndex(index);
-    const boxObj = boxInfo.getBoxObjByBoxName(Util.get(appState, ["board"]), boxName);
+    const boxObj = boxInfo.getBoxObjByBoxName(gameBoards[levelParam], boxName);
     const { disabled, borders } = boxObj;
     if(!boxInfo.isClickable(Util.get(appState, ["borders"]), side)){
       if(!disabled){
@@ -377,7 +354,7 @@ const PlayGame = (props) => {
       return;
     }
 
-    const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(Util.get(appState, ["board"]), side, index);
+    const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(gameBoards[levelParam], side, index);
     const adjBoxName = boxInfo.getBoxNameByIndex(adjacentBoxIndex);
 
     if(boxInfo.hasFootRestriction(footIndexes, index, adjacentBoxIndex)){
@@ -388,24 +365,23 @@ const PlayGame = (props) => {
     setSide(boxName, side, null, player);
 
     const updatedConnections = [];
-    (!boxInfo.isDisabled(Util.get(appState, ["board"]), boxName)) && updatedConnections.push(index);
+    (!boxInfo.isDisabled(gameBoards[levelParam], boxName)) && updatedConnections.push(index);
 
     if(adjacentBoxIndex || adjacentBoxIndex === 0){
       setSide(adjBoxName, adjBoxSide, "adjBox", player);
-      (!boxInfo.isDisabled(Util.get(appState, ["board"]), adjBoxName)) && updatedConnections.push(adjacentBoxIndex);
+      (!boxInfo.isDisabled(gameBoards[levelParam], adjBoxName)) && updatedConnections.push(adjacentBoxIndex);
     }
 
     updatedConnections.length && adjustConnectedBoxes(updatedConnections);
-    // adjustBorderCount();
 
-    const hasScored = boxInfo.hasScored(Util.get(appState, ["board"]), index, adjacentBoxIndex);
-    if((Util.get(appState, ["board"])[boxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), boxName)) ||
-      (Util.get(appState, ["board"])[adjBoxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), adjBoxName))){
+    const hasScored = boxInfo.hasScored(gameBoards[levelParam], index, adjacentBoxIndex);
+    if((gameBoards[levelParam][boxName] && !boxInfo.isDisabled(gameBoards[levelParam], boxName)) ||
+      (gameBoards[levelParam][adjBoxName] && !boxInfo.isDisabled(gameBoards[levelParam], adjBoxName))){
       setLineColor([index, adjacentBoxIndex], [side, adjBoxSide]);
     }
   }
 
-  const keys = Object.keys(Util.get(appState, ["board"]));
+  const keys = Object.keys(gameBoards[levelParam]);
 
   const setExplosionBoxes = (boxIndex) => {
     if(!activeBomb.length || (Util.get(appState, ["playerTurn"]) !== "first")) return;
@@ -513,41 +489,42 @@ const PlayGame = (props) => {
   }
 
   const changeLevel = (level, levelText) => {
-    setDirection(false);
-    setScreenText("")
-    if((levelText !== "x" || !levelText)){
-      setComputerTurn(false)
-      dispatch({ type: Types.SET_PLAYER_TURN, payload: "first" });
-      // setBorders(util.breakRefAndCopy(boxInfo.borderCount));
-      setConnectedBoxes(util.breakRefAndCopy(boxInfo.connectedBoxesObj));
-      setWhoScored(util.breakRefAndCopy(whoScoredObj));
-      setWhoClickedTheLineTracker(util.breakRefAndCopy(whoClickedTheLine));
-      setComputerLastLineClick(false);
-      dispatch({ type: Types.SET_YOUR_SCORE, payload: { playerOneScore: 0, playerTwoScore: 0 } });
-      setGameOver(false);
-      setExplodingBoxes({});
-      setActiveBomb("");
-      setFootIndexes(util.breakRefAndCopy(config.footSquares[level]));
-      setGameIsOver(false);
-      setYouWin(false);
-      setBoardTotalScore(util.getBoardScore(gameBoards[level]));
-      dispatch({ type: Types.SET_LEVEL, payload: level })
-      setOpenTraining(trainRestrictions[level].preText ? true : false);
-      if(config.informationBoard.includes(levelText)){
-        setShowInformativeScreen(true);
-        const type = config.informationText[`${levelText}`];
-        setInformationType(type)
-      }
-    }
+    dispatch({ type: Types.RESET_STATE });
+    dispatch({ type: Types.SET_LEVEL, payload: level });
+
+    // setDirection(false);
+    // setScreenText("")
+    // if((levelText !== "x" || !levelText)){
+    //   setComputerTurn(false)
+    //   dispatch({ type: Types.SET_PLAYER_TURN, payload: "first" });
+    //   // setBorders(util.breakRefAndCopy(boxInfo.borderCount));
+    //   setConnectedBoxes(util.breakRefAndCopy(boxInfo.connectedBoxesObj));
+    //   setWhoScored(util.breakRefAndCopy(whoScoredObj));
+    //   setWhoClickedTheLineTracker(util.breakRefAndCopy(whoClickedTheLine));
+    //   setComputerLastLineClick(false);
+    //   dispatch({ type: Types.SET_YOUR_SCORE, payload: { playerOneScore: 0, playerTwoScore: 0 } });
+    //   setGameOver(false);
+    //   setExplodingBoxes({});
+    //   setActiveBomb("");
+    //   setFootIndexes(util.breakRefAndCopy(config.footSquares[level]));
+    //   setGameIsOver(false);
+    //   setYouWin(false);
+    //   setBoardTotalScore(util.getBoardScore(gameBoards[level]));
+    //   setOpenTraining(trainRestrictions[level].preText ? true : false);
+    //   if(config.informationBoard.includes(levelText)){
+    //     setShowInformativeScreen(true);
+    //     const type = config.informationText[`${levelText}`];
+    //     setInformationType(type)
+    //   }
+    // }
   }
 
   const restartGame = () => {
-    const level = Util.get(appState, ["currentLevel"]);
-    changeLevel(level, parseInt(level.replace("level", "")));
+    changeLevel(levelParam, parseInt(level.replace("level", "")));
   }
 
   const nextLevel = () => {
-    const level = parseInt(Util.get(appState, ["currentLevel"]).replace("level", ""))
+    const level = parseInt(levelParam.replace("level", ""))
     const nextLevel = level + 1;
     changeLevel(`level${nextLevel}`, nextLevel);
     setGameIsOver(false);
@@ -666,10 +643,13 @@ const PlayGame = (props) => {
           padding: config.width * 0.07
         }}>
           {keys.map((data, index) => {
+
+            const board = gameBoards[levelParam];
+
             const {
               disabled,
               borders
-            } = Util.get(appState, ["board"])[data];
+            } = board[data];
             const {
               isTopRightCornerBox,
               isTopLeftCornerBox,
@@ -679,11 +659,10 @@ const PlayGame = (props) => {
               isRightSideRow,
               isBottomSideRow,
               isLeftSideRow
-            } = boxInfo.getSidesInfo(Util.get(appState, ["board"]), index);
+            } = boxInfo.getSidesInfo(board, index);
             const box = boxInfo.getBoxNameByIndex(index)
             const isDisabledBox = disabled || false;
 
-            const board = Util.get(appState, ["board"]);
             const hasScored = board[box].borders.top && board[box].borders.right && board[box].borders.bottom && board[box].borders.left;
             const borderColors = boxInfo.getBorderColors(box, whoClickedTheLineTracker);
 
@@ -738,7 +717,7 @@ const PlayGame = (props) => {
               aimBoxes={aimBoxes}
               circleFlash={circleFlash}
               setDirectionText={setDirection}
-              currentLevel={Util.get(appState, ["currentLevel"])}/>)})}
+              currentLevel={levelParam}/>)})}
         </View>
         <View
           pointerEvents="none"
@@ -803,23 +782,6 @@ const PlayGame = (props) => {
           <Text style={styles.text}>{direction || "make more boxes to win"}</Text>
         </TouchableOpacity>
 
-        <View style={styles.levelSelectSection}>
-          {config.levels.map((data, index) => {
-            const levelStyle = (data === "x") ? styles.lockedLevel : styles.openLevel;
-            const levelText = (data === "x") ? "x" : (index + 1);
-            return (<TouchableOpacity key={index} onPress={
-              (Util.get(appState, ["currentLevel"]) === `level${levelText}`) ? null :
-              changeLevel.bind(this, `level${index + 1}`, levelText)
-            }>
-              <View style={styles.levelBox}>
-                <View style={levelStyle}>
-                  <Text style={levelStyle}>{levelText}</Text>
-                </View>
-              </View>
-            </TouchableOpacity>)
-          })}
-        </View>
-
         <GameScoreBoard
           yourScore={Util.get(appState, ["scores", ["yourScore"]])}
           computerScore={Util.get(appState, ["scores", ["computerScore"]])}
@@ -837,14 +799,14 @@ const PlayGame = (props) => {
         <YouWin
           restartGame={restartGame}
           nextLevel={nextLevel}
-          isLastBoard={Util.get(appState, ["currentLevel"]) === config.finalLevel}
+          isLastBoard={levelParam === config.finalLevel}
         />}
 
       <BackBtn {...props} />
 
-      { openTraining && trainRestrictions[Util.get(appState, ["currentLevel"])].preText &&
+      { openTraining && trainRestrictions[levelParam].preText &&
         <Training
-          text={trainRestrictions[Util.get(appState, ["currentLevel"])].preText}
+          text={trainRestrictions[levelParam].preText}
           openTraining={setOpenTraining}/>}
 
       {showInformativeScreen && <InformativeScreen
@@ -878,34 +840,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0
-  },
-  openLevel: {
-    fontSize: 20,
-    color: "#b57800",
-    fontFamily: "Raleway-ExtraBold"
-  },
-  lockedLevel: {
-    fontSize: 20,
-    color: "#fff",
-    padding: 2,
-    opacity: 0.6,
-    fontFamily: "Raleway-ExtraBold"
-  },
-  levelSelectSection: {
-    width: config.width,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  levelBox: {
-    height: 40,
-    width: 40,
-    backgroundColor: "#270038",
-    borderRadius: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 2
   },
   text: {
     color: "#fff",

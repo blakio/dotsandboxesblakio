@@ -63,12 +63,6 @@ const HomeScreen = (props) => {
     colorAnimation.stopAnimation();
   })
 
-  const startTheGame = () => {
-    sounds.introMusic.setCurrentTime(0);
-    sounds.introMusic.pause();
-    startGame();
-  }
-
   let colorAnimation = new Animated.Value(0);
 
   const startAnimation = () => {
@@ -100,7 +94,7 @@ const HomeScreen = (props) => {
     <StatusBar hidden />
     <View style={styles.menuArea}>
       <View style={styles.textSectionStlye}>
-        <TouchableOpacity onPress={startTheGame}>
+        <TouchableOpacity onPress={startGame}>
           <Text style={styles.textBoxStlye}>play</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={motivationPage}>

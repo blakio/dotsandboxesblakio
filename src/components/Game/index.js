@@ -7,7 +7,7 @@ import { config } from "./util/Settings";
 
 const Game = (props) => {
   const { navigate } = props.navigation;
-  const startGame = () => navigate("Game");
+  const startGame = () => navigate("LevelScreen");
   const motivationPage = () => navigate("Motivation");
   const storePage = () => navigate("Store");
 
