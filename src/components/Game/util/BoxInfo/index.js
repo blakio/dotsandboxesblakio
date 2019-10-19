@@ -545,13 +545,6 @@ export const boxInfo = {
     return (playerTurn === "first") ? "second" : "first";
   },
 
-  getTheNewBordAfterClickingSide: (board, boxName, side) => {
-    const temp = {...board};
-    // set the clicked side to true
-    temp[boxName].borders[side] = true;
-    return temp;
-  },
-
   isDisabled: (board, box) => {
     if(!box) return true;
     return board[box] && board[box].disabled;

@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   TouchableOpacity,
   Image,
   Animated
 } from "react-native";
+
+//state setup
+import StateContext from "../../../State/State";
 
 import Pointer from "../Pointer";
 import { boxInfo } from "../../util/BoxInfo";
@@ -13,6 +16,12 @@ import { sounds } from "../../Sounds";
 import { config } from "../../util/Settings";
 
 const GameBlock = (props) => {
+
+  const {
+    borders,
+    board,
+    whoScored
+  } = useContext(StateContext);
 
   const [showExplosionBox, setShowExplosionBox] = useState(true);
 
@@ -54,11 +63,9 @@ const GameBlock = (props) => {
 
   const {
     isDisabledBox,
-    borders,
     clickBorder,
     index,
     hasScored,
-    scored,
     borderColors,
     computerLastLineClick,
     boxName,
@@ -78,6 +85,8 @@ const GameBlock = (props) => {
     side,
     currentLevel
   } = props;
+
+  const scored = whoScored[boxName];
 
   let stopAnimation;
   let startingColor;
@@ -106,7 +115,7 @@ const GameBlock = (props) => {
   }
 
   const borderStyles = boxInfo.getBorderStyles(
-    borders, isTopRightCornerBox, isTopLeftCornerBox,
+    board[boxName].borders, isTopRightCornerBox, isTopLeftCornerBox,
     isTopSideRow, isBottomRightCornerBox, isBottomLeftCornerBox,
     isBottomSideRow, isRightSideRow, isLeftSideRow
   );

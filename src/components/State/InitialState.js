@@ -1,11 +1,22 @@
+import { gameBoards } from "../Game/util/GameBoards";
+import { boxInfo } from "../Game/util/BoxInfo";
+import { whoScoredObj } from "../Game/util/WhoScored";
+
+const breakRefAndCopy = (obj) => {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 export default InitialState = {
   scores: {
     yourScore: 0,
     computerScore: 0
   },
   currentLevel: "level1",
-  pastLevelScreen: false,
-  playerTurn: "first"
+  playerTurn: "first",
+  board: breakRefAndCopy(gameBoards["level1"]),
+  borders: breakRefAndCopy(boxInfo.borderCount),
+  whoScored: breakRefAndCopy(whoScoredObj),
+  justNowScored: false
 }
 
 // const [computerLastLineClick, setComputerLastLineClick] = useState(false);
