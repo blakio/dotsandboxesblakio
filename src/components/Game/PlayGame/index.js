@@ -206,29 +206,6 @@ const PlayGame = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      let playerOneScore = 0;
-      let playerTwoScore = 0;
-      for(let i in whoScored){
-        if(whoScored[i] === "first"){
-          playerOneScore++;
-        } else if (whoScored[i] === "second") {
-          playerTwoScore++;
-        }
-      }
-
-      dispatch({
-        type: Types.SET_YOUR_SCORE,
-        payload: { playerOneScore, playerTwoScore }
-      });
-
-      if(playerOneScore + playerTwoScore === 36){
-        setGameOver(true)
-      }
-    }, waitTime)
-  }, [whoScored, explodingBoxes, connectedBoxes])
-
-  useEffect(() => {
-    setTimeout(() => {
       const setDefaultBombs = async () => {
         setCurrentLevelBombs(config.levelDefaultBombs[Util.get(appState, ["currentLevel"])])
       }
@@ -236,14 +213,6 @@ const PlayGame = (props) => {
       setTraining(util.breakRefAndCopy(trainRestrictions[Util.get(appState, ["currentLevel"])]));
     }, waitTime)
   }, [Util.get(appState, ["currentLevel"])])
-
-  useEffect(() => {
-    if(waitTime){
-      setTimeout(() => {
-        setWaitTime(0)
-      }, 800)
-    }
-  }, [waitTime])
 
 
 
@@ -351,45 +320,12 @@ const PlayGame = (props) => {
     })
   }
 
-  const setTurnPlayer = (hasScored, clickedIndexes) => {
-    const {scored, boxes} = hasScored;
-    // set the turn to the next play turn if there was not a score
-    if(!scored){
-      const whosTurn = boxInfo.getTheNextPlayerTurn(Util.get(appState, ["playerTurn"]));
-      // dispatch({ type: Types.SET_PLAYER_TURN, payload: whosTurn });
-    } else {
-
-      const boxIndex = clickedIndexes[0];
-      const box = (boxIndex || boxIndex === 0) ? boxInfo.getBoxNameByIndex(boxIndex) : false;
-      const boxLineCount = box ? Util.get(appState, ["borders"])[box] : false;
-      const boxAboutToScored = boxLineCount === 3;
-
-      const adjBoxIndex = clickedIndexes[1];
-      const adjBox = (adjBoxIndex || adjBoxIndex === 0) ? boxInfo.getBoxNameByIndex(adjBoxIndex) : false;
-      const adjBoxLineCount = adjBox ? Util.get(appState, ["borders"])[adjBox] : false;
-      const adjBoxAboutToScored = adjBoxLineCount === 3;
-
-      const setScoredPlayer = {};
-      if(boxAboutToScored && adjBoxAboutToScored){
-        setScoredPlayer[box] = Util.get(appState, ["playerTurn"]);
-        setScoredPlayer[adjBox] = Util.get(appState, ["playerTurn"]);
-      } else if (boxAboutToScored) {
-        setScoredPlayer[box] = Util.get(appState, ["playerTurn"]);
-      } else if (adjBoxAboutToScored) {
-        setScoredPlayer[adjBox] = Util.get(appState, ["playerTurn"]);
-      }
-
-      setWhoScored({ ...whoScored, ...setScoredPlayer })
-
-    }
-  }
-
   const setSide = (boxName, side, adjBox, player) => {
     dispatch({
       type: Types.SET_CLICKED_LINE,
       payload: { boxName, side, adjBox, scoreTurn: player }
     })
-    setTurns(turns + 1);
+    if(!adjBox) setTurns(turns + 1);
   }
 
   const clickBorder = (side, index, player) => {
@@ -466,15 +402,7 @@ const PlayGame = (props) => {
     if((Util.get(appState, ["board"])[boxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), boxName)) ||
       (Util.get(appState, ["board"])[adjBoxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), adjBoxName))){
       setLineColor([index, adjacentBoxIndex], [side, adjBoxSide]);
-      // setTurnPlayer(hasScored, [index, adjacentBoxIndex]);
     }
-
-    // if(player === "second"){
-    //   // prevent first player from making a move on the computer's turn
-    //   setTimeout(() => {
-    //     setComputerTurn(false);
-    //   }, 250)
-    // }
   }
 
   const keys = Object.keys(Util.get(appState, ["board"]));

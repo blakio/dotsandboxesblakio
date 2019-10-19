@@ -48,11 +48,11 @@ const StateFunctions = {
       sounds.score.setCurrentTime(0);
       sounds.score.play();
 
-      currentState.whoScored[boxName] = currentState.playerTurn;
+      currentState.whoScored[boxName] = scoreTurn;
       // set score
-      const player = (playerTurn === "first") ? "yourScore" : "computerScore";
+      const player = (scoreTurn === "first") ? "yourScore" : "computerScore";
       const currentScore = currentState.scores[player];
-      currentScore.scores[player] = currentScore + 1;
+      currentState.scores[player] = currentScore + 1;
 
       currentState.justNowScored = true;
       currentState.playerTurn = scoreTurn;
