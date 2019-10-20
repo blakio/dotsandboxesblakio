@@ -95,16 +95,31 @@ const StateFunctions = {
     currentState.connectedBoxes = payload;
     return { ...state, connectedBoxes: currentState.connectedBoxes }
   },
-  setFootIndexes: (payload, state) => {
+  setInitialFootIndexes: (payload, state) => {
     const currentState = breakRefAndCopy(state);
     currentState.footIndexes = config.footSquares[payload];
     return { ...state, footIndexes: currentState.footIndexes }
+  },
+  setFootIndexes: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.footIndexes = payload;
+    return { ...state, footIndexes: currentState.footIndexes }
+  },
+  setBorders: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.borders = payload;
+    return { ...state, borders: currentState.borders }
+  },
+  setWhoClickedTheLine: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.whoClickedTheLine = payload;
+    return { ...state, whoClickedTheLine: currentState.whoClickedTheLine }
+  },
+  setBoard: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.board = payload;
+    return { ...state, board: currentState.board }
   }
 }
-
-// whoClickedTheLine
-// borders
-// connectedBoxes
-// footIndexes
 
 export default StateFunctions;

@@ -42,7 +42,7 @@ const GameOver = (props) => {
 
   return (<Animated.View style={youWinStyle(top, opacity)}>
     <View style={styles.textSectionStlye}>
-      <Image style={styles.imgStyle} source={images.confetti} />
+      <Image style={styles.imgStyle} source={images.celebrate} />
       <Text style={styles.youWin}>YOU WIN!</Text>
       <TouchableOpacity onPress={restartGame}>
         <Text style={styles.retry}>RETRY</Text>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   imgStyle: {
     position: "absolute",
-    top: 100,
+    top: 180,
     height: 400,
     width: 400
   }

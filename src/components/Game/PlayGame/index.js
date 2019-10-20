@@ -55,14 +55,11 @@ const PlayGame = (props) => {
     ...appState
   } = state;
 
-  // const [borders, setBorders] = useState(util.breakRefAndCopy(boxInfo.borderCount));
-  // const [connectedBoxes, setConnectedBoxes] = useState(util.breakRefAndCopy(boxInfo.connectedBoxesObj));
   const [whoClickedTheLineTracker, setWhoClickedTheLineTracker] = useState(util.breakRefAndCopy(whoClickedTheLine));
   const [computerLastLineClick, setComputerLastLineClick] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [explodingBoxes, setExplodingBoxes] = useState({});
   const [activeBomb, setActiveBomb] = useState("");
-  // const [footIndexes, setFootIndexes] = useState(config.footSquares[levelParam]);
   const [gameIsOver, setGameIsOver] = useState(false);
   const [youWin, setYouWin] = useState(false);
   const [boardTotalScore, setBoardTotalScore] = useState(util.getBoardScore(Util.get(appState, ["board"])))
@@ -130,7 +127,7 @@ const PlayGame = (props) => {
 
     // set foot indexes
     dispatch({
-      type: Types.SET_FOOT_INDEXES,
+      type: Types.SET_INITIAL_FOOT_INDEXES,
       payload: levelParam
     })
   }, []);
@@ -321,7 +318,7 @@ const PlayGame = (props) => {
     const { disabled, borders } = boxObj;
 
     // play wrong click for boxes that are on the screen but not clickable
-    if(!boxInfo.isClickable(Util.get(appState, ["borders"]), side)){
+    if(!boxInfo.isClickable(Util.get(appState, ["board"])[boxName].borders, side)){
       if(!disabled){
         sounds.wrong.setCurrentTime(0);
         return sounds.wrong.play()
@@ -361,14 +358,15 @@ const PlayGame = (props) => {
   const keys = Object.keys(Util.get(appState, ["board"]));
 
   const setExplosionBoxes = (boxIndex) => {
-    debugger
-    if(!activeBomb.length || (Util.get(appState, ["playerTurn"]) !== "first")) return;
+    const isActiveBombSelected = activeBomb.length;
+    const isTurnPlayerMakingTheMove = Util.get(appState, ["playerTurn"]) === "first"
+    if(!isActiveBombSelected || !isTurnPlayerMakingTheMove) return;
 
     setWaitTime(500);
-
     setDirection(false);
 
-    if(!passedMoveRestrictions(boxIndex, null, activeBomb)){
+    const hasPassedRestrictions = passedMoveRestrictions(boxIndex, null, activeBomb);
+    if(!hasPassedRestrictions){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     }
@@ -381,10 +379,10 @@ const PlayGame = (props) => {
     const bomb = activeBomb.slice(0, -1);
 
     // remove bomb from the list
-    const temp7 = [...currentLevelBombs];
-    const bombIndex = temp7.indexOf(bomb);
-    temp7.splice(bombIndex, 1);
-    setCurrentLevelBombs(temp7);
+    const remainingBombs = [...currentLevelBombs];
+    const bombIndex = remainingBombs.indexOf(bomb);
+    remainingBombs.splice(bombIndex, 1);
+    setCurrentLevelBombs(remainingBombs);
 
     // get the pattern for the explosions and play the sprite sheet
     const temp = boxInfo.getLightPattern(explosions, bomb, boxIndex);
@@ -398,7 +396,8 @@ const PlayGame = (props) => {
       })
     }
 
-    const temp3 = {...whoClickedTheLineTracker}
+    const temp2 = {...Util.get(appState, ["board"])}
+    const temp3 = {...Util.get(appState, ["whoClickedTheLine"])}
     const temp4 = {...Util.get(appState, ["borders"])}
     const temp5 = {...Util.get(appState, ["connectedBoxes"])}
     const temp6 = [...Util.get(appState, ["footIndexes"])]
@@ -407,14 +406,16 @@ const PlayGame = (props) => {
     for(let side in bombType){
       const sideIndex = boxInfo.getSideIndex(side);
       bombType[side].forEach(rowBoxIndex => {
-        temp3[`box${rowBoxIndex}`][side] = null;
-        temp5[`box${rowBoxIndex}`][sideIndex] = boxInfo.connectedBoxesObjRef[`box${rowBoxIndex}`][sideIndex];
+        const box = `box${rowBoxIndex}`;
+        temp3[box][side] = null;
+        temp2[box].borders[side] = null;
+        temp5[box][sideIndex] = boxInfo.connectedBoxesObjRef[box][sideIndex];
 
-        let newCount = temp4[`box${rowBoxIndex}`];
+        let newCount = temp4[box];
         if(newCount > 0){
-          newCount = temp4[`box${rowBoxIndex}`]--;
+          newCount = --temp4[box];
         }
-        temp4[`box${rowBoxIndex}`] = newCount;
+        temp4[box] = newCount;
 
         const boxName = boxInfo.getBoxNameByIndex(rowBoxIndex);
         if(computerLastLineClick.boxes && computerLastLineClick.boxes.includes(boxName)){
@@ -435,9 +436,11 @@ const PlayGame = (props) => {
       });
     }
 
-    // setBorders(temp4);
-    // setConnectedBoxes(temp5);
-    // setFootIndexes(temp6);
+    dispatch({ type: Types.SET_BOARD, payload: temp2 });
+    dispatch({ type: Types.SET_WHO_CLICKED_THE_LINE, payload: temp3 });
+    dispatch({ type: Types.SET_BORDERS, payload: temp4 });
+    dispatch({ type: Types.SET_CONNECTED_BOXES, payload: temp5 });
+    dispatch({ type: Types.SET_FOOT_INDEXES, payload: temp6 });
     setActiveBomb("");
   }
 

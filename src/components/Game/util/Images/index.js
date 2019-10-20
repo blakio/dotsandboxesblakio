@@ -6,7 +6,7 @@ const gold =       require("../../../../imgs/gold.png");
 const rhino =      require("../../../../imgs/asset_rhino.png");
 const foot =       require("../../../../imgs/foot.png");
 const io =         require("../../../../imgs/io.png");
-const confetti =   require("../../../../imgs/confetti.png");
+const celebrate =   require("../../../../imgs/celebrate.png");
 const sad =        require("../../../../imgs/sad.png");
 const home =       require("../../../../imgs/home.png");
 const restart =    require("../../../../imgs/restart.png");
@@ -20,7 +20,7 @@ export const images = {
   foot,
   gold,
   io,
-  confetti,
+  celebrate,
   sad,
   home,
   restart

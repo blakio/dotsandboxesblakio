@@ -18,8 +18,16 @@ export default (state, action) => {
       return StateFunctions.setGameBoard(payload, state);
     case Types.SET_CONNECTED_BOXES:
       return StateFunctions.setConnectedBoxes(payload, state);
+    case Types.SET_INITIAL_FOOT_INDEXES:
+      return StateFunctions.setInitialFootIndexes(payload, state);
     case Types.SET_FOOT_INDEXES:
       return StateFunctions.setFootIndexes(payload, state);
+    case Types.SET_BORDERS:
+      return StateFunctions.setBorders(payload, state);
+    case Types.SET_WHO_CLICKED_THE_LINE:
+      return StateFunctions.setWhoClickedTheLine(payload, state);
+    case Types.SET_BOARD:
+      return StateFunctions.setBoard(payload, state);
     default:
       return state;
   }

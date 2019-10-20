@@ -15,11 +15,11 @@ export default InitialState = {
   },
   currentLevel: "level1",
   playerTurn: "first",
-  board: breakRefAndCopy(gameBoards["level1"]),
+  board: {},
   borders: breakRefAndCopy(boxInfo.borderCount),
   whoScored: breakRefAndCopy(whoScoredObj),
   justNowScored: false,
   whoClickedTheLine: breakRefAndCopy(whoClickedTheLine),
   connectedBoxes: breakRefAndCopy(boxInfo.connectedBoxesObj),
-  footIndexes: breakRefAndCopy(config.footSquares["level1"])
+  footIndexes: breakRefAndCopy({})
 }
