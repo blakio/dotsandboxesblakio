@@ -35,11 +35,11 @@ const StateFunctions = {
   setClickedLine: (payload, state) => {
 
     // set border as clicked
-    const { boxName, side, adjBox, scoreTurn } = payload;
+    const { boxName, side, isAdjBox, scoreTurn } = payload;
     const currentState = breakRefAndCopy(state);
     currentState.board[boxName].borders[side] = true;
 
-    if(!adjBox){
+    if(!isAdjBox){
       currentState.justNowScored = false;
     }
 
@@ -65,7 +65,7 @@ const StateFunctions = {
       sounds.lineClick.setCurrentTime(0);
       sounds.lineClick.play();
 
-      if(!adjBox && !currentState.justNowScored){
+      if(!isAdjBox && !currentState.justNowScored){
         const newTurnPlayer = (currentState.playerTurn === "first") ? "second" : "first";
         currentState.playerTurn = newTurnPlayer;
       }
@@ -79,6 +79,11 @@ const StateFunctions = {
       scores: currentState.scores,
       playerTurn: currentState.playerTurn
     }
+  },
+  setGameBoard: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.board = gameBoards[payload];
+    return { ...state, board: currentState.board }
   }
 }
 

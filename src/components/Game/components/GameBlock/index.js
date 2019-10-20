@@ -78,7 +78,6 @@ const GameBlock = (props) => {
     isBottomSideRow,
     isLeftSideRow,
     footIndexes,
-    aimBoxes,
     blinkingEdge,
     navigation,
     trainingBoxesSidesClick,
@@ -295,13 +294,6 @@ const GameBlock = (props) => {
           source={images.foot}
         />
       </View>}
-
-      {(aimBoxes.includes(boxName)) && <Animated.View style={styles.aim}>
-        <Image
-          style={{flex:1, height: 50, width: 50, position: "absolute"}}
-          source={images.aim}
-        />
-      </Animated.View>}
 
     </Animated.View>
     <Pointer

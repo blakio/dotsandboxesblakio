@@ -25,8 +25,8 @@ const LevelScreen = (props) => {
   const startGame = (level) => {
     sounds.introMusic.setCurrentTime(0);
     sounds.introMusic.pause();
-    
-    navigate("Game", { level: `level${level}` })
+
+    navigate("Loading", { level: `level${level}` })
   }
 
   useEffect(() => {

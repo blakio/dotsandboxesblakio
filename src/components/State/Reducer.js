@@ -14,6 +14,8 @@ export default (state, action) => {
       return StateFunctions.setPlayerTurn(payload, state);
     case Types.SET_CLICKED_LINE:
       return StateFunctions.setClickedLine(payload, state);
+    case Types.SET_GAME_BOARD:
+      return StateFunctions.setGameBoard(payload, state);
     default:
       return state;
   }

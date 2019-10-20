@@ -28,7 +28,6 @@ import Pointer from "../components/Pointer";
 import Training from "../Training";
 import BackBtn from "../components/BackBtn";
 import BombSelector from "../components/BombSelector"
-import LevelScreen from "../LevelScreen"
 
 import Util from "../Util";
 
@@ -48,6 +47,7 @@ import { sounds } from "../Sounds";
 const PlayGame = (props) => {
 
   const levelParam = props.navigation.getParam("level");
+  const { navigate } = props.navigation;
 
   const [state, dispatch] = useReducer(Reducer, InitialState);
 
@@ -66,7 +66,7 @@ const PlayGame = (props) => {
   const [footIndexes, setFootIndexes] = useState(config.footSquares[levelParam]);
   const [gameIsOver, setGameIsOver] = useState(false);
   const [youWin, setYouWin] = useState(false);
-  const [boardTotalScore, setBoardTotalScore] = useState(util.getBoardScore(gameBoards[levelParam]))
+  const [boardTotalScore, setBoardTotalScore] = useState(util.getBoardScore(Util.get(appState, ["board"])))
   const [showInformativeScreen, setShowInformativeScreen] = useState(false)
   const [informationType, setInformationType] = useState(null)
   const [viewPointer, setViewPointer] = useState(false);
@@ -79,28 +79,18 @@ const PlayGame = (props) => {
   const [waitTime, setWaitTime] = useState(0);
   const [turnText, setTurnText] = useState("your turn");
   const [turns, setTurns] = useState(0);
-  const [aimBoxes, setAimBoxes] = useState([]);
-  const [circleFlash, setCircleFlash] = useState({});
   const [direction, setDirection] = useState(false);
   const [computerTurn, setComputerTurn] = useState(false);
   const [openTraining, setOpenTraining] = useState(trainRestrictions[levelParam].preText ? true : false);
   const [explosionSprites, setExplosionSprites] = useState([]);
 
-  // the game music is turned down when closing the app
-  useEffect(() => {
-    AppState.addEventListener('change', nextAppState => {
-      (nextAppState === 'active') ? sounds.inGameMusic.setVolume(0.4) : sounds.inGameMusic.setVolume(0);
-    })
-  }, []);
-
   // play the game music
-  const playGameMusic = () => {
+  props.navigation.addListener('willFocus', () => {
     sounds.inGameMusic.setCurrentTime(0);
     sounds.inGameMusic.play();
     sounds.inGameMusic.setNumberOfLoops(-1);
     sounds.inGameMusic.setVolume(0.4);
-  }
-  props.navigation.addListener('willFocus', () => { playGameMusic() });
+  });
 
   // stop the music when navigating away from the game page
   props.navigation.addListener('willBlur', () => {
@@ -110,10 +100,10 @@ const PlayGame = (props) => {
 
   // used during debugging mode to see which move the computer will make
   const checkComputerMove = () => {
-    const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, gameBoards[levelParam], footIndexes);
+    const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, Util.get(appState, ["board"]), footIndexes);
   }
 
-  // set the text that shows on the screen when reaching a consectutive boxes per turn
+  // set the text that shows on the screen when reaching a consecutive box score per turn
   const showScreenText = (text) => {
     setScreenText(text)
     setTimeout(() => { setScreenText("") }, 1000);
@@ -124,14 +114,31 @@ const PlayGame = (props) => {
   ///////////////////// life cycle /////////////////////
 
   useEffect(() => {
+    // the game music is turned down when closing the app
+    AppState.addEventListener('change', nextAppState => {
+      (nextAppState === 'active') ? sounds.inGameMusic.setVolume(0.4) : sounds.inGameMusic.setVolume(0);
+    })
+
+    // set the information screen
+    const level = parseInt(levelParam.replace("level", ""));
+    if(config.informationBoard.includes(level)){
+      setShowInformativeScreen(true);
+      const type = config.informationText[`${level}`];
+      setInformationType(type)
+    }
+
+    // set the gameboard
+    dispatch({
+      type: Types.SET_GAME_BOARD,
+      payload: levelParam
+    })
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
       const restriction = training && training.yourMoves && training.yourMoves[0];
-      setAimBoxes(restriction.aimBoxes || []);
-      if(restriction && restriction.type === "explosionClick"){
-        setBombToClick(restriction.bomb);
-      } else {
-        setBombToClick(null);
-      }
+      const bombToClick = (restriction && restriction.type === "explosionClick") ? restriction.bomb : null;
+      setBombToClick(bombToClick)
     }, waitTime);
   }, [training])
 
@@ -152,7 +159,7 @@ const PlayGame = (props) => {
         }
 
         // get a move for the computer to make
-        const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, gameBoards[levelParam], footIndexes, showScreenText);
+        const move = computerMove(Util.get(appState, ["borders"]), connectedBoxes, Util.get(appState, ["board"]), footIndexes, showScreenText);
         // if the move is empty the computer has no moves
         if(!move && !footIndexes.length){
           setYouWin(Util.get(appState, ["scores", ["yourScore"]]) > Util.get(appState, ["scores", ["computerScore"]]));
@@ -202,19 +209,13 @@ const PlayGame = (props) => {
   const removeUsedMoveRestriction = () => {
     const yourMoves = util.breakRefAndCopy(training.yourMoves);
     const updatedMoves = yourMoves.slice(1, yourMoves.length);
-    setTraining({
-      ...training,
-      yourMoves: updatedMoves
-    });
+    setTraining({ ...training, yourMoves: updatedMoves });
   }
 
   const removeComputerUsedMoveRestriction = () => {
     const computerMoves = util.breakRefAndCopy(training.computerMoves);
     const updatedMoves = computerMoves.slice(1, computerMoves.length);
-    setTraining({
-      ...training,
-      computerMoves: updatedMoves
-    });
+    setTraining({ ...training, computerMoves: updatedMoves });
   }
 
   const passedMoveRestrictions = ( clickBox = null, side = null, bomb = null ) => {
@@ -297,55 +298,34 @@ const PlayGame = (props) => {
     })
   }
 
-  const setSide = (boxName, side, adjBox, player) => {
+  const setSide = (boxName, side, isAdjBox, player) => {
     dispatch({
       type: Types.SET_CLICKED_LINE,
-      payload: { boxName, side, adjBox, scoreTurn: player }
+      payload: { boxName, side, isAdjBox, scoreTurn: player }
     })
-    if(!adjBox) setTurns(turns + 1);
+    if(!isAdjBox) setTurns(turns + 1);
   }
 
   const clickBorder = (side, index, player) => {
     if(Util.get(appState, ["playerTurn"]) !== player) return;
 
-    if(!passedMoveRestrictions(index, side)){
+    // play wrong click sound if box has restrictions is not meet
+    // or for out of turn clicks
+    const hasPassedRestrictions = passedMoveRestrictions(index, side);
+    const isYourTurn = player === Util.get(appState, ["playerTurn"])
+    if(!hasPassedRestrictions || !isYourTurn){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     }
 
-    if(player !== Util.get(appState, ["playerTurn"])){
-      sounds.wrong.setCurrentTime(0);
-      return sounds.wrong.play()
-    }
-
-    if(activeBomb.length){
-      return setExplosionBoxes(index);
-    }
-
-    const trainingBoxesSidesClick = {};
-    if(Util.get(appState, ["playerTurn"]) === "first"){
-      const corner = util.getCornersFromSide(side);
-      const boxCornerData = connectedCorners[index];
-      corner.map(data => {
-        if(trainingBoxesSidesClick[`box${index}`]){
-          trainingBoxesSidesClick[`box${index}`].push(data);
-        } else {
-          trainingBoxesSidesClick[`box${index}`] = [data];
-        }
-        boxCornerData[data].map(d => {
-          if(trainingBoxesSidesClick[`box${d.box}`]){
-            trainingBoxesSidesClick[`box${d.box}`].push(d.corner);
-          } else {
-            trainingBoxesSidesClick[`box${d.box}`] = [d.corner];
-          }
-        })
-      })
-    }
-    setCircleFlash(trainingBoxesSidesClick);
+    const isBombSelected = activeBomb.length
+    if(isBombSelected) return setExplosionBoxes(index);
 
     const boxName = boxInfo.getBoxNameByIndex(index);
-    const boxObj = boxInfo.getBoxObjByBoxName(gameBoards[levelParam], boxName);
+    const boxObj = boxInfo.getBoxObjByBoxName(Util.get(appState, ["board"]), boxName);
     const { disabled, borders } = boxObj;
+
+    // play wrong click for boxes that are on the screen but not clickable
     if(!boxInfo.isClickable(Util.get(appState, ["borders"]), side)){
       if(!disabled){
         sounds.wrong.setCurrentTime(0);
@@ -354,34 +334,36 @@ const PlayGame = (props) => {
       return;
     }
 
-    const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(gameBoards[levelParam], side, index);
+    const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(Util.get(appState, ["board"]), side, index);
     const adjBoxName = boxInfo.getBoxNameByIndex(adjacentBoxIndex);
 
+    // play wrong click sound if box has restrictions is not meet
     if(boxInfo.hasFootRestriction(footIndexes, index, adjacentBoxIndex)){
       sounds.wrong.setCurrentTime(0);
       return sounds.wrong.play();
     };
 
-    setSide(boxName, side, null, player);
+    const isAdjBox = false;
+    setSide(boxName, side, isAdjBox, player);
 
     const updatedConnections = [];
-    (!boxInfo.isDisabled(gameBoards[levelParam], boxName)) && updatedConnections.push(index);
+    (!boxInfo.isDisabled(Util.get(appState, ["board"]), boxName)) && updatedConnections.push(index);
 
     if(adjacentBoxIndex || adjacentBoxIndex === 0){
-      setSide(adjBoxName, adjBoxSide, "adjBox", player);
-      (!boxInfo.isDisabled(gameBoards[levelParam], adjBoxName)) && updatedConnections.push(adjacentBoxIndex);
+      const isAdjBox = true;
+      setSide(adjBoxName, adjBoxSide, isAdjBox, player);
+      (!boxInfo.isDisabled(Util.get(appState, ["board"]), adjBoxName)) && updatedConnections.push(adjacentBoxIndex);
     }
 
     updatedConnections.length && adjustConnectedBoxes(updatedConnections);
 
-    const hasScored = boxInfo.hasScored(gameBoards[levelParam], index, adjacentBoxIndex);
-    if((gameBoards[levelParam][boxName] && !boxInfo.isDisabled(gameBoards[levelParam], boxName)) ||
-      (gameBoards[levelParam][adjBoxName] && !boxInfo.isDisabled(gameBoards[levelParam], adjBoxName))){
+    if((Util.get(appState, ["board"])[boxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), boxName)) ||
+      (Util.get(appState, ["board"])[adjBoxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), adjBoxName))){
       setLineColor([index, adjacentBoxIndex], [side, adjBoxSide]);
     }
   }
 
-  const keys = Object.keys(gameBoards[levelParam]);
+  const keys = Object.keys(Util.get(appState, ["board"]));
 
   const setExplosionBoxes = (boxIndex) => {
     if(!activeBomb.length || (Util.get(appState, ["playerTurn"]) !== "first")) return;
@@ -488,46 +470,18 @@ const PlayGame = (props) => {
     setDirectionText("bomb", bomb);
   }
 
-  const changeLevel = (level, levelText) => {
-    dispatch({ type: Types.RESET_STATE });
-    dispatch({ type: Types.SET_LEVEL, payload: level });
-
-    // setDirection(false);
-    // setScreenText("")
-    // if((levelText !== "x" || !levelText)){
-    //   setComputerTurn(false)
-    //   dispatch({ type: Types.SET_PLAYER_TURN, payload: "first" });
-    //   // setBorders(util.breakRefAndCopy(boxInfo.borderCount));
-    //   setConnectedBoxes(util.breakRefAndCopy(boxInfo.connectedBoxesObj));
-    //   setWhoScored(util.breakRefAndCopy(whoScoredObj));
-    //   setWhoClickedTheLineTracker(util.breakRefAndCopy(whoClickedTheLine));
-    //   setComputerLastLineClick(false);
-    //   dispatch({ type: Types.SET_YOUR_SCORE, payload: { playerOneScore: 0, playerTwoScore: 0 } });
-    //   setGameOver(false);
-    //   setExplodingBoxes({});
-    //   setActiveBomb("");
-    //   setFootIndexes(util.breakRefAndCopy(config.footSquares[level]));
-    //   setGameIsOver(false);
-    //   setYouWin(false);
-    //   setBoardTotalScore(util.getBoardScore(gameBoards[level]));
-    //   setOpenTraining(trainRestrictions[level].preText ? true : false);
-    //   if(config.informationBoard.includes(levelText)){
-    //     setShowInformativeScreen(true);
-    //     const type = config.informationText[`${levelText}`];
-    //     setInformationType(type)
-    //   }
-    // }
+  const changeLevel = (level) => {
+    navigate("Loading", { level })
   }
 
   const restartGame = () => {
-    changeLevel(levelParam, parseInt(level.replace("level", "")));
+    changeLevel(levelParam);
   }
 
   const nextLevel = () => {
     const level = parseInt(levelParam.replace("level", ""))
     const nextLevel = level + 1;
-    changeLevel(`level${nextLevel}`, nextLevel);
-    setGameIsOver(false);
+    changeLevel(`level${nextLevel}`);
   }
 
   const closeInformationScreen = () => {
@@ -590,10 +544,6 @@ const PlayGame = (props) => {
     }
   }
 
-  // if(!state.pastLevelScreen){
-  //   return <LevelScreen {...props} dispatch={dispatch} />
-  // }
-
   ///////////////////// render /////////////////////
   return (<StateContext.Provider value={{ ...state, dispatch }}>
     <View style={styles.boardStyle}>
@@ -644,7 +594,7 @@ const PlayGame = (props) => {
         }}>
           {keys.map((data, index) => {
 
-            const board = gameBoards[levelParam];
+            const board = Util.get(appState, ["board"]);
 
             const {
               disabled,
@@ -714,8 +664,6 @@ const PlayGame = (props) => {
               side={side}
               navigation={props.navigation}
               trainingBoxesSidesClick={trainingBoxesSidesClick}
-              aimBoxes={aimBoxes}
-              circleFlash={circleFlash}
               setDirectionText={setDirection}
               currentLevel={levelParam}/>)})}
         </View>
@@ -819,9 +767,7 @@ const PlayGame = (props) => {
 
 }
 
-PlayGame.navigationOptions = {
-  header: null
-};
+PlayGame.navigationOptions = { header: null };
 
 export default PlayGame;
 
