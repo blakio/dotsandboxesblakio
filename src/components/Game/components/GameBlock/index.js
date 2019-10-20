@@ -20,7 +20,9 @@ const GameBlock = (props) => {
   const {
     borders,
     board,
-    whoScored
+    whoScored,
+    whoClickedTheLine,
+    footIndexes
   } = useContext(StateContext);
 
   const [showExplosionBox, setShowExplosionBox] = useState(true);
@@ -66,7 +68,6 @@ const GameBlock = (props) => {
     clickBorder,
     index,
     hasScored,
-    borderColors,
     computerLastLineClick,
     boxName,
     isTopRightCornerBox,
@@ -77,12 +78,13 @@ const GameBlock = (props) => {
     isRightSideRow,
     isBottomSideRow,
     isLeftSideRow,
-    footIndexes,
     blinkingEdge,
     navigation,
     trainingBoxesSidesClick,
     side
   } = props;
+
+  const borderColors = boxInfo.getBorderColors(boxName, whoClickedTheLine);
 
   const scored = whoScored[boxName];
 

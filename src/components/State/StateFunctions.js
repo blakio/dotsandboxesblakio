@@ -2,6 +2,7 @@ import { gameBoards } from "../Game/util/GameBoards";
 import { boxInfo } from "../Game/util/BoxInfo";
 import { sounds } from "../Game/Sounds";
 import InitialState from "./InitialState";
+import { config } from "../Game/util/Settings";
 
 const breakRefAndCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
@@ -71,20 +72,39 @@ const StateFunctions = {
       }
     }
 
+    // set who clicked the line
+    currentState.whoClickedTheLine[boxName][side] = scoreTurn;
+
     return {
       ...state,
       board: currentState.board,
       borders,
       whoScored: currentState.whoScored,
       scores: currentState.scores,
-      playerTurn: currentState.playerTurn
+      playerTurn: currentState.playerTurn,
+      whoClickedTheLine: currentState.whoClickedTheLine
     }
   },
   setGameBoard: (payload, state) => {
     const currentState = breakRefAndCopy(state);
     currentState.board = gameBoards[payload];
     return { ...state, board: currentState.board }
+  },
+  setConnectedBoxes: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.connectedBoxes = payload;
+    return { ...state, connectedBoxes: currentState.connectedBoxes }
+  },
+  setFootIndexes: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.footIndexes = config.footSquares[payload];
+    return { ...state, footIndexes: currentState.footIndexes }
   }
 }
+
+// whoClickedTheLine
+// borders
+// connectedBoxes
+// footIndexes
 
 export default StateFunctions;
