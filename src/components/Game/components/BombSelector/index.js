@@ -14,7 +14,6 @@ import {
 } from "react-native";
 
 import Pointer from "../Pointer";
-import Arrows from "../Arrows";
 
 import { config } from "../../util/Settings";
 import { images } from "../../util/Images";
