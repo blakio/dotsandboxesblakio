@@ -470,13 +470,9 @@ const PlayGame = (props) => {
     setDirectionText("bomb", bomb);
   }
 
-  const changeLevel = (level) => {
-    navigate("Loading", { level })
-  }
+  const changeLevel = level => navigate("Loading", { level });
 
-  const restartGame = () => {
-    changeLevel(levelParam);
-  }
+  const restartGame = () => changeLevel(levelParam);
 
   const nextLevel = () => {
     const level = parseInt(levelParam.replace("level", ""))
@@ -484,40 +480,7 @@ const PlayGame = (props) => {
     changeLevel(`level${nextLevel}`);
   }
 
-  const closeInformationScreen = () => {
-    setShowInformativeScreen(false);
-  }
-
-  let colorAnimation = new Animated.Value(0);
-
-  const startAnimation = () => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(colorAnimation, {
-          toValue: 1,
-          duration: 1000
-        }),
-        Animated.timing(colorAnimation, {
-          toValue: 0,
-          duration: 1000
-        })
-      ]),
-      {
-        iterations: 4
-      }
-    ).start();
-  }
-
-  startAnimation();
-
-  const letterColor = colorAnimation.interpolate({
-    inputRange: [ 0, 1 ],
-    outputRange: [ '#b57800', 'transparent' ]
-  });
-
-  props.navigation.addListener('willBlur', () => {
-    colorAnimation.stopAnimation();
-  })
+  const closeInformationScreen = () => setShowInformativeScreen(false);
 
   const trainingBoxesSidesClick = {};
   if(training !== "" && Util.get(appState, ["playerTurn"]) === "first"){
@@ -543,6 +506,8 @@ const PlayGame = (props) => {
       })
     }
   }
+
+  const explosionStyle = direction => (direction ? { color: "#FF5454" } : {});
 
   ///////////////////// render /////////////////////
   return (<StateContext.Provider value={{ ...state, dispatch }}>
@@ -727,7 +692,7 @@ const PlayGame = (props) => {
 
         <TouchableOpacity
           onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
-          <Text style={styles.text}>{direction || "make more boxes to win"}</Text>
+          <Text style={{ ...styles.text, ...explosionStyle(direction) }}>{direction || "make more boxes to win"}</Text>
         </TouchableOpacity>
 
         <GameScoreBoard
@@ -738,10 +703,7 @@ const PlayGame = (props) => {
         />
       </View>
 
-      {gameIsOver && !youWin &&
-        <GameOver
-          restartGame={restartGame}
-        />}
+      {gameIsOver && !youWin && <GameOver restartGame={restartGame} />}
 
       {gameIsOver && youWin &&
         <YouWin

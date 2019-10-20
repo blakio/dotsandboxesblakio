@@ -92,7 +92,7 @@ const styles = {
     height: 40,
     width: 40,
     margin: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: 100
   },
   bombSection: {
