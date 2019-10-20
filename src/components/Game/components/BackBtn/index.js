@@ -2,6 +2,7 @@ import React from "react";
 
 import {
   View,
+  Text,
   Image,
   TouchableHighlight
 } from "react-native";
@@ -11,8 +12,20 @@ import { config } from "../../util/Settings";
 
 const BackBtn = (props) => {
 
+  const { onGameScreen, restartGame } = props;
+
   // navigate to the home page
   const goHome = () => props.navigation.navigate("HomePage");
+  const levelScreen = () => props.navigation.navigate("LevelScreen");
+
+  const textStlye = {
+    color: "#fff",
+    fontFamily: "Raleway-Black",
+    fontSize: config.width * 0.068,
+    textAlign: "center",
+    opacity: 0.6,
+    margin: 10
+  }
 
   return (<View
     onPress={() => goHome()}
@@ -22,15 +35,26 @@ const BackBtn = (props) => {
       width: config.width,
       height: 50,
       backgroundColor: "rgb(39,0,56)",
-      justifyContent: "center",
-      alignItems: "center"
+      justifyContent: "space-around",
+      alignItems: "center",
+      flexDirection: "row"
     }}>
+    {onGameScreen && <TouchableHighlight onPress={restartGame}>
+      <Image style={{
+        width: 30,
+        height:  30,
+        opacity: 0.6
+      }} source={images.restart} />
+    </TouchableHighlight>}
     <TouchableHighlight onPress={goHome}>
       <Image style={{
         width: 30,
         height:  30
       }} source={images.home} />
     </TouchableHighlight>
+    {onGameScreen && <TouchableHighlight onPress={levelScreen}>
+      <Text style={textStlye}>LV</Text>
+    </TouchableHighlight>}
   </View>)
 }
 

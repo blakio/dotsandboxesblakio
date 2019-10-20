@@ -6,15 +6,10 @@ const gold =       require("../../../../imgs/gold.png");
 const rhino =      require("../../../../imgs/asset_rhino.png");
 const foot =       require("../../../../imgs/foot.png");
 const io =         require("../../../../imgs/io.png");
-const aim =        require("../../../../imgs/aim.png");
 const confetti =   require("../../../../imgs/confetti.png");
 const sad =        require("../../../../imgs/sad.png");
 const home =       require("../../../../imgs/home.png");
-const top =        require("../../../../imgs/top.png");
-const right =      require("../../../../imgs/right.png");
-const bottom =     require("../../../../imgs/bottom.png");
-const left =       require("../../../../imgs/left.png");
-const question =   require("../../../../imgs/question.png");
+const restart =    require("../../../../imgs/restart.png");
 
 export const images = {
   cheetahImg,
@@ -25,13 +20,8 @@ export const images = {
   foot,
   gold,
   io,
-  aim,
   confetti,
   sad,
   home,
-  top,
-  right,
-  bottom,
-  left,
-  question
+  restart
 }

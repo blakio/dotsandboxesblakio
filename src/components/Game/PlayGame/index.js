@@ -712,7 +712,7 @@ const PlayGame = (props) => {
           isLastBoard={levelParam === config.finalLevel}
         />}
 
-      <BackBtn {...props} />
+      <BackBtn {...props} onGameScreen={true} restartGame={restartGame} />
 
       { openTraining && trainRestrictions[levelParam].preText &&
         <Training
