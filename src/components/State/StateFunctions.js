@@ -121,6 +121,11 @@ const StateFunctions = {
     const currentState = breakRefAndCopy(state);
     currentState.board = payload;
     return { ...state, board: currentState.board }
+  },
+  setWhoScored: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.whoScored = payload;
+    return { ...state, whoScored: currentState.whoScored }
   }
 }
 

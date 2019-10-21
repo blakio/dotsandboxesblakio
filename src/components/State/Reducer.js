@@ -28,6 +28,8 @@ export default (state, action) => {
       return StateFunctions.setWhoClickedTheLine(payload, state);
     case Types.SET_BOARD:
       return StateFunctions.setBoard(payload, state);
+    case Types.SET_WHO_SCORE:
+      return StateFunctions.setWhoScored(payload, state);
     default:
       return state;
   }

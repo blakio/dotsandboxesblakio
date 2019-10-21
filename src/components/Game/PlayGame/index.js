@@ -203,7 +203,7 @@ const PlayGame = (props) => {
       setDefaultBombs();
       setTraining(util.breakRefAndCopy(trainRestrictions[levelParam]));
     }, waitTime)
-  }, [levelParam])
+  }, [levelParam]);
 
 
 
@@ -415,6 +415,7 @@ const PlayGame = (props) => {
       })
     }
 
+    const temp1 = {...Util.get(appState, ["whoScored"])}
     const temp2 = {...Util.get(appState, ["board"])}
     const temp3 = {...Util.get(appState, ["whoClickedTheLine"])}
     const temp4 = {...Util.get(appState, ["borders"])}
@@ -426,6 +427,7 @@ const PlayGame = (props) => {
       const sideIndex = boxInfo.getSideIndex(side);
       bombType[side].forEach(rowBoxIndex => {
         const box = `box${rowBoxIndex}`;
+        temp1[box] = null;
         temp3[box][side] = null;
         temp2[box].borders[side] = null;
         temp5[box][sideIndex] = boxInfo.connectedBoxesObjRef[box][sideIndex];
@@ -455,6 +457,7 @@ const PlayGame = (props) => {
       });
     }
 
+    dispatch({ type: Types.SET_WHO_SCORE, payload: temp1 });
     dispatch({ type: Types.SET_BOARD, payload: temp2 });
     dispatch({ type: Types.SET_WHO_CLICKED_THE_LINE, payload: temp3 });
     dispatch({ type: Types.SET_BORDERS, payload: temp4 });

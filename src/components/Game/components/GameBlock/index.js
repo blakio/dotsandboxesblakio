@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import {
   View,
+  Text,
   TouchableOpacity,
   Image,
   Animated
@@ -253,6 +254,8 @@ const GameBlock = (props) => {
 
   return (<TouchableOpacity onPress={() => clickGameBox()}>
     <Animated.View style={{...styles.box, ...borderStyles}}>
+
+      {/*<Text style={{position: "absolute", fontSize: 20}}>{index}</Text>*/}
 
       {(scored === "first") && <View style={styles.yourScore}>
         <Image
