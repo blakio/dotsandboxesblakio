@@ -16,9 +16,6 @@ const setFieldToPayload = (payload, state, field) => {
 }
 
 const StateFunctions = {
-  resetState: (payload, state) => {
-    return { ...breakRefAndCopy(InitialState) }
-  },
   setScores: (payload, state) => {
     const currentState = breakRefAndCopy(state);
     currentState.scores.yourScore = payload.playerOneScore;
@@ -63,10 +60,6 @@ const StateFunctions = {
       currentState.justNowScored = true;
       currentState.playerTurn = scoreTurn;
     } else {
-      // play line click sound
-      sounds.lineClick.setCurrentTime(0);
-      sounds.lineClick.play();
-
       if(!isAdjBox && !currentState.justNowScored){
         const newTurnPlayer = (currentState.playerTurn === "first") ? "second" : "first";
         currentState.playerTurn = newTurnPlayer;
@@ -81,7 +74,7 @@ const StateFunctions = {
       board: currentState.board,
       borders,
       whoScored: currentState.whoScored,
-      scores: currentState.scores,
+      // scores: currentState.scores,
       playerTurn: currentState.playerTurn,
       whoClickedTheLine: currentState.whoClickedTheLine
     }

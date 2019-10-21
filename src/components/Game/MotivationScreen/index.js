@@ -66,7 +66,7 @@ const StoreScreen = (props) => {
     </View>
 
     <View style={styles.textSection}>
-      <Text style={styles.text}> The purpose of this game is to rekindle our respect for black women,  learn  about African history,  celebrate black culture, and spread unity amongst  all black people regardless of class, gender, or sexuality.  </Text>
+      <Text style={styles.text}> The purpose of this game is to rekindle our respect for black women,  learn  about African history, celebrate black culture, and spread unity amongst  all black people regardless of class, gender, or sexuality.  </Text>
     </View>
 
     <BackBtn {...props} />

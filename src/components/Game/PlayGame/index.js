@@ -141,6 +141,7 @@ const PlayGame = (props) => {
 
   useEffect(() => {
     const additionalTimeout = (levelParam === "level1") ? 500 : 0;
+    setScores();
     setTimeout(() => {
       // only use logic if it is the computer turn. ex: "second" player
       if(Util.get(appState, ["playerTurn"]) === "second"){
@@ -208,6 +209,30 @@ const PlayGame = (props) => {
 
 
   ///////////////////// functions /////////////////////
+  const setScores = (obj) => {
+    let playerOneScore = 0;
+    let playerTwoScore = 0;
+
+    const updatedScores = obj ? obj : appState.whoScored;
+    for(let scored in updatedScores){
+      if(updatedScores[scored] === "first"){
+        playerOneScore++;
+      } else if(updatedScores[scored] === "second"){
+        playerTwoScore++;
+      }
+    }
+
+    dispatch({
+      type: Types.SET_SCORES,
+      payload: { playerOneScore, playerTwoScore }
+    })
+
+    const atMaxScore = (playerOneScore + playerTwoScore) === Util.get(appState, ["boardTotalScore"]);
+    if(atMaxScore && !youWin && !youLose){
+      (playerOneScore > playerTwoScore) ? setYouWin(true) : setYouLose(true);
+    }
+  }
+
   const removeUsedMoveRestriction = () => {
     const yourMoves = util.breakRefAndCopy(training.yourMoves);
     const updatedMoves = yourMoves.slice(1, yourMoves.length);
@@ -371,6 +396,10 @@ const PlayGame = (props) => {
       setLineColor([index, adjacentBoxIndex], [side, adjBoxSide]);
     }
 
+    // play line click sound
+    sounds.lineClick.setCurrentTime(0);
+    sounds.lineClick.play();
+
     setTurns(turns + 1);
   }
 
@@ -464,6 +493,8 @@ const PlayGame = (props) => {
     dispatch({ type: Types.SET_CONNECTED_BOXES, payload: temp5 });
     dispatch({ type: Types.SET_FOOT_INDEXES, payload: temp6 });
     setActiveBomb("");
+
+    setScores(temp1);
   }
 
   const setDirectionText = (type, bomb) => {

@@ -10,6 +10,9 @@ import {
 
 import { images } from "../util/Images";
 import { config } from "../util/Settings";
+import { gameBoards } from "../util/GameBoards";
+
+import InitialState from "../../State/InitialState";
 
 const Loading = (props) => {
 
@@ -18,6 +21,10 @@ const Loading = (props) => {
   setTimeout(() => {
     navigate("Game", { level: levelParam })
   }, 4000);
+
+  InitialState.currentLevel = levelParam;
+  InitialState.footIndexes = config.footSquares[levelParam];
+  InitialState.board = gameBoards[levelParam];
 
   let colorAnimation = new Animated.Value(0);
 
