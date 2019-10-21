@@ -60,9 +60,8 @@ const PlayGame = (props) => {
   const [gameOver, setGameOver] = useState(false);
   const [explodingBoxes, setExplodingBoxes] = useState({});
   const [activeBomb, setActiveBomb] = useState("");
-  const [gameIsOver, setGameIsOver] = useState(false);
   const [youWin, setYouWin] = useState(false);
-  const [boardTotalScore, setBoardTotalScore] = useState(util.getBoardScore(Util.get(appState, ["board"])))
+  const [youLose, setYouLose] = useState(false);
   const [showInformativeScreen, setShowInformativeScreen] = useState(false)
   const [informationType, setInformationType] = useState(null)
   const [currentLevelBombs, setCurrentLevelBombs] = useState([]);
@@ -147,6 +146,7 @@ const PlayGame = (props) => {
       if(Util.get(appState, ["playerTurn"]) === "second"){
         setConsecutiveTurns(0)
 
+        // make training move
         if(training && training.computerMoves && training.computerMoves.length){
           const restriction = training.computerMoves[0];
           if(restriction.type === "clickSide"){
@@ -154,17 +154,18 @@ const PlayGame = (props) => {
             return removeComputerUsedMoveRestriction();
           }
         }
-
         // get a move for the computer to make
         const move = computerMove(Util.get(appState, ["borders"]), Util.get(appState, ["connectedBoxes"]), Util.get(appState, ["board"]), Util.get(appState, ["footIndexes"]), showScreenText);
-        // if the move is empty the computer has no moves
+
+        const yourScore = Util.get(appState, ["scores", "yourScore"]);
+        const computerScore = Util.get(appState, ["scores", "computerScore"]);
+        // if the computer has no moves and there are not obstacles
         if(!move && !Util.get(appState, ["footIndexes"]).length){
-          setYouWin(Util.get(appState, ["scores", ["yourScore"]]) > Util.get(appState, ["scores", ["computerScore"]]));
-          return setGameIsOver(true);
+          return (yourScore > computerScore) ? setYouWin(true) : setYouLose(true);
         } else if (!move) {
-          setYouWin(false)
-          return setGameIsOver(true);
+          return setYouLose(true);
         }
+
         // if the move is not empty make a computer mover
         clickBorder(move.side, move.index, "second");
       } else {
@@ -180,11 +181,15 @@ const PlayGame = (props) => {
           }
         }
 
-        const totalScore = Util.get(appState, ["scores", ["yourScore"]]) + Util.get(appState, ["scores", ["computerScore"]]);
-        const aboutToScoreLastPoint = boardTotalScore - 1
-        if(totalScore === aboutToScoreLastPoint && !Util.get(appState, ["footIndexes"]).length){
-          setYouWin(Util.get(appState, ["scores", ["yourScore"]]) > Util.get(appState, ["scores", ["computerScore"]]));
-          return setGameIsOver(true);
+        const totalScore = Util.get(appState, ["scores", "yourScore"]) + Util.get(appState, ["scores", "computerScore"]);
+        const scoredTotalPoints = totalScore === Util.get(appState, ["boardTotalScore"]);
+        const obstacles = Util.get(appState, ["footIndexes"]).length;
+        if(scoredTotalPoints && !obstacles){
+          const yourScore = Util.get(appState, ["scores", "yourScore"]);
+          const computerScore = Util.get(appState, ["scores", "computerScore"]);
+          return (yourScore > computerScore) ? setYouWin(true) : setYouLose(true);
+        } else if ((obstacles + totalScore) === Util.get(appState, ["boardTotalScore"])) {
+          return setYouLose(true);
         }
       }
     }, 500)
@@ -295,7 +300,6 @@ const PlayGame = (props) => {
       type: Types.SET_CLICKED_LINE,
       payload: { boxName, side, isAdjBox, scoreTurn: player }
     })
-    if(!isAdjBox) setTurns(turns + 1);
   }
 
   const clickBorder = (side, index, player) => {
@@ -319,7 +323,7 @@ const PlayGame = (props) => {
 
     // play wrong click for boxes that are on the screen but not clickable
     if(!boxInfo.isClickable(Util.get(appState, ["board"])[boxName].borders, side)){
-      if(!disabled){
+      if(!boxObj.disabled){
         sounds.wrong.setCurrentTime(0);
         return sounds.wrong.play()
       }
@@ -328,6 +332,19 @@ const PlayGame = (props) => {
 
     const { adjBoxSide, adjacentBoxIndex } = boxInfo.getAdjacentBoxInfo(Util.get(appState, ["board"]), side, index);
     const adjBoxName = boxInfo.getBoxNameByIndex(adjacentBoxIndex);
+
+    if(adjacentBoxIndex){
+      const adjBoxObj = boxInfo.getBoxObjByBoxName(Util.get(appState, ["board"]), `box${adjacentBoxIndex}`);
+      if(adjBoxObj.disabled && disabled) return;
+    }
+
+    // prevent click when clicking on a disabled box and the adj box line isn't clickable
+    if(disabled && adjacentBoxIndex){
+      const oppositeSide = boxInfo.getOppositeSide(side);
+      if(!boxInfo.isClickable(Util.get(appState, ["board"])[`box${adjacentBoxIndex}`].borders, oppositeSide)){
+        return;
+      }
+    }
 
     // play wrong click sound if box has restrictions is not meet
     if(boxInfo.hasFootRestriction(Util.get(appState, ["footIndexes"]), index, adjacentBoxIndex)){
@@ -353,6 +370,8 @@ const PlayGame = (props) => {
       (Util.get(appState, ["board"])[adjBoxName] && !boxInfo.isDisabled(Util.get(appState, ["board"]), adjBoxName))){
       setLineColor([index, adjacentBoxIndex], [side, adjBoxSide]);
     }
+
+    setTurns(turns + 1);
   }
 
   const keys = Object.keys(Util.get(appState, ["board"]));
@@ -701,9 +720,9 @@ const PlayGame = (props) => {
         />
       </View>
 
-      {gameIsOver && !youWin && <GameOver restartGame={restartGame} />}
+      {youLose && <GameOver restartGame={restartGame} />}
 
-      {gameIsOver && youWin &&
+      {youWin &&
         <YouWin
           restartGame={restartGame}
           nextLevel={nextLevel}

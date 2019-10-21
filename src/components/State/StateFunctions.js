@@ -3,6 +3,7 @@ import { boxInfo } from "../Game/util/BoxInfo";
 import { sounds } from "../Game/Sounds";
 import InitialState from "./InitialState";
 import { config } from "../Game/util/Settings";
+import { util } from "../Game/util/Util";
 
 const breakRefAndCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
@@ -88,7 +89,8 @@ const StateFunctions = {
   setGameBoard: (payload, state) => {
     const currentState = breakRefAndCopy(state);
     currentState.board = gameBoards[payload];
-    return { ...state, board: currentState.board }
+    const boardTotalScore = util.getBoardScore(currentState.board);
+    return { ...state, board: currentState.board, boardTotalScore }
   },
   setConnectedBoxes: (payload, state) => {
     const currentState = breakRefAndCopy(state);

@@ -254,6 +254,13 @@ export const boxInfo = {
     if (side === "left") return 3;
   },
 
+  getOppositeSide: (side) => {
+    if (side === "top") return "bottom";
+    if (side === "right") return "left";
+    if (side === "bottom") return "top";
+    if (side === "left") return "right";
+  },
+
   getRandomBoxChoice: (boxesArray) => {
     return boxesArray[Math.floor(Math.random() * boxesArray.length)];
   },
