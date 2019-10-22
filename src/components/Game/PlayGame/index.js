@@ -594,7 +594,7 @@ const PlayGame = (props) => {
         position: "absolute",
         top: 0,
         left: 0,
-        opacity: activeBomb.length ? 0.6 : 0
+        opacity: activeBomb.length ? 0.8 : 0
       }}></View>
 
       <View style={{

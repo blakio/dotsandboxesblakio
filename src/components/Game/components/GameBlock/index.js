@@ -143,6 +143,7 @@ const GameBlock = (props) => {
   const styles = {
     box: {
       backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
+      backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#4A1A5B'),
       height: config.width * 0.14,
       width: config.width * 0.14,
       position: "relative",
