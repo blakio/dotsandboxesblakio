@@ -15,6 +15,7 @@ import { boxInfo } from "../../util/BoxInfo";
 import { images } from "../../util/Images";
 import { sounds } from "../../Sounds";
 import { config } from "../../util/Settings";
+import Stretch from "../Stretch"
 
 const GameBlock = (props) => {
 
@@ -295,10 +296,12 @@ const GameBlock = (props) => {
       </TouchableOpacity>
 
       {footIndexes.includes(index) && <View style={styles.foot}>
-        <Image
-          style={{height: 36, width: 28, top: -4}}
-          source={images.foot}
-        />
+        <Stretch>
+          <Image
+            style={{height: 36, width: 28, top: -4}}
+            source={images.foot}
+          />
+        </Stretch>
       </View>}
 
     </Animated.View>

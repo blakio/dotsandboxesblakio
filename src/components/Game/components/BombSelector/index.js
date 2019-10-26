@@ -4,7 +4,8 @@ import React from "react";
 import StateContext from "../../../State/State";
 import Reducer from "../../../State/Reducer";
 import InitialState from "../../../State/InitialState";
-import Types from "../../../State/Types"
+import Types from "../../../State/Types";
+import Stretch from "../Stretch";
 
 import {
   View,
@@ -60,16 +61,18 @@ const BombSelector = (props) => {
       const getStyle = () => (activeBomb && !isActiveBomb) ? { opacity: 0.2 } : {};
 
       return (<TouchableOpacity key={index} onPress={() => selectBomb(data, index)}>
-        <Animated.View
-          style={getStyle()}
-          removeClippedSubviews={true}>
-          <Image
-            style={style}
-            source={image}
-          />
+        <Stretch>
+          <Animated.View
+            style={getStyle()}
+            removeClippedSubviews={true}>
+            <Image
+              style={style}
+              source={image}
+            />
 
-          {(bombToClick === data) && <Pointer bomb={true}/>}
-        </Animated.View>
+            {(bombToClick === data) && <Pointer bomb={true}/>}
+          </Animated.View>
+        </Stretch>
       </TouchableOpacity>)
     })}
 

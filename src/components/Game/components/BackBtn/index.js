@@ -2,6 +2,7 @@ import React from "react";
 
 import {
   View,
+  Animated,
   Text,
   Image,
   TouchableHighlight
@@ -9,6 +10,7 @@ import {
 
 import { images } from "../../util/Images";
 import { config } from "../../util/Settings";
+import Stretch from "../Stretch";
 
 const BackBtn = (props) => {
 
@@ -39,22 +41,29 @@ const BackBtn = (props) => {
       alignItems: "center",
       flexDirection: "row"
     }}>
-    {onGameScreen && <TouchableHighlight onPress={restartGame}>
-      <Image style={{
-        width: config.textWidth,
-        height:  config.textWidth,
-        opacity: 0.6
-      }} source={images.restart} />
-    </TouchableHighlight>}
+    {onGameScreen && <Stretch>
+      <TouchableHighlight onPress={restartGame}>
+        <Image style={{
+          width: config.textWidth,
+          height:  config.textWidth,
+          opacity: 0.6
+        }} source={images.restart} />
+      </TouchableHighlight>
+    </Stretch>}
     <TouchableHighlight onPress={goHome}>
-      <Image style={{
-        width: 30,
-        height:  30
-      }} source={images.home} />
+      <Stretch>
+        <Image style={{
+          width: 30,
+          height:  30
+        }} source={images.home} />
+      </Stretch>
     </TouchableHighlight>
-    {onGameScreen && <TouchableHighlight onPress={levelScreen}>
-      <Text style={textStlye}>LV</Text>
-    </TouchableHighlight>}
+    {onGameScreen && <Stretch>
+      <TouchableHighlight onPress={levelScreen}>
+        <Text style={textStlye}>LV</Text>
+      </TouchableHighlight>
+    </Stretch>}
+
   </View>)
 }
 

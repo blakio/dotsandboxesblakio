@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   menuArea: {
     width: config.width,
-    height: (config.height * 0.5),
+    height: (config.height * 0.4),
     position: "absolute",
     left: 0,
     bottom: 0
@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
     opacity: 1,
     fontFamily: "Raleway-Black",
     letterSpacing: 6,
-    lineHeight: 80
+    lineHeight: 80,
+    lineHeight: 0
   },
   title: {
     position: "absolute",
