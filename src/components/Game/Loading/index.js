@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   StatusBar
 } from "react-native";
 
+import { StackActions, NavigationActions } from 'react-navigation';
+
 import { images } from "../util/Images";
 import { config } from "../util/Settings";
 import { gameBoards } from "../util/GameBoards";
@@ -16,15 +18,29 @@ import InitialState from "../../State/InitialState";
 
 const Loading = (props) => {
 
-  const { navigate } = props.navigation;
-  const levelParam = props.navigation.getParam("level");
+  const {
+    navigate,
+    getParam
+  } = props.navigation;
+
+  const levelParam = getParam("level");
+
+  props.navigation.dismiss();
   setTimeout(() => {
-    navigate("Game", { level: levelParam })
-  }, 4000);
+    props.navigation.dispatch(resetAction);
+    // navigate("Game", { level: levelParam })
+  }, 1000);
+
+  const resetAction = StackActions.reset({
+      index: 0,
+      params: { level: levelParam },
+      actions: [NavigationActions.navigate({ routeName: 'Game' })],
+  });
 
   InitialState.currentLevel = levelParam;
   InitialState.footIndexes = config.footSquares[levelParam];
   InitialState.board = gameBoards[levelParam];
+  InitialState.currentLevel = levelParam;
 
   let colorAnimation = new Animated.Value(0);
 
@@ -111,7 +127,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: "Raleway-Light",
-    fontSize: config.width * 0.068,
+    fontSize: config.textWidth,
     textAlign: "center",
     opacity: 0.8,
     margin: 10

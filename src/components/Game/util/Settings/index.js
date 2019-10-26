@@ -31,5 +31,6 @@ export const config = {
     level8: [6, 7, 8, 9, 10, 11, 28, 29, 34, 35]
   },
   width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height
+  height: Dimensions.get('window').height,
+  textWidth: 20
 }

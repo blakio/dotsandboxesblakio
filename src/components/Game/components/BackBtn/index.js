@@ -21,7 +21,7 @@ const BackBtn = (props) => {
   const textStlye = {
     color: "#fff",
     fontFamily: "Raleway-Black",
-    fontSize: config.width * 0.068,
+    fontSize: config.textWidth,
     textAlign: "center",
     opacity: 0.6,
     margin: 10
@@ -41,8 +41,8 @@ const BackBtn = (props) => {
     }}>
     {onGameScreen && <TouchableHighlight onPress={restartGame}>
       <Image style={{
-        width: 30,
-        height:  30,
+        width: config.textWidth,
+        height:  config.textWidth,
         opacity: 0.6
       }} source={images.restart} />
     </TouchableHighlight>}

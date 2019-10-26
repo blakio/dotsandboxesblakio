@@ -93,14 +93,14 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: "Raleway-ExtraLight",
-    fontSize: 24,
+    fontSize: config.textWidth,
     textAlign: "center",
-    width: config.width*0.9
+    width: config.width * 0.9
   },
   author: {
     color: "#b57800",
     fontFamily: "Raleway-Medium",
-    fontSize: 26,
+    fontSize: config.textWidth,
     textAlign: "center",
     letterSpacing: 6
   },

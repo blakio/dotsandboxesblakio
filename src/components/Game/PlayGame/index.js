@@ -46,7 +46,6 @@ import { sounds } from "../Sounds";
 
 const PlayGame = (props) => {
 
-  const levelParam = props.navigation.getParam("level");
   const { navigate } = props.navigation;
 
   const [state, dispatch] = useReducer(Reducer, InitialState);
@@ -54,6 +53,8 @@ const PlayGame = (props) => {
   const {
     ...appState
   } = state;
+
+  const levelParam = Util.get(appState, ["currentLevel"]);
 
   const [whoClickedTheLineTracker, setWhoClickedTheLineTracker] = useState(util.breakRefAndCopy(whoClickedTheLine));
   const [computerLastLineClick, setComputerLastLineClick] = useState(false);
@@ -804,7 +805,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "Raleway-Light",
     textAlign: "center",
-    fontSize: config.width * 0.068,
+    fontSize: config.textWidth,
     textAlign: "center",
     opacity: 0.8,
     margin: 0

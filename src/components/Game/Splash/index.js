@@ -6,6 +6,12 @@ import {
   StatusBar
 } from "react-native";
 
+import { StackActions, NavigationActions } from 'react-navigation';
+const resetAction = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'HomePage' })],
+});
+
 import { images } from "../util/Images";
 import { config } from "../util/Settings";
 
@@ -15,7 +21,7 @@ const Splash = (props) => {
   props.navigationOptions = { header: null }
 
   const { navigate } = props.navigation;
-  const goHome = () => navigate("HomePage");
+  const goHome = () => props.navigation.dispatch(resetAction);
 
   setTimeout(() => {
     goHome();
@@ -40,8 +46,8 @@ const Splash = (props) => {
       <Text
         style={{
           color: "#fff",
-          fontFamily: "Raleway-Light",
-          fontSize: 26,
+          fontFamily: "Raleway-Medium",
+          fontSize: config.textWidth,
           textAlign: "center",
           opacity: 0.8,
           margin: 10
