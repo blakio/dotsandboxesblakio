@@ -147,8 +147,7 @@ const styles = StyleSheet.create({
     opacity: 1,
     fontFamily: "Raleway-Black",
     letterSpacing: 6,
-    lineHeight: 80,
-    lineHeight: 0
+    lineHeight: 60
   },
   title: {
     position: "absolute",
