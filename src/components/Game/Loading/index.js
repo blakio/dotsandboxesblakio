@@ -13,6 +13,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { images } from "../util/Images";
 import { config } from "../util/Settings";
 import { gameBoards } from "../util/GameBoards";
+import Util from "../Util";
 
 import InitialState from "../../State/InitialState";
 
@@ -37,10 +38,10 @@ const Loading = (props) => {
       actions: [NavigationActions.navigate({ routeName: 'Game' })],
   });
 
-  InitialState.currentLevel = levelParam;
-  InitialState.footIndexes = config.footSquares[levelParam];
-  InitialState.board = gameBoards[levelParam];
-  InitialState.currentLevel = levelParam;
+  InitialState.currentLevel = Util.breakRefAndCopy(levelParam);
+  InitialState.footIndexes = Util.breakRefAndCopy(config.footSquares[levelParam]);
+  InitialState.board = Util.breakRefAndCopy(gameBoards[levelParam]);
+  InitialState.currentLevel = Util.breakRefAndCopy(levelParam);
 
   let colorAnimation = new Animated.Value(0);
 
