@@ -7,7 +7,7 @@ import {
 
 const Stretch = (props) => {
 
-  let stretchX = new Animated.Value(1.05);
+  let stretchX = new Animated.Value(1.08);
   let stretchY = new Animated.Value(1);
 
   const startAnimation = () => {
@@ -18,7 +18,7 @@ const Stretch = (props) => {
           duration: 500
         }),
         Animated.timing(stretchX, {
-          toValue: 1.05,
+          toValue: 1.08,
           duration: 500
         })
       ]),
@@ -29,7 +29,7 @@ const Stretch = (props) => {
     Animated.loop(
       Animated.sequence([
         Animated.timing(stretchY, {
-          toValue: 1.05,
+          toValue: 1.08,
           duration: 500
         }),
         Animated.timing(stretchY, {
@@ -58,4 +58,3 @@ const Stretch = (props) => {
   }
 
   export default Stretch;
-  

@@ -17,6 +17,8 @@ import { sounds } from "../../Sounds";
 import { config } from "../../util/Settings";
 import Stretch from "../Stretch"
 
+import SpriteSheet from "rn-sprite-sheet";
+
 const GameBlock = (props) => {
 
   const {
@@ -28,6 +30,8 @@ const GameBlock = (props) => {
   } = useContext(StateContext);
 
   const [showExplosionBox, setShowExplosionBox] = useState(true);
+  const [computerSprites, setComputerSprites] = useState([]);
+  const [showComputerHand, setShowComputerHand] = useState(false);
 
   let opacity = new Animated.Value(0);
   useEffect(() => {
@@ -143,10 +147,10 @@ const GameBlock = (props) => {
 
   const styles = {
     box: {
-      backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
-      backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#4A1A5B'),
-      height: config.width * 0.14,
-      width: config.width * 0.14,
+      // backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
+      backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#43005B'),
+      height: config.width * 0.14133,
+      width: config.width * 0.14133,
       position: "relative",
       opacity: isDisabledBox ? 0 : 1,
       borderTopWidth: borderTopWidth,
@@ -305,8 +309,51 @@ const GameBlock = (props) => {
       </View>}
 
     </Animated.View>
-    <Pointer
-      side={side}/>
+    {/*<Pointer
+      side={side}/>*/}
+
+    <View
+      pointerEvents="none"
+      style={{
+        height: config.width * 0.84,
+        width: config.width * 0.84,
+        position: "absolute",
+        flexWrap: "wrap",
+        flexDirection: "row"
+      }}
+    >
+      {showComputerHand && Array.apply(null, Array(36)).map((el, index) => (<TouchableOpacity
+          key={index}
+          onPress={() => computerSprites[index].play({
+            type: "explode",
+            fps: 24,
+            loop: false,
+            resetAfterFinish: false,
+            onFinish: () => {}
+          })}
+        >
+          <View
+            style={{
+              height: config.width * 0.139,
+              width: config.width * 0.139,
+              top: -25,
+              left: -25
+            }}
+          >
+            <SpriteSheet
+              ref={ref => (computerSprites[index] = ref)}
+              source={require('./handSelect.png')}
+              columns={13}
+              rows={1}
+              width={200}
+              animations={{
+                explode: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+              }}
+            />
+          </View>
+      </TouchableOpacity>))}
+    </View>
+
   </TouchableOpacity>)
 
 }

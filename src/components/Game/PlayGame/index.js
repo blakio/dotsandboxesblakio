@@ -75,6 +75,7 @@ const PlayGame = (props) => {
   const [direction, setDirection] = useState(false);
   const [openTraining, setOpenTraining] = useState(trainRestrictions[levelParam].preText ? true : false);
   const [explosionSprites, setExplosionSprites] = useState([]);
+  const [trainingSprites, setTrainingSprites] = useState([]);
 
   // play the game music
   props.navigation.addListener('willFocus', () => {
@@ -138,6 +139,51 @@ const PlayGame = (props) => {
       const bombToClick = (restriction && restriction.type === "explosionClick") ? restriction.bomb : null;
       setBombToClick(bombToClick)
     }, waitTime);
+
+    const restriction = training.yourMoves && training.yourMoves[0];
+    if(restriction && restriction.type ==="clickSide"){
+      dispatch({
+        type: Types.SET_TRAINING_PRESS,
+        payload: {
+          box: restriction.boxes[0],
+          side: restriction.sides[0]
+        }
+      })
+    } else if(restriction && restriction.type ==="boxClick"){
+      dispatch({
+        type: Types.SET_TRAINING_PRESS,
+        payload: {
+          box: restriction.clickBox,
+          side: "middle"
+        }
+      })
+    } else {
+      dispatch({
+        type: Types.SET_TRAINING_PRESS,
+        payload: {
+          box: null,
+          side: null
+        }
+      })
+    }
+    if(restriction && restriction.boxes && restriction.boxes[0] && (Util.get(appState, ["clickHelp"]).box !== restriction.boxes[0])){
+      trainingSprites[restriction.boxes[0]].play({
+        type: "training",
+        fps: 14,
+        loop: true,
+        resetAfterFinish: false,
+        onFinish: () => {}
+      })
+    }
+    if(restriction && restriction.clickBox && (Util.get(appState, ["clickHelp"]).box !== restriction.clickBox)){
+      trainingSprites[restriction.clickBox].play({
+        type: "training",
+        fps: 14,
+        loop: true,
+        resetAfterFinish: false,
+        onFinish: () => {}
+      })
+    }
   }, [training])
 
   useEffect(() => {
@@ -564,6 +610,14 @@ const PlayGame = (props) => {
 
   const explosionStyle = direction => (direction ? { color: "#FF5454" } : {});
 
+  const pointerStyle = {
+    top: { top: -74, left: -60, transform: [{ rotate: '0deg'}] },
+    right: { top: 64, left: -22, transform: [{ rotate: '-90deg'}] },
+    bottom: { top: -18, left: -60, transform: [{ rotate: '0deg'}] },
+    left: { top: 60, left: -80, transform: [{ rotate: '-90deg'}] },
+    middle: { top: -40, left: -58, transform: [{ rotate: '0deg'}] }
+  }
+
   ///////////////////// render /////////////////////
   return (<StateContext.Provider value={{ ...state, dispatch }}>
     <View style={styles.boardStyle}>
@@ -610,7 +664,20 @@ const PlayGame = (props) => {
         <View style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          padding: config.width * 0.07
+          padding: config.width * 0.06,
+          // box shadow css
+          borderWidth: 1,
+          borderRadius: 2,
+          borderColor: 'transparent',
+          borderBottomWidth: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 0.4,
+          shadowRadius: 2,
+          elevation: 1,
+          marginLeft: 5,
+          marginRight: 5,
+          marginTop: 10
         }}>
           {keys.map((data, index) => {
 
@@ -658,7 +725,10 @@ const PlayGame = (props) => {
               side = "box";
             }
 
-            return (<GameBlock
+            return (<View style={{position: "relative"}} key={index}>
+
+
+              <GameBlock
               key={index}
               isDisabledBox={isDisabledBox}
               clickBorder={clickBorder}
@@ -682,8 +752,57 @@ const PlayGame = (props) => {
               navigation={props.navigation}
               trainingBoxesSidesClick={trainingBoxesSidesClick}
               setDirectionText={setDirection}
-              currentLevel={levelParam}/>)})}
+              currentLevel={levelParam}/>
+
+
+
+            </View>)})}
         </View>
+
+        <View
+          pointerEvents="none"
+          style={{
+            height: config.width * 0.84,
+            width: config.width * 0.84,
+            position: "absolute",
+            flexWrap: "wrap",
+            flexDirection: "row"
+          }}
+        >
+          {Array.apply(null, Array(36)).map((el, index) => {
+            const { box, side } = Util.get(appState, ["clickHelp"]);
+            return (<TouchableOpacity
+                key={index}
+                onPress={() => trainingSprites[index].play({
+                  type: "training",
+                  fps: 24,
+                  loop: true,
+                  resetAfterFinish: false,
+                  onFinish: () => {}
+                })}
+              >
+                <View
+                    style={{
+                      height: config.width * 0.139,
+                      width: config.width * 0.139,
+                      opacity: ((box === index) && (Util.get(appState, ["playerTurn"]) === "first")) ? 1 : 0,
+                      ...pointerStyle[side]
+                    }}
+                  >
+                    <SpriteSheet
+                      ref={ref => (trainingSprites[index] = ref)}
+                      source={require('./selectHelp.png')}
+                      columns={14}
+                      rows={1}
+                      width={200}
+                      animations={{
+                        training: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                      }}
+                    />
+                  </View>
+            </TouchableOpacity>)})}
+        </View>
+
         <View
           pointerEvents="none"
           style={{
@@ -698,7 +817,7 @@ const PlayGame = (props) => {
               key={index}
               onPress={() => explosionSprites[index].play({
                 type: "explode",
-                fps: 14,
+                fps: 24,
                 loop: false,
                 resetAfterFinish: false,
                 onFinish: () => {}
@@ -714,17 +833,18 @@ const PlayGame = (props) => {
               >
                 <SpriteSheet
                   ref={ref => (explosionSprites[index] = ref)}
-                  source={require('./explosionSprite.png')}
+                  source={require('./explosion4.png')}
                   columns={11}
                   rows={1}
                   width={100}
                   animations={{
-                    explode: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    explode: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                   }}
                 />
               </View>
           </TouchableOpacity>))}
         </View>
+
       </View>
 
       <View style={{

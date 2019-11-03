@@ -28,6 +28,8 @@ export default (state, action) => {
       return StateFunctions.setBoard(payload, state);
     case Types.SET_WHO_SCORE:
       return StateFunctions.setWhoScored(payload, state);
+    case Types.SET_TRAINING_PRESS:
+      return StateFunctions.setTrainingPress(payload, state);
     default:
       return state;
   }

@@ -119,6 +119,11 @@ const StateFunctions = {
     const currentState = breakRefAndCopy(state);
     currentState.whoScored = payload;
     return { ...state, whoScored: currentState.whoScored }
+  },
+  setTrainingPress: (payload, state) => {
+    const currentState = breakRefAndCopy(state);
+    currentState.clickHelp = payload;
+    return { ...state, clickHelp: currentState.clickHelp }
   }
 }
 

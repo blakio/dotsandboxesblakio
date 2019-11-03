@@ -22,5 +22,9 @@ export default InitialState = {
   whoClickedTheLine: breakRefAndCopy(whoClickedTheLine),
   connectedBoxes: breakRefAndCopy(boxInfo.connectedBoxesObj),
   footIndexes: [],
-  boardTotalScore: 100
+  boardTotalScore: 100,
+  clickHelp: {
+    side: null,
+    box: null
+  }
 }
