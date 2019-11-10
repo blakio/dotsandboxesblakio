@@ -143,14 +143,16 @@ const GameBlock = (props) => {
     setTopRightCornerColor(cornerHighlights.includes("topRight") ? "#b57800" : "#270038");
     setBottomLeftCornerColor(cornerHighlights.includes("bottomLeft") ? "#b57800" : "#270038");
     setBottomRightCornerColor(cornerHighlights.includes("bottomRight") ? "#b57800" : "#270038");
-  }, [cornerHighlights])
+  }, [cornerHighlights]);
+
+  const gameBlockWidth = (config.width * 0.9) / 6;
 
   const styles = {
     box: {
       // backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
       backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#43005B'),
-      height: config.width * 0.14133,
-      width: config.width * 0.14133,
+      height: gameBlockWidth,
+      width: gameBlockWidth,
       position: "relative",
       opacity: isDisabledBox ? 0 : 1,
       borderTopWidth: borderTopWidth,

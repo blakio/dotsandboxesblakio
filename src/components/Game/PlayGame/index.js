@@ -618,6 +618,68 @@ const PlayGame = (props) => {
     middle: { top: -40, left: -58, transform: [{ rotate: '0deg'}] }
   }
 
+  const getMarginTop = (side, box) => {
+    const topSideBoes = [0, 1, 2, 3, 4, 5];
+    let marginTop = 0;
+    if(topSideBoes.includes(box) && side === "top"){
+      marginTop = config.width * 0.9 / 30;
+    }
+    return marginTop;
+  }
+
+  const getMarginRight = (side, box) => {
+    const rightSideBoxes = [5, 11, 17, 23, 29, 35];
+
+    let marginRight = 0
+
+    if(side === "top" || side === "bottom"){
+      marginRight = config.width * 0.9 / 22;
+    }
+    if(side === "left"){
+      marginRight = config.width * 0.9 / 8.3;
+    }
+    if(side === "right"){
+      marginRight = config.width * 0.9 / 11;
+    }
+
+    if(rightSideBoxes.includes(box) && side === "left"){
+      marginRight = 0;
+    }
+
+    if(rightSideBoxes.includes(box) && side === "right"){
+      marginRight = 0;
+    }
+
+    return marginRight;
+  }
+
+  const getMarginBottom = (side, box) => {
+    return 0;
+  }
+
+  const getMarginLeft = (side, box) => {
+    const leftSideBoxes = [0, 6, 12, 18, 24, 30];
+    const rightSideBoxes = [5, 11, 17, 23, 29, 35];
+
+    let marginLeft = 0;
+    if(leftSideBoxes.includes(box)){
+      marginLeft = config.width * 0.9 / 12.5;
+    }
+    if(rightSideBoxes.includes(box) && side === "right"){
+      marginLeft = config.width * 0.9 / 10.5;
+    }
+    return marginLeft;
+  }
+
+  const getLeft = (side, box) => {
+    const rightSideBoxes = [5, 11, 17, 23, 29, 35];
+    let left = (side === "top" || side === "bottom") ? 0 : -15;
+    if(rightSideBoxes.includes(box) && side === "right"){
+      left = -6;
+    }
+    return left;
+  }
+
   ///////////////////// render /////////////////////
   return (<StateContext.Provider value={{ ...state, dispatch }}>
     <View style={styles.boardStyle}>
@@ -653,31 +715,30 @@ const PlayGame = (props) => {
       }}></View>
 
       <View style={{
-        width: config.width,
-        height: config.width,
+        width: config.width * 0.9,
+        height: config.width * 0.9,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 40,
-        marginBottom: config.height * 0.03,
+        marginTop: 70,
         position: "relative"
       }}>
         <View style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          padding: config.width * 0.06,
+          position: "relative"
           // box shadow css
-          borderWidth: 1,
-          borderRadius: 2,
-          borderColor: 'transparent',
-          borderBottomWidth: 0,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 8 },
-          shadowOpacity: 0.4,
-          shadowRadius: 2,
-          elevation: 1,
-          marginLeft: 5,
-          marginRight: 5,
-          marginTop: 10
+          // borderWidth: 1,
+          // borderRadius: 2,
+          // borderColor: 'transparent',
+          // borderBottomWidth: 0,
+          // shadowColor: '#000',
+          // shadowOffset: { width: 0, height: 8 },
+          // shadowOpacity: 0.4,
+          // shadowRadius: 2,
+          // elevation: 1,
+          // marginLeft: 5,
+          // marginRight: 5,
+          // marginTop: 10
         }}>
           {keys.map((data, index) => {
 
@@ -729,31 +790,30 @@ const PlayGame = (props) => {
 
 
               <GameBlock
-              key={index}
-              isDisabledBox={isDisabledBox}
-              clickBorder={clickBorder}
-              index={index}
-              hasScored={hasScored}
-              computerLastLineClick={computerLastLineClick}
-              boxName={box}
-              isTopRightCornerBox={isTopRightCornerBox}
-              isTopLeftCornerBox={isTopLeftCornerBox}
-              isBottomRightCornerBox={isBottomRightCornerBox}
-              isBottomLeftCornerBox={isBottomLeftCornerBox}
-              isTopSideRow={isTopSideRow}
-              isRightSideRow={isRightSideRow}
-              isBottomSideRow={isBottomSideRow}
-              isLeftSideRow={isLeftSideRow}
-              explodingBoxes={explodingBoxes}
-              setExplosionBoxes={setExplosionBoxes}
-              blinkingEdge={blinkingEdge}
-              blinkingBox={blinkingBox}
-              side={side}
-              navigation={props.navigation}
-              trainingBoxesSidesClick={trainingBoxesSidesClick}
-              setDirectionText={setDirection}
-              currentLevel={levelParam}/>
-
+                key={index}
+                isDisabledBox={isDisabledBox}
+                clickBorder={clickBorder}
+                index={index}
+                hasScored={hasScored}
+                computerLastLineClick={computerLastLineClick}
+                boxName={box}
+                isTopRightCornerBox={isTopRightCornerBox}
+                isTopLeftCornerBox={isTopLeftCornerBox}
+                isBottomRightCornerBox={isBottomRightCornerBox}
+                isBottomLeftCornerBox={isBottomLeftCornerBox}
+                isTopSideRow={isTopSideRow}
+                isRightSideRow={isRightSideRow}
+                isBottomSideRow={isBottomSideRow}
+                isLeftSideRow={isLeftSideRow}
+                explodingBoxes={explodingBoxes}
+                setExplosionBoxes={setExplosionBoxes}
+                blinkingEdge={blinkingEdge}
+                blinkingBox={blinkingBox}
+                side={side}
+                navigation={props.navigation}
+                trainingBoxesSidesClick={trainingBoxesSidesClick}
+                setDirectionText={setDirection}
+                currentLevel={levelParam}/>
 
 
             </View>)})}
@@ -762,8 +822,8 @@ const PlayGame = (props) => {
         <View
           pointerEvents="none"
           style={{
-            height: config.width * 0.84,
-            width: config.width * 0.84,
+            height: config.width * 0.9,
+            width: config.width * 0.9,
             position: "absolute",
             flexWrap: "wrap",
             flexDirection: "row"
@@ -771,6 +831,8 @@ const PlayGame = (props) => {
         >
           {Array.apply(null, Array(36)).map((el, index) => {
             const { box, side } = Util.get(appState, ["clickHelp"]);
+            const gameBlockWidth = (config.width * 0.9) / 6;
+
             return (<TouchableOpacity
                 key={index}
                 onPress={() => trainingSprites[index].play({
@@ -783,8 +845,8 @@ const PlayGame = (props) => {
               >
                 <View
                     style={{
-                      height: config.width * 0.139,
-                      width: config.width * 0.139,
+                      height: gameBlockWidth,
+                      width: gameBlockWidth,
                       opacity: ((box === index) && (Util.get(appState, ["playerTurn"]) === "first")) ? 1 : 0,
                       ...pointerStyle[side]
                     }}
@@ -806,43 +868,86 @@ const PlayGame = (props) => {
         <View
           pointerEvents="none"
           style={{
-            height: config.width * 0.84,
-            width: config.width * 0.84,
+            height: config.width * 0.9,
+            width: config.width * 0.9,
             position: "absolute",
             flexWrap: "wrap",
             flexDirection: "row"
           }}
         >
-          {Array.apply(null, Array(36)).map((el, index) => (<TouchableOpacity
-              key={index}
-              onPress={() => explosionSprites[index].play({
-                type: "explode",
-                fps: 24,
-                loop: false,
-                resetAfterFinish: false,
-                onFinish: () => {}
-              })}
-            >
-              <View
-                style={{
-                  height: config.width * 0.139,
-                  width: config.width * 0.139,
-                  top: -25,
-                  left: -25
-                }}
+          {Array.apply(null, Array(36)).map((el, index) => {
+            const gameBlockWidth = (config.width * 0.9) / 6;
+
+            return (<TouchableOpacity
+                key={index}
+                onPress={() => explosionSprites[index].play({
+                  type: "explode",
+                  fps: 24,
+                  loop: false,
+                  resetAfterFinish: false,
+                  onFinish: () => {}
+                })}
               >
-                <SpriteSheet
-                  ref={ref => (explosionSprites[index] = ref)}
-                  source={require('./explosion4.png')}
-                  columns={11}
-                  rows={1}
-                  width={100}
-                  animations={{
-                    explode: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                <View
+                  style={{
+                    height: gameBlockWidth,
+                    width: gameBlockWidth,
+                    top: -25,
+                    left: -25
                   }}
-                />
-              </View>
-          </TouchableOpacity>))}
+                >
+                  <SpriteSheet
+                    ref={ref => (explosionSprites[index] = ref)}
+                    source={require('./explosion4.png')}
+                    columns={11}
+                    rows={1}
+                    width={100}
+                    animations={{
+                      explode: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    }}
+                  />
+                </View>
+            </TouchableOpacity>)
+          })}
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            height: config.width,
+            width: config.width,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap"
+          }}
+        >
+          {boxInfo.edgeBoxes.map((data, index) => {
+
+            const { side, box } = data;
+            const height = (side === "top" || side === "bottom") ? (config.width * 0.9 / 22) : (config.width * 0.9 / 8.3);
+            const width = (side === "top" || side === "bottom") ? (config.width * 0.9 / 8.3) : (config.width * 0.9 / 22);
+            const marginTop = getMarginTop(side, box);
+            const marginRight = getMarginRight(side, box);
+            const marginBottom = getMarginBottom(side, box);
+            const marginLeft = getMarginLeft(side, box);
+            const left = getLeft(side, box);
+
+            return (<TouchableOpacity
+              key={index}
+              onPress={() => clickBorder(side, box, "first")}
+            >
+              <View style={{
+                height,
+                width,
+                marginTop,
+                marginRight,
+                marginBottom,
+                marginLeft,
+                position: "relative",
+                left
+              }}></View>
+            </TouchableOpacity>)
+          })}
         </View>
 
       </View>

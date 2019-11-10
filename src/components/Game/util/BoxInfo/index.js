@@ -238,6 +238,22 @@ export const boxInfo = {
     box30: [ "box24", "box31", null   , null ], box31: [ "box25", "box32", null   , "box30" ], box32: [ "box26", "box33", null   , "box31" ], box33: [ "box27", "box34", null   , "box32" ], box34: [ "box28", "box35", null   , "box33" ], box35: [ "box29", null   , null   , "box34" ]
   },
 
+  edgeBoxes: [
+    {box: 0, side: "top"},     {box: 1, side: "top"},     {box: 2, side: "top"},     {box: 3, side: "top"},     {box: 4, side: "top"},     {box: 5, side: "top"},
+    {box: 0, side: "left"},    {box: 1, side: "left"},    {box: 2, side: "left"},    {box: 3, side: "left"},    {box: 4, side: "left"},    {box: 5, side: "left"},  {box: 5, side: "right"},
+    {box: 6, side: "top"},     {box: 7, side: "top"},     {box: 8, side: "top"},     {box: 9, side: "top"},     {box: 10, side: "top"},    {box: 11, side: "top"},
+    {box: 6, side: "left"},    {box: 7, side: "left"},    {box: 8, side: "left"},    {box: 9, side: "left"},    {box: 10, side: "left"},   {box: 11, side: "left"}, {box: 11, side: "right"},
+    {box: 12, side: "top"},    {box: 13, side: "top"},    {box: 14, side: "top"},    {box: 15, side: "top"},    {box: 16, side: "top"},    {box: 17, side: "top"},
+    {box: 12, side: "left"},   {box: 13, side: "left"},   {box: 14, side: "left"},   {box: 15, side: "left"},   {box: 16, side: "left"},   {box: 17, side: "left"}, {box: 17, side: "right"},
+    {box: 18, side: "top"},    {box: 19, side: "top"},    {box: 20, side: "top"},    {box: 21, side: "top"},    {box: 22, side: "top"},    {box: 23, side: "top"},
+    {box: 18, side: "left"},   {box: 19, side: "left"},   {box: 20, side: "left"},   {box: 21, side: "left"},   {box: 22, side: "left"},   {box: 23, side: "left"}, {box: 23, side: "right"},
+    {box: 24, side: "top"},    {box: 25, side: "top"},    {box: 26, side: "top"},    {box: 27, side: "top"},    {box: 28, side: "top"},    {box: 29, side: "top"},
+    {box: 24, side: "left"},   {box: 25, side: "left"},   {box: 26, side: "left"},   {box: 27, side: "left"},   {box: 28, side: "left"},   {box: 29, side: "left"}, {box: 29, side: "right"},
+    {box: 30, side: "top"},    {box: 31, side: "top"},    {box: 32, side: "top"},    {box: 33, side: "top"},    {box: 34, side: "top"},    {box: 35, side: "top"},
+    {box: 30, side: "left"},   {box: 31, side: "left"},   {box: 32, side: "left"},   {box: 33, side: "left"},   {box: 34, side: "left"},   {box: 35, side: "left"}, {box: 35, side: "right"},
+    {box: 30, side: "bottom"}, {box: 31, side: "bottom"}, {box: 32, side: "bottom"}, {box: 33, side: "bottom"}, {box: 34, side: "bottom"}, {box: 35, side: "bottom"}
+  ],
+
   getSide: (index) => {
     let side;
     if(index === 0){ side = "top" }
