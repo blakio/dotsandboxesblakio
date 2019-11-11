@@ -722,6 +722,50 @@ const PlayGame = (props) => {
         marginTop: 70,
         position: "relative"
       }}>
+
+
+        <View
+          style={{
+            position: "absolute",
+            height: config.width,
+            width: config.width,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap"
+          }}
+        >
+          {boxInfo.edgeBoxes.map((data, index) => {
+
+            const { side, box } = data;
+            const height = (side === "top" || side === "bottom") ? (config.width * 0.9 / 22) : (config.width * 0.9 / 8.3);
+            const width = (side === "top" || side === "bottom") ? (config.width * 0.9 / 8.3) : (config.width * 0.9 / 22);
+            const marginTop = getMarginTop(side, box);
+            const marginRight = getMarginRight(side, box);
+            const marginBottom = getMarginBottom(side, box);
+            const marginLeft = getMarginLeft(side, box);
+            const left = getLeft(side, box);
+
+            return (<TouchableOpacity
+                key={index}
+                onPress={() => {
+                  clickBorder(side, box, "first")
+                }}
+              >
+              <View style={{
+                height,
+                width,
+                marginTop,
+                marginRight,
+                marginBottom,
+                marginLeft,
+                position: "relative",
+                left
+              }}></View>
+            </TouchableOpacity>)
+          })}
+        </View>
+
+
         <View style={{
           flexDirection: "row",
           flexWrap: "wrap",
@@ -907,45 +951,6 @@ const PlayGame = (props) => {
                     }}
                   />
                 </View>
-            </TouchableOpacity>)
-          })}
-        </View>
-
-        <View
-          style={{
-            position: "absolute",
-            height: config.width,
-            width: config.width,
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap"
-          }}
-        >
-          {boxInfo.edgeBoxes.map((data, index) => {
-
-            const { side, box } = data;
-            const height = (side === "top" || side === "bottom") ? (config.width * 0.9 / 22) : (config.width * 0.9 / 8.3);
-            const width = (side === "top" || side === "bottom") ? (config.width * 0.9 / 8.3) : (config.width * 0.9 / 22);
-            const marginTop = getMarginTop(side, box);
-            const marginRight = getMarginRight(side, box);
-            const marginBottom = getMarginBottom(side, box);
-            const marginLeft = getMarginLeft(side, box);
-            const left = getLeft(side, box);
-
-            return (<TouchableOpacity
-              key={index}
-              onPress={() => clickBorder(side, box, "first")}
-            >
-              <View style={{
-                height,
-                width,
-                marginTop,
-                marginRight,
-                marginBottom,
-                marginLeft,
-                position: "relative",
-                left
-              }}></View>
             </TouchableOpacity>)
           })}
         </View>
