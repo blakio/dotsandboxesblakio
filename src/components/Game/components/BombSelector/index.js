@@ -11,7 +11,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Animated
+  Animated,
+  Vibration
 } from "react-native";
 
 import Pointer from "../Pointer";
@@ -79,6 +80,7 @@ const BombSelector = (props) => {
     {emptySpots.map((spot, index) => {
       return (<TouchableOpacity key={index} onPress={() => {
         sounds.wrong.setCurrentTime(0);
+        Vibration.vibrate(200);
         sounds.wrong.play();
       }}>
         <Animated.View style={styles.empty}>

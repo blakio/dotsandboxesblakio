@@ -11,6 +11,7 @@ import {
   StatusBar,
   Animated
 } from "react-native";
+import * as Animatable from 'react-native-animatable';
 
 import BackBtn from "../components/BackBtn";
 
@@ -106,11 +107,11 @@ const LevelScreen = (props) => {
             key={index}
             onPress={() => startGame(data)}>
             <View style={styles.levelBlock}>
-              <Text style={{
+              <Animatable.Text animation="pulse" iterationCount="infinite" style={{
                 color: "#b57800",
                 fontSize: 40,
                 fontFamily: "Raleway-Black"
-              }}>{data}</Text>
+              }}>{data}</Animatable.Text>
             </View>
           </TouchableOpacity>)
         })}

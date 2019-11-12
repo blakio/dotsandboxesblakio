@@ -35,7 +35,7 @@ const Pointer = (props) => {
   } else if (side === "top" || bomb){
     rotate = "180deg";
     bottom = 40;
-    left = 0;
+    left = -40;
   } else if (side === "box"){
     rotate = "-90deg";
     bottom = -6;
@@ -49,8 +49,8 @@ const Pointer = (props) => {
       position: "absolute",
       bottom,
       left,
-      height: 60,
-      width: 60,
+      height: 120,
+      width: 120,
       justifyContent: "center",
       alignItems: "center",
       opacity

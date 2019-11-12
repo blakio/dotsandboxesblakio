@@ -4,7 +4,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  Animated
+  Animated,
+  Vibration
 } from "react-native";
 
 //state setup
@@ -255,6 +256,7 @@ const GameBlock = (props) => {
     if(footIndexes.includes(index)){
       props.setDirectionText("uses bomb to remove");
       sounds.wrong.setCurrentTime(0);
+      Vibration.vibrate(200);
       return sounds.wrong.play();
     }
     props.setExplosionBoxes(props.index);

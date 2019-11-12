@@ -14,10 +14,12 @@ import {
   Animated,
   StyleSheet,
   AppState,
-  StatusBar
+  StatusBar,
+  Vibration
 } from "react-native";
 
 import SpriteSheet from "rn-sprite-sheet";
+import * as Animatable from 'react-native-animatable';
 
 import GameScoreBoard from "../components/GameScoreBoard";
 import GameBlock from "../components/GameBlock";
@@ -171,7 +173,7 @@ const PlayGame = (props) => {
         type: "training",
         fps: 14,
         loop: true,
-        resetAfterFinish: false,
+        resetAfterFinish: true,
         onFinish: () => {}
       })
     }
@@ -180,7 +182,7 @@ const PlayGame = (props) => {
         type: "training",
         fps: 14,
         loop: true,
-        resetAfterFinish: false,
+        resetAfterFinish: true,
         onFinish: () => {}
       })
     }
@@ -383,6 +385,7 @@ const PlayGame = (props) => {
     const isYourTurn = player === Util.get(appState, ["playerTurn"])
     if(!hasPassedRestrictions || !isYourTurn){
       sounds.wrong.setCurrentTime(0);
+      Vibration.vibrate(200);
       return sounds.wrong.play();
     }
 
@@ -397,6 +400,7 @@ const PlayGame = (props) => {
     if(!boxInfo.isClickable(Util.get(appState, ["board"])[boxName].borders, side)){
       if(!boxObj.disabled){
         sounds.wrong.setCurrentTime(0);
+        Vibration.vibrate(200);
         return sounds.wrong.play()
       }
       return;
@@ -421,6 +425,7 @@ const PlayGame = (props) => {
     // play wrong click sound if box has restrictions is not meet
     if(boxInfo.hasFootRestriction(Util.get(appState, ["footIndexes"]), index, adjacentBoxIndex)){
       sounds.wrong.setCurrentTime(0);
+      Vibration.vibrate(200);
       return sounds.wrong.play();
     };
 
@@ -463,6 +468,7 @@ const PlayGame = (props) => {
     const hasPassedRestrictions = passedMoveRestrictions(boxIndex, null, activeBomb);
     if(!hasPassedRestrictions){
       sounds.wrong.setCurrentTime(0);
+      Vibration.vibrate(200);
       return sounds.wrong.play();
     }
 
@@ -561,6 +567,7 @@ const PlayGame = (props) => {
   const selectBomb = (bomb, index) => {
     if(!passedMoveRestrictions(null, null, bomb)){
       sounds.wrong.setCurrentTime(0);
+      Vibration.vibrate(200);
       return sounds.wrong.play();
     }
     if(activeBomb === bomb + index){
@@ -611,11 +618,11 @@ const PlayGame = (props) => {
   const explosionStyle = direction => (direction ? { color: "#FF5454" } : {});
 
   const pointerStyle = {
-    top: { top: -74, left: -60, transform: [{ rotate: '0deg'}] },
-    right: { top: 64, left: -22, transform: [{ rotate: '-90deg'}] },
-    bottom: { top: -18, left: -60, transform: [{ rotate: '0deg'}] },
-    left: { top: 60, left: -80, transform: [{ rotate: '-90deg'}] },
-    middle: { top: -40, left: -58, transform: [{ rotate: '0deg'}] }
+    top: { top: 0, left: 0, transform: [{ rotate: '0deg'}] },
+    right: { top: 18, left: 24, transform: [{ rotate: '-90deg'}] },
+    bottom: { top: 28, left: -18, transform: [{ rotate: '0deg'}] },
+    left: { top: 0, left: 0, transform: [{ rotate: '-90deg'}] },
+    middle: { top: 4, left: -18, transform: [{ rotate: '0deg'}] }
   }
 
   const getMarginTop = (side, box) => {
@@ -898,11 +905,11 @@ const PlayGame = (props) => {
                     <SpriteSheet
                       ref={ref => (trainingSprites[index] = ref)}
                       source={require('./selectHelp.png')}
-                      columns={14}
+                      columns={13}
                       rows={1}
-                      width={200}
+                      height={120}
                       animations={{
-                        training: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                        training: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                       }}
                     />
                   </View>
@@ -974,7 +981,7 @@ const PlayGame = (props) => {
 
         <TouchableOpacity
           onPress={config.isDebuggingMode ? () => { checkComputerMove() } : null}>
-          <Text style={{ ...styles.text, ...explosionStyle(direction) }}>{direction || "make more boxes to win"}</Text>
+          <Animatable.Text animation="pulse" iterationCount="infinite" style={{ ...styles.text, ...explosionStyle(direction) }}>{direction || "make more boxes to win"}</Animatable.Text>
         </TouchableOpacity>
 
         <GameScoreBoard

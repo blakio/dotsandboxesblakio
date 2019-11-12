@@ -9,6 +9,7 @@ import {
   AppState,
   StatusBar
 } from "react-native";
+import * as Animatable from 'react-native-animatable';
 
 import { images } from "../util/Images";
 import { sounds } from "../Sounds";
@@ -95,13 +96,13 @@ const HomeScreen = (props) => {
     <View style={styles.menuArea}>
       <View style={styles.textSectionStlye}>
         <TouchableOpacity onPress={startGame}>
-          <Text style={styles.textBoxStlye}>play</Text>
+          <Animatable.Text animation="bounceInUp" style={styles.textBoxStlye}>play</Animatable.Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={motivationPage}>
-          <Text style={styles.textBoxStlye}>motivation</Text>
+          <Animatable.Text animation="bounceInLeft" style={styles.textBoxStlye}>motivation</Animatable.Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={storePage}>
-          <Text style={styles.textBoxStlye}>store</Text>
+          <Animatable.Text animation="bounceInRight" style={styles.textBoxStlye}>store</Animatable.Text>
         </TouchableOpacity>
       </View>
     </View>

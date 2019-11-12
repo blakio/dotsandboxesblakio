@@ -24,9 +24,7 @@ const BackBtn = (props) => {
     color: "#fff",
     fontFamily: "Raleway-Black",
     fontSize: config.textWidth,
-    textAlign: "center",
-    opacity: 0.6,
-    margin: 10
+    textAlign: "center"
   }
 
   return (<View
@@ -60,7 +58,15 @@ const BackBtn = (props) => {
     </TouchableHighlight>
     {onGameScreen && <Stretch>
       <TouchableHighlight onPress={levelScreen}>
-        <Text style={textStlye}>LV</Text>
+        <View style={{
+          width: config.textWidth,
+          height:  config.textWidth,
+          opacity: 0.6,
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <Text style={textStlye}>L</Text>
+        </View>
       </TouchableHighlight>
     </Stretch>}
 

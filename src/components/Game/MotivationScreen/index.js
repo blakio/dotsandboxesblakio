@@ -62,7 +62,7 @@ const StoreScreen = (props) => {
     <Image style={styles.imgStyle} source={images.background} />
 
     <View style={styles.title}>
-      <Animated.Text style={nameBoxStlye(letterColor)}>MOTIVATION</Animated.Text>
+      <Animated.Text style={nameBoxStlye(letterColor)}>MOTIVE</Animated.Text>
     </View>
 
     <View style={styles.textSection}>
