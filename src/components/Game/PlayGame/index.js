@@ -82,7 +82,7 @@ const PlayGame = (props) => {
   // play the game music
   props.navigation.addListener('willFocus', () => {
     sounds.inGameMusic.setCurrentTime(0);
-    sounds.inGameMusic.play();
+    // sounds.inGameMusic.play();
     sounds.inGameMusic.setNumberOfLoops(-1);
     sounds.inGameMusic.setVolume(0.4);
   });
@@ -692,8 +692,6 @@ const PlayGame = (props) => {
     <View style={styles.boardStyle}>
       <StatusBar hidden />
 
-      <Image style={styles.imgStyle} source={images.background} />
-
       <View style={{
         position: "absolute",
         top: 100,
@@ -726,10 +724,9 @@ const PlayGame = (props) => {
         height: config.width * 0.9,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 70,
+        marginTop: 100,
         position: "relative"
       }}>
-
 
         <View
           style={{
@@ -965,7 +962,7 @@ const PlayGame = (props) => {
       </View>
 
       <View style={{
-        backgroundColor: "rgb(39,0,56)",
+        backgroundColor: "#270035",
         position: "absolute",
         bottom: 0,
         paddingTop: 20,
@@ -1040,11 +1037,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-Light",
+    fontFamily: "Raleway",
     textAlign: "center",
     fontSize: config.textWidth,
     textAlign: "center",
-    opacity: 0.8,
     margin: 0
   }
 });

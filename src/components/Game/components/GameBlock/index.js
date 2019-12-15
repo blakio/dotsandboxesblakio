@@ -30,32 +30,8 @@ const GameBlock = (props) => {
     footIndexes
   } = useContext(StateContext);
 
-  const [showExplosionBox, setShowExplosionBox] = useState(true);
   const [computerSprites, setComputerSprites] = useState([]);
   const [showComputerHand, setShowComputerHand] = useState(false);
-
-  let opacity = new Animated.Value(0);
-  useEffect(() => {
-    if(props.explodingBoxes[props.index]){
-      Animated.timing(
-        opacity, { toValue: 1, duration: 100 }
-      ).start(() => {
-        Animated.timing(
-          opacity, { toValue: 0, duration: 400 }
-        ).start(obj => {
-          // prevent the bomb from remaining on the screen
-          if(!obj.finished){
-            setTimeout(() => {
-              setShowExplosionBox(false);
-              setTimeout(() => {
-                setShowExplosionBox(true);
-              })
-            }, 250)
-          }
-        });
-      });
-    }
-  }, [props.explodingBoxes]);
 
   let fadeIn = new Animated.Value(0.5);
   useEffect(() => {
@@ -100,15 +76,16 @@ const GameBlock = (props) => {
   let endingColor;
   let colorAnimation;
 
-  const scoreColor = (scored === "second") && "#2b0938";
-  let topBorderColor = (borderColors[0] === "first") ? "#b57800" : (borderColors[0] === "second") ? "#980000" : "transparent";
-  let rightBorderColor = (borderColors[1] === "first") ? "#b57800" : (borderColors[1] === "second") ? "#980000" : "transparent";
-  let bottomBorderColor = (borderColors[2] === "first") ? "#b57800" : (borderColors[2] === "second") ? "#980000" : "transparent";
-  let leftBorderColor = (borderColors[3] === "first") ? "#b57800" : (borderColors[3] === "second") ? "#980000" : "transparent";
+  const scoreColor = (scored === "second") ? "#FF3A3A" : (scored === "first") ? "#FFC656" : false;
+
+  let topBorderColor = (borderColors[0] === "first") ? "#F7AE1D" : (borderColors[0] === "second") ? "#FF6D6D" : "transparent";
+  let rightBorderColor = (borderColors[1] === "first") ? "#F7AE1D" : (borderColors[1] === "second") ? "#FF6D6D" : "transparent";
+  let bottomBorderColor = (borderColors[2] === "first") ? "#F7AE1D" : (borderColors[2] === "second") ? "#FF6D6D" : "transparent";
+  let leftBorderColor = (borderColors[3] === "first") ? "#F7AE1D" : (borderColors[3] === "second") ? "#FF6D6D" : "transparent";
 
   const computerCurrentMove = computerLastLineClick && computerLastLineClick.boxes.includes(boxName);
   if(computerCurrentMove){
-    const lastClickColor = "#FF6D6D";
+    const lastClickColor = "#FFADAD";
     const indexOfBox = computerLastLineClick.boxes.indexOf(boxName);
     if(computerLastLineClick.sides[indexOfBox] === "top"){
       topBorderColor = lastClickColor;
@@ -127,10 +104,14 @@ const GameBlock = (props) => {
     isBottomSideRow, isRightSideRow, isLeftSideRow
   );
 
-  let borderTopWidth = (isTopRightCornerBox || isTopLeftCornerBox || isTopSideRow) ? 2 : 1;
-  let borderRightWidth = (isTopRightCornerBox || isBottomRightCornerBox || isRightSideRow) ? 2 : 1;
-  let borderBottomWidth = (isBottomRightCornerBox || isBottomLeftCornerBox || isBottomSideRow) ? 2 : 1;
-  let borderLeftWidth = (isTopLeftCornerBox || isBottomLeftCornerBox || isLeftSideRow) ? 2 : 1;
+  let borderTopWidth = (isTopRightCornerBox || isTopLeftCornerBox || isTopSideRow) ? 12 : 6;
+  let borderRightWidth = (isTopRightCornerBox || isBottomRightCornerBox || isRightSideRow) ? 12 : 6;
+  let borderBottomWidth = (isBottomRightCornerBox || isBottomLeftCornerBox || isBottomSideRow) ? 12 : 6;
+  let borderLeftWidth = (isTopLeftCornerBox || isBottomLeftCornerBox || isLeftSideRow) ? 12 : 6;
+
+  const getDotPosition = (isEdgeBox) => {
+    return -18;
+  }
 
   let cornerHighlights = trainingBoxesSidesClick[boxName] || [];
 
@@ -151,7 +132,8 @@ const GameBlock = (props) => {
   const styles = {
     box: {
       // backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#490e5f'),
-      backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#43005B'),
+      // backgroundColor: footIndexes.includes(index) ? "#270035" : (scoreColor || '#43005B'),
+      backgroundColor: scoreColor || 'transparent',
       height: gameBlockWidth,
       width: gameBlockWidth,
       position: "relative",
@@ -192,38 +174,42 @@ const GameBlock = (props) => {
     },
     topLeft: {
       position: "absolute",
-      top: -6,
-      left: -6,
-      height: 10,
-      width: 10,
-      backgroundColor: topLeftCornerColor || "#270038",
+      top: getDotPosition(isTopRightCornerBox || isTopLeftCornerBox || isTopSideRow),
+      left: getDotPosition(isTopLeftCornerBox || isBottomLeftCornerBox || isLeftSideRow),
+      height: 24,
+      width: 24,
+      // backgroundColor: topLeftCornerColor || "#270038",
+      backgroundColor: "#d2d2d2d2",
       borderRadius: 200
     },
     topRight: {
       position: "absolute",
-      top: -6,
-      right: -6,
-      height: 10,
-      width: 10,
-      backgroundColor: topRightCornerColor || "#270038",
+      top: getDotPosition(isTopRightCornerBox || isTopLeftCornerBox || isTopSideRow),
+      right: getDotPosition(isTopRightCornerBox || isBottomRightCornerBox || isRightSideRow),
+      height: 24,
+      width: 24,
+      // backgroundColor: topRightCornerColor || "#270038",
+      backgroundColor: "#d2d2d2d2",
       borderRadius: 200
     },
     bottomLeft: {
       position: "absolute",
-      bottom: -6,
-      left: -6,
-      height: 10,
-      width: 10,
-      backgroundColor: bottomLeftCornerColor || "#270038",
+      bottom: getDotPosition(isBottomRightCornerBox || isBottomLeftCornerBox || isBottomSideRow),
+      left: getDotPosition(isTopLeftCornerBox || isBottomLeftCornerBox || isLeftSideRow),
+      height: 24,
+      width: 24,
+      // backgroundColor: bottomLeftCornerColor || "#270038",
+      backgroundColor: "#d2d2d2d2",
       borderRadius: 200
     },
     bottomRight: {
       position: "absolute",
-      right: -6,
-      bottom: -6,
-      height: 10,
-      width: 10,
-      backgroundColor: bottomRightCornerColor || "#270038",
+      right: getDotPosition(isTopRightCornerBox || isBottomRightCornerBox || isRightSideRow),
+      bottom: getDotPosition(isBottomRightCornerBox || isBottomLeftCornerBox || isBottomSideRow),
+      height: 24,
+      width: 24,
+      // backgroundColor: bottomRightCornerColor || "#270038",
+      backgroundColor: "#d2d2d2d2",
       borderRadius: 200
     },
     yourScore: {
@@ -267,20 +253,12 @@ const GameBlock = (props) => {
 
       {/*<Text style={{position: "absolute", fontSize: 20}}>{index}</Text>*/}
 
-      {(scored === "first") && <View style={styles.yourScore}>
+      {/*(scored === "first") && <View style={styles.yourScore}>
         <Image
           style={{flex:1, height: null, width: null}}
           source={images.gold}
         />
-      </View>}
-
-      {showExplosionBox && <Animated.View
-        style={{
-          height: "100%",
-          width: "100%",
-          backgroundColor: "#980000",
-          opacity: opacity}}>
-      </ Animated.View>}
+      </View>*/}
 
       <View style={styles.topLeft} />
       <View style={styles.topRight} />

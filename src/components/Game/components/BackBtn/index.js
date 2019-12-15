@@ -51,7 +51,7 @@ const BackBtn = (props) => {
     <TouchableHighlight onPress={goHome}>
       <Stretch>
         <Image style={{
-          width: 30,
+          width: 50,
           height:  30
         }} source={images.home} />
       </Stretch>

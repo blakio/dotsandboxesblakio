@@ -18,8 +18,12 @@ import PlayGame from "./src/components/Game/PlayGame";
 import LevelScreen from "./src/components/Game/LevelScreen";
 import Loading from "./src/components/Game/Loading";
 
+// used to test components
+import Testing from "./src/Testing";
+
 const MainNavigator = createStackNavigator({
-  Home: { screen: Splash },
+  Home: { screen: Testing },
+  // Home: { screen: Splash },
   HomePage: { screen: Game },
   Motivation: { screen: MotivationScreen },
   Store: { screen: StoreScreen },

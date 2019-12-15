@@ -86,22 +86,21 @@ const styles = StyleSheet.create({
     top: -4
   },
   yourScoreStyle: {
-    color: "#b57800",
+    color: "#D68E00",
     fontSize: 40,
     fontFamily: "Raleway-ExtraBold",
     margin: 0
   },
   computerScoreStyle: {
-    color: "#980000",
+    color: "#BF0000",
     fontSize: 40,
     fontFamily: "Raleway-ExtraBold",
     margin: 0
   },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-Light",
+    fontFamily: "Raleway",
     fontSize: config.textWidth,
-    textAlign: "center",
-    opacity: 0.8
+    textAlign: "center"
   }
 });

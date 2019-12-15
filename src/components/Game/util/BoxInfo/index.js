@@ -575,18 +575,18 @@ export const boxInfo = {
 
   getBorderStyles: ( borders, isTopRightCornerBox, isTopLeftCornerBox, isTopSideRow, isBottomRightCornerBox, isBottomLeftCornerBox, isBottomSideRow, isRightSideRow, isLeftSideRow ) => {
     const borderStyles = {};
-    if((isTopRightCornerBox || isTopLeftCornerBox || isTopSideRow) && !borders.top){
-      borderStyles.borderTopColor = "#230130";
-    }
-    if((isTopRightCornerBox || isBottomRightCornerBox || isRightSideRow) && !borders.right){
-      borderStyles.borderRightColor = "#230130";
-    }
-    if((isBottomRightCornerBox || isBottomLeftCornerBox || isBottomSideRow) && !borders.bottom){
-      borderStyles.borderBottomColor = "#230130";
-    }
-    if((isTopLeftCornerBox || isBottomLeftCornerBox || isLeftSideRow) && !borders.left){
-      borderStyles.borderLeftColor = "#230130";
-    }
+    // if((isTopRightCornerBox || isTopLeftCornerBox || isTopSideRow) && !borders.top){
+    //   borderStyles.borderTopColor = "#230130";
+    // }
+    // if((isTopRightCornerBox || isBottomRightCornerBox || isRightSideRow) && !borders.right){
+    //   borderStyles.borderRightColor = "#230130";
+    // }
+    // if((isBottomRightCornerBox || isBottomLeftCornerBox || isBottomSideRow) && !borders.bottom){
+    //   borderStyles.borderBottomColor = "#230130";
+    // }
+    // if((isTopLeftCornerBox || isBottomLeftCornerBox || isLeftSideRow) && !borders.left){
+    //   borderStyles.borderLeftColor = "#230130";
+    // }
     return borderStyles;
   },
 

@@ -42,7 +42,7 @@ const HomeScreen = (props) => {
 
   const playGameMusic = () => {
     sounds.introMusic.setCurrentTime(0);
-    sounds.introMusic.play();
+    // sounds.introMusic.play();
     sounds.introMusic.setNumberOfLoops(-1);
   }
 

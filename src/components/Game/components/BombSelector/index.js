@@ -96,11 +96,10 @@ const styles = {
     height: 40,
     width: 40,
     margin: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 100
   },
   bombSection: {
-    backgroundColor: util.darkPurple,
     width: config.width,
     flexDirection: "row",
     justifyContent: "center",
