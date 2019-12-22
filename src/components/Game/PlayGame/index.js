@@ -29,7 +29,10 @@ import InformativeScreen from "../components/InformativeScreen";
 import Pointer from "../components/Pointer";
 import Training from "../Training";
 import BackBtn from "../components/BackBtn";
-import BombSelector from "../components/BombSelector"
+import BombSelector from "../components/BombSelector";
+import GameBoard from "../components/GameBoard";
+
+import Testing from "../../../Testing"
 
 import Util from "../Util";
 
@@ -82,7 +85,7 @@ const PlayGame = (props) => {
   // play the game music
   props.navigation.addListener('willFocus', () => {
     sounds.inGameMusic.setCurrentTime(0);
-    // sounds.inGameMusic.play();
+    sounds.inGameMusic.play();
     sounds.inGameMusic.setNumberOfLoops(-1);
     sounds.inGameMusic.setVolume(0.4);
   });
@@ -770,7 +773,7 @@ const PlayGame = (props) => {
         </View>
 
 
-        <View style={{
+        {/*<View style={{
           flexDirection: "row",
           flexWrap: "wrap",
           position: "relative"
@@ -865,7 +868,18 @@ const PlayGame = (props) => {
 
 
             </View>)})}
-        </View>
+        </View>*/}
+
+        <GameBoard
+          footIndexes={Util.get(appState, ["footIndexes"])}
+          clickBorder={clickBorder}
+          whoClickedTheLine={Util.get(appState, ["whoClickedTheLine"])}
+          board={Util.get(appState, ["board"])}
+          whoScored={Util.get(appState, ["whoScored"])}
+          setDirectionText={setDirection}
+          sounds={sounds}
+          setExplosionBoxes={setExplosionBoxes}
+        />
 
         <View
           pointerEvents="none"

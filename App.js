@@ -22,8 +22,8 @@ import Loading from "./src/components/Game/Loading";
 import Testing from "./src/Testing";
 
 const MainNavigator = createStackNavigator({
-  Home: { screen: Testing },
-  // Home: { screen: Splash },
+  // Home: { screen: Testing },
+  Home: { screen: Splash },
   HomePage: { screen: Game },
   Motivation: { screen: MotivationScreen },
   Store: { screen: StoreScreen },

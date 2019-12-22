@@ -239,6 +239,7 @@ const GameBlock = (props) => {
   }
 
   const clickGameBox = () => {
+    debugger
     if(footIndexes.includes(index)){
       props.setDirectionText("uses bomb to remove");
       sounds.wrong.setCurrentTime(0);
