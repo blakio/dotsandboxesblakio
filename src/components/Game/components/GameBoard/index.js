@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,8 @@ import { images } from "../../util/Images";
 import Stretch from "../Stretch"
 
 const GameBoard = (props) => {
+
+  const [click, setClick] = useState(false);
 
   const disabledBoxes = util.getDisabledBoxes(props.board);
 
@@ -91,6 +93,11 @@ const GameBoard = (props) => {
           additionalStlyes.opacity = 0.2;
         }
 
+        const hoverStlyes = (click.type === "line" && click.index === index) ? {
+          backgroundColor: "#FFC656",
+          opacity: 1
+        } : {};
+
         return (<View style={{
           ...styles.sideContainer,
           ...styles[positionClass.row],
@@ -107,7 +114,7 @@ const GameBoard = (props) => {
               ...additionalStlyes,
               ...styles.hSide,
               ...styles[bgColor],
-              backgroundColor: "rgba(0, 0, 0, 0.2)"
+              ...hoverStlyes
             }}>
               {/*<Text>{index}</Text>*/}
             </View>
@@ -127,6 +134,11 @@ const GameBoard = (props) => {
           additionalStlyes.opacity = 0.2;
         }
 
+        const hoverStlyes = (click.type === "line" && click.index === index) ? {
+          backgroundColor: "#FFC656",
+          opacity: 1
+        } : {};
+
         return (<View style={{
           ...styles.sideContainer,
           ...styles[positionClass.row],
@@ -143,7 +155,7 @@ const GameBoard = (props) => {
               ...additionalStlyes,
               ...styles.vSide,
               ...styles[bgColor],
-              backgroundColor: "rgba(0, 0, 0, 0.2)"
+              ...hoverStlyes
             }}>
               {/*<Text>{index}</Text>*/}
             </View>
@@ -180,9 +192,46 @@ const GameBoard = (props) => {
         const locationY = e.nativeEvent.locationY;
         const lineClickPositions = util.lineClickPositions;
         const boxClickPositions = util.boxClickPositions;
-        const click = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
-        console.log(click)
+
+        const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
+        if(props.activeBomb && clickHelper.type === "box"){
+          setClick(clickHelper);
+        } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
+          setClick(clickHelper);
+        }
+
       }}
+      onResponderGrant={e => {
+        const locationX = e.nativeEvent.locationX;
+        const locationY = e.nativeEvent.locationY;
+        const lineClickPositions = util.lineClickPositions;
+        const boxClickPositions = util.boxClickPositions;
+
+        const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
+        if(props.activeBomb && clickHelper.type === "box"){
+          setClick(clickHelper);
+        } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
+          setClick(clickHelper);
+        }
+        
+      }}
+    onResponderRelease={e => {
+      if(click){
+        if(click.type === "line"){
+          const disabledMapper = util.disabledLineConditions[click.index];
+          const isDisabled = util.getDisabledStatus(disabledMapper, disabledBoxes);
+          if(!isDisabled){
+            const clickInfo = util.clickSide[click.index];
+            const thisclick = util.getClick(clickInfo, disabledBoxes);
+            props.clickBorder(thisclick.side, util.getBoxIndex(thisclick.box), "first");
+          }
+        } else if (click.type === "box") {
+          clickGameBox(click.index)
+        }
+      }
+      // reset variables
+      setClick(false)
+    }}
     ></View>
 
   </View>)

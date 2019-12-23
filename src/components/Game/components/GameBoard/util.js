@@ -584,7 +584,7 @@ const getClickFromPostion = (x, y, lineClickPositions, boxClickPositions) => {
       if((xLow < x) && (xHigh > x) && (yLow < y) && (yHigh > y)){
         click = {
           type: "line",
-          number: data
+          index: parseInt(data)
         }
       }
     }
@@ -599,7 +599,7 @@ const getClickFromPostion = (x, y, lineClickPositions, boxClickPositions) => {
         if((xLow < x) && (xHigh > x) && (yLow < y) && (yHigh > y)){
           click = {
             type: "box",
-            number: data
+            index: parseInt(data)
           }
         }
       }

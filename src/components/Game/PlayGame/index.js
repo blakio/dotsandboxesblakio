@@ -879,6 +879,7 @@ const PlayGame = (props) => {
           setDirectionText={setDirection}
           sounds={sounds}
           setExplosionBoxes={setExplosionBoxes}
+          activeBomb={activeBomb}
         />
 
         <View
