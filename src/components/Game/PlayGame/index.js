@@ -22,7 +22,6 @@ import SpriteSheet from "rn-sprite-sheet";
 import * as Animatable from 'react-native-animatable';
 
 import GameScoreBoard from "../components/GameScoreBoard";
-import GameBlock from "../components/GameBlock";
 import GameOver from "../components/GameOver";
 import YouWin from "../components/YouWin";
 import InformativeScreen from "../components/InformativeScreen";
@@ -36,14 +35,11 @@ import Testing from "../../../Testing"
 
 import Util from "../Util";
 
-import { gameBoards } from "../util/GameBoards";
 import { boxInfo } from "../util/BoxInfo";
 import { computerMove } from "../util/ComputerLogic";
 import { whoClickedTheLine } from "../util/WhoClicked";
-import { whoScoredObj } from "../util/WhoScored";
 import { explosions, explosionSides } from "../util/ExplosionPattern";
 import { config } from "../util/Settings";
-import { images } from "../util/Images";
 import { util } from "../util/Util";
 import { connectedCorners } from "../util/ConnectedCorners";
 import { trainRestrictions } from "../util/Training";
@@ -61,10 +57,7 @@ const PlayGame = (props) => {
 
   const levelParam = Util.get(appState, ["currentLevel"]);
 
-  const [whoClickedTheLineTracker, setWhoClickedTheLineTracker] = useState(util.breakRefAndCopy(whoClickedTheLine));
   const [computerLastLineClick, setComputerLastLineClick] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [explodingBoxes, setExplodingBoxes] = useState({});
   const [activeBomb, setActiveBomb] = useState("");
   const [youWin, setYouWin] = useState(false);
   const [youLose, setYouLose] = useState(false);
@@ -458,8 +451,6 @@ const PlayGame = (props) => {
     setTurns(turns + 1);
   }
 
-  const keys = Object.keys(Util.get(appState, ["board"]));
-
   const setExplosionBoxes = (boxIndex) => {
     const isActiveBombSelected = activeBomb.length;
     const isTurnPlayerMakingTheMove = Util.get(appState, ["playerTurn"]) === "first"
@@ -577,8 +568,12 @@ const PlayGame = (props) => {
       setDirectionText("bomb", false);
       return setActiveBomb("")
     }
-    setActiveBomb(`${bomb}${index}`);
-    setDirectionText("bomb", bomb);
+    if(Util.get(appState, ["playerTurn"]) === "first"){
+      setActiveBomb(`${bomb}${index}`);
+      setDirectionText("bomb", bomb);
+    } else {
+      setDirection("please wait your turn")
+    }
   }
 
   const changeLevel = level => navigate("Loading", { level });
@@ -772,104 +767,6 @@ const PlayGame = (props) => {
           })}
         </View>
 
-
-        {/*<View style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          position: "relative"
-          // box shadow css
-          // borderWidth: 1,
-          // borderRadius: 2,
-          // borderColor: 'transparent',
-          // borderBottomWidth: 0,
-          // shadowColor: '#000',
-          // shadowOffset: { width: 0, height: 8 },
-          // shadowOpacity: 0.4,
-          // shadowRadius: 2,
-          // elevation: 1,
-          // marginLeft: 5,
-          // marginRight: 5,
-          // marginTop: 10
-        }}>
-          {keys.map((data, index) => {
-
-            const board = Util.get(appState, ["board"]);
-
-            const {
-              disabled,
-              borders
-            } = board[data];
-            const {
-              isTopRightCornerBox,
-              isTopLeftCornerBox,
-              isBottomRightCornerBox,
-              isBottomLeftCornerBox,
-              isTopSideRow,
-              isRightSideRow,
-              isBottomSideRow,
-              isLeftSideRow
-            } = boxInfo.getSidesInfo(board, index);
-            const box = boxInfo.getBoxNameByIndex(index)
-            const isDisabledBox = disabled || false;
-
-            const hasScored = board[box].borders.top && board[box].borders.right && board[box].borders.bottom && board[box].borders.left;
-
-            const restriction = training && training.yourMoves && training.yourMoves[0];
-
-            let blinkingEdge = false;
-            let blinkingBox = false;
-
-            if (restriction && restriction.type === "clickSide" && Util.get(appState, ["playerTurn"]) === "first"){
-              const restrictionIndex = restriction.boxes.indexOf(index);
-              blinkingEdge = (restrictionIndex !== -1) && restriction.sides[restrictionIndex];
-            }
-
-            if(restriction && (restriction.type === "boxClick") && (Util.get(appState, ["playerTurn"]) === "first") && (index === restriction.clickBox)){
-              blinkingBox = true;
-            }
-
-            let side = false;
-            if(blinkingEdge === "top"){
-              side = "top";
-            } else if (blinkingEdge === "left") {
-              side = "right";
-            } else if (blinkingBox) {
-              side = "box";
-            }
-
-            return (<View style={{position: "relative"}} key={index}>
-
-
-              <GameBlock
-                key={index}
-                isDisabledBox={isDisabledBox}
-                clickBorder={clickBorder}
-                index={index}
-                hasScored={hasScored}
-                computerLastLineClick={computerLastLineClick}
-                boxName={box}
-                isTopRightCornerBox={isTopRightCornerBox}
-                isTopLeftCornerBox={isTopLeftCornerBox}
-                isBottomRightCornerBox={isBottomRightCornerBox}
-                isBottomLeftCornerBox={isBottomLeftCornerBox}
-                isTopSideRow={isTopSideRow}
-                isRightSideRow={isRightSideRow}
-                isBottomSideRow={isBottomSideRow}
-                isLeftSideRow={isLeftSideRow}
-                explodingBoxes={explodingBoxes}
-                setExplosionBoxes={setExplosionBoxes}
-                blinkingEdge={blinkingEdge}
-                blinkingBox={blinkingBox}
-                side={side}
-                navigation={props.navigation}
-                trainingBoxesSidesClick={trainingBoxesSidesClick}
-                setDirectionText={setDirection}
-                currentLevel={levelParam}/>
-
-
-            </View>)})}
-        </View>*/}
-
         <GameBoard
           footIndexes={Util.get(appState, ["footIndexes"])}
           clickBorder={clickBorder}
@@ -1042,13 +939,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: config.height,
     width: config.width
-  },
-  imgStyle: {
-    width: config.width,
-    height: config.height,
-    position: "absolute",
-    top: 0,
-    left: 0
   },
   text: {
     color: "#fff",

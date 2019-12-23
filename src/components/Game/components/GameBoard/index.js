@@ -24,6 +24,30 @@ const GameBoard = (props) => {
   const hBoxes = new Array(84).fill("");
   const selectedLines = util.getSelectedLines(util.getSelected(props.whoClickedTheLine), util.sideAndSquareMapper);
 
+  const handleSelection = (e) => {
+    const locationX = e.nativeEvent.locationX;
+    const locationY = e.nativeEvent.locationY;
+    const lineClickPositions = util.lineClickPositions;
+    const boxClickPositions = util.boxClickPositions;
+
+    const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
+    if(clickHelper){
+      if(props.activeBomb && clickHelper.type === "box"){
+        setClick(clickHelper);
+      } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
+        const disabledMapper = util.disabledLineConditions[clickHelper.index];
+        const isDisabled = util.getDisabledStatus(disabledMapper, disabledBoxes);
+        if(!isDisabled){
+          setClick(clickHelper)
+        } else if(click !== "false") {
+          setClick(false)
+        }
+      }
+    } else if(click !== "false") {
+      setClick(false)
+    }
+  }
+
   const clickGameBox = (index) => {
     if(props.footIndexes.includes(index)){
       props.setDirectionText("uses bomb to remove");
@@ -187,34 +211,8 @@ const GameBoard = (props) => {
         position: "absolute"
       }}
       onStartShouldSetResponder={e => true}
-      onResponderMove={e => {
-        const locationX = e.nativeEvent.locationX;
-        const locationY = e.nativeEvent.locationY;
-        const lineClickPositions = util.lineClickPositions;
-        const boxClickPositions = util.boxClickPositions;
-
-        const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
-        if(props.activeBomb && clickHelper.type === "box"){
-          setClick(clickHelper);
-        } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
-          setClick(clickHelper);
-        }
-
-      }}
-      onResponderGrant={e => {
-        const locationX = e.nativeEvent.locationX;
-        const locationY = e.nativeEvent.locationY;
-        const lineClickPositions = util.lineClickPositions;
-        const boxClickPositions = util.boxClickPositions;
-
-        const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
-        if(props.activeBomb && clickHelper.type === "box"){
-          setClick(clickHelper);
-        } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
-          setClick(clickHelper);
-        }
-
-      }}
+      onResponderMove={e => handleSelection(e)}
+      onResponderGrant={e => handleSelection(e)}
       onResponderRelease={e => {
         if(click){
           if(click.type === "line"){
