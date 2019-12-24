@@ -78,7 +78,7 @@ const PlayGame = (props) => {
   // play the game music
   props.navigation.addListener('willFocus', () => {
     sounds.inGameMusic.setCurrentTime(0);
-    sounds.inGameMusic.play();
+    // sounds.inGameMusic.play();
     sounds.inGameMusic.setNumberOfLoops(-1);
     sounds.inGameMusic.setVolume(0.4);
   });
@@ -875,6 +875,7 @@ const PlayGame = (props) => {
 
       <View style={{
         backgroundColor: "#270035",
+        backgroundColor: "#300042",
         position: "absolute",
         bottom: 0,
         paddingTop: 20,
@@ -938,7 +939,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: config.height,
-    width: config.width
+    width: config.width,
+    backgroundColor: "#F7F7F7"
   },
   text: {
     color: "#fff",

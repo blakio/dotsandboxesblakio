@@ -61,18 +61,18 @@ const GameBoard = (props) => {
   return (<View style={{
       justifyContent: "center",
       alignItems: "center",
-      borderWidth: 1,
-      borderRadius: 2,
-      borderColor: 'transparent',
-      borderBottomWidth: 0,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.4,
-      shadowRadius: 2,
-      elevation: 1,
-      marginLeft: 5,
-      marginRight: 5,
-      marginTop: 10
+      // borderWidth: 1,
+      // borderRadius: 2,
+      // borderColor: 'transparent',
+      // borderBottomWidth: 0,
+      // shadowColor: '#000',
+      // shadowOffset: { width: 0, height: 8 },
+      // shadowOpacity: 0.4,
+      // shadowRadius: 2,
+      // elevation: 1,
+      // marginLeft: 5,
+      // marginRight: 5,
+      // marginTop: 10
     }}
   >
 
@@ -81,15 +81,21 @@ const GameBoard = (props) => {
       <View style={styles.squaresContainer}>
         {new Array(36).fill("").map((data, index) => {
           const bgColor = util.getScoreStatus(index, util.getWhoScored(props.whoScored));
+          const hasFoot = props.footIndexes.includes(index);
+          const additionalStlyes = {};
+          if(hasFoot){
+            additionalStlyes.backgroundColor = "#300042";
+          }
           return (<TouchableOpacity
             key={index}
             onPress={() => clickGameBox(index)}
             >
             <View style={{
               ...styles.squares,
-              ...styles[bgColor]
+              ...styles[bgColor],
+              ...additionalStlyes
             }}>
-              {props.footIndexes.includes(index) && <View style={styles.foot}>
+              {hasFoot && <View style={styles.foot}>
                 <Stretch>
                   <Image
                     style={{height: 36, width: 28, top: -4}}
@@ -113,11 +119,12 @@ const GameBoard = (props) => {
 
         const additionalStlyes = {};
         if(!isDisabled){
-          // additionalStlyes.backgroundColor = "#bbb";
+          additionalStlyes.backgroundColor = "#bbb";
           additionalStlyes.opacity = 0.2;
         }
 
         const hoverStlyes = (click.type === "line" && click.index === index) ? {
+          ...styles.hDoubleHeight,
           backgroundColor: "#FFC656",
           opacity: 1
         } : {};
@@ -134,13 +141,15 @@ const GameBoard = (props) => {
               props.clickBorder(click.side, util.getBoxIndex(click.box), "first");
             }
           }}>
-            <View style={{
-              ...additionalStlyes,
-              ...styles.hSide,
-              ...styles[bgColor],
-              ...hoverStlyes
-            }}>
-              {/*<Text>{index}</Text>*/}
+            <View style={styles.hClickBox}>
+              <View style={{
+                ...additionalStlyes,
+                ...styles.hSide,
+                ...styles[bgColor],
+                ...hoverStlyes
+              }}>
+                {/*<Text>{index}</Text>*/}
+              </View>
             </View>
           </TouchableOpacity>
         </View>)
@@ -154,11 +163,12 @@ const GameBoard = (props) => {
 
         const additionalStlyes = {};
         if(!isDisabled){
-          // additionalStlyes.backgroundColor = "#bbb";
+          additionalStlyes.backgroundColor = "#bbb";
           additionalStlyes.opacity = 0.2;
         }
 
         const hoverStlyes = (click.type === "line" && click.index === index) ? {
+          ...styles.vDoubleHeight,
           backgroundColor: "#FFC656",
           opacity: 1
         } : {};
@@ -175,13 +185,15 @@ const GameBoard = (props) => {
               props.clickBorder(click.side, util.getBoxIndex(click.box), "first");
             }
           }}>
-            <View style={{
-              ...additionalStlyes,
-              ...styles.vSide,
-              ...styles[bgColor],
-              ...hoverStlyes
-            }}>
-              {/*<Text>{index}</Text>*/}
+            <View style={styles.vClickBox}>
+              <View style={{
+                ...additionalStlyes,
+                ...styles.vSide,
+                ...styles[bgColor],
+                ...hoverStlyes
+              }}>
+                {/*<Text>{index}</Text>*/}
+              </View>
             </View>
           </TouchableOpacity>
         </View>)
