@@ -73,9 +73,19 @@ const LevelScreen = (props) => {
     colorAnimation.stopAnimation();
   })
 
+  // const nameBoxStlye = (color) => {
+  //   return {
+  //     color,
+  //     fontSize: config.width * 0.14,
+  //     opacity: 1,
+  //     fontFamily: "Raleway-Black",
+  //     textAlign: "center"
+  //   }
+  // }
+
   const nameBoxStlye = (color) => {
     return {
-      color,
+      color: "#b57800",
       fontSize: config.width * 0.14,
       opacity: 1,
       fontFamily: "Raleway-Black",

@@ -875,7 +875,7 @@ const PlayGame = (props) => {
 
       <View style={{
         backgroundColor: "#270035",
-        backgroundColor: "#300042",
+        // backgroundColor: "#300042",
         position: "absolute",
         bottom: 0,
         paddingTop: 20,
@@ -939,8 +939,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: config.height,
-    width: config.width,
-    backgroundColor: "#F7F7F7"
+    width: config.width
   },
   text: {
     color: "#fff",

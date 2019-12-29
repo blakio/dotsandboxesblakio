@@ -46,13 +46,14 @@ const Splash = (props) => {
       <Text
         style={{
           color: "#fff",
-          fontFamily: "Raleway-Medium",
+          fontFamily: "Raleway",
           fontSize: config.textWidth,
           textAlign: "center",
           opacity: 0.8,
-          margin: 10
+          margin: 10,
+          letterSpacing: 10
         }}
-      >blakio</Text>
+      >blakio.com</Text>
 
     </View>
   </View>)

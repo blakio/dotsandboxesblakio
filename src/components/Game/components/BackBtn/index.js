@@ -12,6 +12,8 @@ import { images } from "../../util/Images";
 import { config } from "../../util/Settings";
 import Stretch from "../Stretch";
 
+import Icon from 'react-native-vector-icons/FontAwesome'
+
 const BackBtn = (props) => {
 
   const { onGameScreen, restartGame } = props;

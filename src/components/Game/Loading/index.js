@@ -30,7 +30,7 @@ const Loading = (props) => {
   setTimeout(() => {
     props.navigation.dispatch(resetAction);
     // navigate("Game", { level: levelParam })
-  }, 1000);
+  }, 1400);
 
   const resetAction = StackActions.reset({
       index: 0,
@@ -74,9 +74,19 @@ const Loading = (props) => {
     colorAnimation.stopAnimation();
   })
 
+  // const nameBoxStlye = (color) => {
+  //   return {
+  //     color,
+  //     fontSize: config.width * 0.14,
+  //     opacity: 1,
+  //     fontFamily: "Raleway-Black",
+  //     textAlign: "center"
+  //   }
+  // }
+
   const nameBoxStlye = (color) => {
     return {
-      color,
+      color: "#b57800",
       fontSize: config.width * 0.14,
       opacity: 1,
       fontFamily: "Raleway-Black",
@@ -127,7 +137,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-Light",
+    fontFamily: "Raleway",
     fontSize: config.textWidth,
     textAlign: "center",
     opacity: 0.8,

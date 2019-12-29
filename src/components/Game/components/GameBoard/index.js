@@ -119,14 +119,16 @@ const GameBoard = (props) => {
 
         const additionalStlyes = {};
         if(!isDisabled){
-          additionalStlyes.backgroundColor = "#bbb";
-          additionalStlyes.opacity = 0.2;
+          additionalStlyes.backgroundColor = "#C6C6C6";
+          additionalStlyes.opacity = 0.1;
         }
 
         const hoverStlyes = (click.type === "line" && click.index === index) ? {
           ...styles.hDoubleHeight,
           backgroundColor: "#FFC656",
-          opacity: 1
+          opacity: 1,
+          borderWidth: 1,
+          borderColor: "#BC9340"
         } : {};
 
         return (<View style={{
@@ -163,14 +165,16 @@ const GameBoard = (props) => {
 
         const additionalStlyes = {};
         if(!isDisabled){
-          additionalStlyes.backgroundColor = "#bbb";
-          additionalStlyes.opacity = 0.2;
+          additionalStlyes.backgroundColor = "#C6C6C6";
+          additionalStlyes.opacity = 0.1;
         }
 
         const hoverStlyes = (click.type === "line" && click.index === index) ? {
           ...styles.vDoubleHeight,
           backgroundColor: "#FFC656",
-          opacity: 1
+          opacity: 1,
+          borderWidth: 1,
+          borderColor: "#BC9340"
         } : {};
 
         return (<View style={{

@@ -31,6 +31,8 @@ target 'dotsandboxesblakio' do
 
 
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'dotsandboxesblakioTests' do
     inherit! :search_paths
     # Pods for testing

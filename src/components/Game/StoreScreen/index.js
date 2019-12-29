@@ -47,9 +47,19 @@ const StoreScreen = (props) => {
     colorAnimation.stopAnimation();
   })
 
+  // const nameBoxStlye = (color) => {
+  //   return {
+  //     color,
+  //     fontSize: config.width * 0.14,
+  //     opacity: 1,
+  //     fontFamily: "Raleway-Black",
+  //     textAlign: "center"
+  //   }
+  // }
+
   const nameBoxStlye = (color) => {
     return {
-      color,
+      color: "#b57800",
       fontSize: config.width * 0.14,
       opacity: 1,
       fontFamily: "Raleway-Black",
@@ -60,7 +70,7 @@ const StoreScreen = (props) => {
   return (<View style={styles.motivationPage}>
     <StatusBar hidden />
 
-    <Image style={styles.imgStyle} source={images.background} />
+    {/*<Image style={styles.imgStyle} source={images.background} />*/}
 
     <View style={styles.title}>
       <Animated.Text style={nameBoxStlye(letterColor)}>STORE COMING SOON</Animated.Text>
@@ -85,7 +95,8 @@ export default StoreScreen;
 const styles = StyleSheet.create({
   motivationPage: {
     width: config.width,
-    height: config.height
+    height: config.height,
+    backgroundColor: "#270038"
   },
   title: {
     justifyContent: "center",
@@ -99,7 +110,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fff",
-    fontFamily: "Raleway-Light",
+    fontFamily: "Raleway",
     fontSize: config.textWidth,
     textAlign: "center",
     opacity: 0.8,

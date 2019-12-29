@@ -15,9 +15,20 @@ import { images } from "../util/Images";
 import { sounds } from "../Sounds";
 import { config } from "../util/Settings";
 
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+// const nameBoxStlye = (color = "#fff", fontSize = 20, opacity = 1) => {
+//   return {
+//     color,
+//     fontSize,
+//     opacity,
+//     fontFamily: "Raleway-Black"
+//   }
+// }
+
 const nameBoxStlye = (color = "#fff", fontSize = 20, opacity = 1) => {
   return {
-    color,
+    color: "#b57800",
     fontSize,
     opacity,
     fontFamily: "Raleway-Black"
@@ -95,15 +106,28 @@ const HomeScreen = (props) => {
     <StatusBar hidden />
     <View style={styles.menuArea}>
       <View style={styles.textSectionStlye}>
-        <TouchableOpacity onPress={startGame}>
-          <Animatable.Text animation="bounceInUp" style={styles.textBoxStlye}>play</Animatable.Text>
-        </TouchableOpacity>
+
         <TouchableOpacity onPress={motivationPage}>
-          <Animatable.Text animation="bounceInLeft" style={styles.textBoxStlye}>motivation</Animatable.Text>
+          <View style={styles.circleSmallButton}>
+            <Icon name="star" size={30} color="#b57800" />
+          </View>
+          {/*<Animatable.Text animation="bounceInLeft" style={styles.textBoxStlye}>motivation</Animatable.Text>*/}
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={startGame}>
+          <View style={styles.circleBigButton}>
+            <Icon name="play" size={45} color="#b57800" />
+          </View>
+          {/*<Animatable.Text animation="bounceInUp" style={styles.textBoxStlye}>play</Animatable.Text>*/}
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={storePage}>
-          <Animatable.Text animation="bounceInRight" style={styles.textBoxStlye}>store</Animatable.Text>
+          <View style={styles.circleSmallButton}>
+            <Icon name="shopping-cart" size={30} color="#b57800" />
+          </View>
+          {/*<Animatable.Text animation="bounceInRight" style={styles.textBoxStlye}>store</Animatable.Text>*/}
         </TouchableOpacity>
+
       </View>
     </View>
 
@@ -125,7 +149,8 @@ const styles = StyleSheet.create({
   },
   menuArea: {
     width: config.width,
-    height: (config.height * 0.4),
+    height: (config.height * 0.8),
+    height: (config.height * 0.6),
     position: "absolute",
     left: 0,
     bottom: 0
@@ -136,18 +161,43 @@ const styles = StyleSheet.create({
     position: "absolute",
     paddingTop: 40
   },
-  textSectionStlye: {
+  circleBigButton: {
     backgroundColor: "#270038",
+    height: config.width * 0.4,
+    width: config.width * 0.4,
+    borderRadius: 1000,
+    justifyContent: "center",
+    alignItems: "center",
+    top: 40,
+    borderWidth: 10,
+    borderColor: "#3A1749"
+  },
+  circleSmallButton: {
+    backgroundColor: "#270038",
+    height: config.width * 0.2,
+    width: config.width * 0.2,
+    borderRadius: 1000,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 10,
+    borderColor: "#3A1749"
+  },
+  textSectionStlye: {
+    // backgroundColor: "#270038",
     height: "100%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    flexDirection: "row"
   },
   textBoxStlye: {
     color: "#b57800",
+    // color: "#fff",
     fontSize: 50,
+    fontSize: 40,
     opacity: 1,
     fontFamily: "Raleway-Black",
-    letterSpacing: 6,
+    // fontFamily: "Raleway-Light",
+    letterSpacing: 14,
     lineHeight: 60
   },
   title: {
@@ -159,8 +209,8 @@ const styles = StyleSheet.create({
     width: config.width
   },
   titleImg: {
-    height: 60,
-    width: 60,
+    height: 100,
+    width: 100,
     position: "relative",
     top: 12
   }
