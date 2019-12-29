@@ -49,6 +49,7 @@ const StateFunctions = {
     if(borders[boxName] === 4){
       // play score sound
       sounds.score.setCurrentTime(0);
+      sounds.score.setVolume(0.1);
       sounds.score.play();
 
       currentState.whoScored[boxName] = scoreTurn;

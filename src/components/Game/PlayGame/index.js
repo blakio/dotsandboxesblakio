@@ -78,9 +78,9 @@ const PlayGame = (props) => {
   // play the game music
   props.navigation.addListener('willFocus', () => {
     sounds.inGameMusic.setCurrentTime(0);
-    // sounds.inGameMusic.play();
+    sounds.inGameMusic.setVolume(0.01);
+    sounds.inGameMusic.play();
     sounds.inGameMusic.setNumberOfLoops(-1);
-    sounds.inGameMusic.setVolume(0.4);
   });
 
   // stop the music when navigating away from the game page
@@ -107,7 +107,7 @@ const PlayGame = (props) => {
   useEffect(() => {
     // the game music is turned down when closing the app
     AppState.addEventListener('change', nextAppState => {
-      (nextAppState === 'active') ? sounds.inGameMusic.setVolume(0.4) : sounds.inGameMusic.setVolume(0);
+      (nextAppState === 'active') ? sounds.inGameMusic.setVolume(0.01) : sounds.inGameMusic.setVolume(0);
     })
 
     // set the information screen
@@ -220,9 +220,11 @@ const PlayGame = (props) => {
           setConsecutiveTurns(consecutiveTurns + 1);
           if(consecutiveTurns === 4){
             showScreenText("I SEE YOU");
+            sounds.iseeu.setVolume(0.1);
             sounds.iseeu.play();
           } else if (consecutiveTurns === 7) {
             showScreenText("OKAY")
+            sounds.okay.setVolume(0.1);
             sounds.okay.play();
           }
         }
@@ -382,6 +384,7 @@ const PlayGame = (props) => {
     if(!hasPassedRestrictions || !isYourTurn){
       sounds.wrong.setCurrentTime(0);
       Vibration.vibrate(200);
+      sounds.wrong.setVolume(0.1);
       return sounds.wrong.play();
     }
 
@@ -397,6 +400,7 @@ const PlayGame = (props) => {
       if(!boxObj.disabled){
         sounds.wrong.setCurrentTime(0);
         Vibration.vibrate(200);
+        sounds.wrong.setVolume(0.1);
         return sounds.wrong.play()
       }
       return;
@@ -422,6 +426,7 @@ const PlayGame = (props) => {
     if(boxInfo.hasFootRestriction(Util.get(appState, ["footIndexes"]), index, adjacentBoxIndex)){
       sounds.wrong.setCurrentTime(0);
       Vibration.vibrate(200);
+      sounds.wrong.setVolume(0.1);
       return sounds.wrong.play();
     };
 
@@ -446,6 +451,7 @@ const PlayGame = (props) => {
 
     // play line click sound
     sounds.lineClick.setCurrentTime(0);
+    sounds.lineClick.setVolume(0.1);
     sounds.lineClick.play();
 
     setTurns(turns + 1);
@@ -463,11 +469,13 @@ const PlayGame = (props) => {
     if(!hasPassedRestrictions){
       sounds.wrong.setCurrentTime(0);
       Vibration.vibrate(200);
+      sounds.wrong.setVolume(0.1);
       return sounds.wrong.play();
     }
 
     // play bomb sound
     sounds.explosion.setCurrentTime(0);
+    sounds.explosion.setVolume(0.1);
     sounds.explosion.play();
 
     // get bomb name
@@ -562,6 +570,7 @@ const PlayGame = (props) => {
     if(!passedMoveRestrictions(null, null, bomb)){
       sounds.wrong.setCurrentTime(0);
       Vibration.vibrate(200);
+      sounds.wrong.setVolume(0.1);
       return sounds.wrong.play();
     }
     if(activeBomb === bomb + index){
