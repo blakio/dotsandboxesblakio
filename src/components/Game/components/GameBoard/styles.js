@@ -11,6 +11,63 @@ const circleBoxWidth = deviceWidth / 7.00001;
 const circleWidth = circleBoxWidth * 0.4;
 const circleBorderRadius = circleBoxWidth / 2;
 
+// const vrow1 = deviceWidth * 0.0715;
+// const vrow2 = deviceWidth * 0.2132;
+// const vrow3 = deviceWidth * 0.3549;
+// const vrow4 = deviceWidth * 0.4966;
+// const vrow5 = deviceWidth * 0.6383;
+// const vrow6 = deviceWidth * 0.78;
+// const vcol1 = deviceWidth * 0.0304;
+// const vcol2 = deviceWidth * 0.172;
+// const vcol3 = deviceWidth * 0.318;
+// const vcol4 = deviceWidth * 0.457;
+// const vcol5 = deviceWidth * 0.6022;
+// const vcol6 = deviceWidth * 0.7455;
+// const vcol7 = deviceWidth * 0.8875;
+// const hrow1 = deviceWidth * 0.0304;
+// const hrow2 = deviceWidth * 0.175;
+// const hrow3 = deviceWidth * 0.317;
+// const hrow4 = deviceWidth * 0.459;
+// const hrow5 = deviceWidth * 0.6026;
+// const hrow6 = deviceWidth * 0.7455;
+// const hrow7 = deviceWidth * 0.8875;
+// const hcol1 = deviceWidth * 0.0715;
+// const hcol2 = deviceWidth * 0.2132;
+// const hcol3 = deviceWidth * 0.3549;
+// const hcol4 = deviceWidth * 0.4966;
+// const hcol5 = deviceWidth * 0.6383;
+// const hcol6 = deviceWidth * 0.78
+
+// vrow1: 26.812499999999996
+// vrow2: 79.95
+// vrow3: 133.0875
+// vrow4: 186.225
+// vrow5: 239.36249999999998
+// vrow6: 292.5
+
+// vcol1: 11.4
+// vcol2: 64.5
+// vcol3: 119.25
+// vcol4: 171.375
+// vcol5: 225.825
+// vcol6: 279.5625
+// vcol7: 332.8125
+
+// hrow1: 11.4
+// hrow2: 65.625
+// hrow3: 118.875
+// hrow4: 172.125
+// hrow5: 225.97500000000002
+// hrow6: 279.5625
+// hrow7: 332.8125
+
+// hcol1: 26.812499999999996
+// hcol2: 79.95
+// hcol3: 133.0875
+// hcol4: 186.225
+// hcol5: 239.36249999999998
+// hcol6: 292.5
+
 export default StyleSheet.create({
   squaresParent: {
     height: deviceWidth,

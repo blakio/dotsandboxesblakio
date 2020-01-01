@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   Animated,
   Image,
   Vibration,
-  Dimensions
+  Dimensions,
+  PanResponder
 } from "react-native";
 
 import styles from "./styles";
@@ -16,7 +17,40 @@ import Stretch from "../Stretch"
 
 const GameBoard = (props) => {
 
-  const [click, setClick] = useState(false);
+  const [topLeft, setTopLeft] = useState([]);
+  const [topRight, setTopRight] = useState([]);
+  const [bottomLeft, setBottomLeft] = useState([]);
+
+  const getClickResponders = () => {
+    let panResponder;
+    panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (event, gestureState) => true,
+      onPanResponderMove: (e, gestureState) => handleSelection(e),
+      onPanResponderGrant: (e, gestureState) => handleSelection(e, true),
+      onPanResponderRelease: (e, gestureState) => {
+        if(click && click.index){
+          if(click.type === "line"){
+            const disabledMapper = util.disabledLineConditions[click.index];
+            const isDisabled = util.getDisabledStatus(disabledMapper, disabledBoxes);
+            if(!isDisabled){
+              const clickInfo = util.clickSide[click.index];
+              const thisclick = util.getClick(clickInfo, disabledBoxes);
+              props.clickBorder(thisclick.side, util.getBoxIndex(thisclick.box), "first");
+            }
+          } else if (click.type === "box") {
+            clickGameBox(click.index)
+          }
+        }
+        // reset variables
+        setClick(false)
+      }
+    });
+    return panResponder.panHandlers;
+  }
+
+  const [click, setClick] = useState({
+    index: false
+  });
 
   const disabledBoxes = util.getDisabledBoxes(props.board);
 
@@ -24,28 +58,72 @@ const GameBoard = (props) => {
   const hBoxes = new Array(84).fill("");
   const selectedLines = util.getSelectedLines(util.getSelected(props.whoClickedTheLine), util.sideAndSquareMapper);
 
-  const handleSelection = (e) => {
+  const handleSelection = (e, init) => {
     const locationX = e.nativeEvent.locationX;
     const locationY = e.nativeEvent.locationY;
     const lineClickPositions = util.lineClickPositions;
     const boxClickPositions = util.boxClickPositions;
 
-    const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
-    if(clickHelper){
-      if(props.activeBomb && clickHelper.type === "box"){
-        setClick(clickHelper);
-      } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
-        const disabledMapper = util.disabledLineConditions[clickHelper.index];
+    // if(init){
+    //   if(topLeft.length < 10){
+    //     setTopLeft([...topLeft, [locationX, locationY]]);
+    //   } else if(topRight.length < 10){
+    //     setTopRight([...topRight, [locationX, locationY]]);
+    //   } else if(bottomLeft.length < 10){
+    //     setBottomLeft([...bottomLeft, [locationX, locationY]]);
+    //   } else {
+    //     const topLeftAve = util.getAveFromPoints(topLeft)
+    //     const topRightAve = util.getAveFromPoints(topRight)
+    //     const bottomLeftAve = util.getAveFromPoints(bottomLeft)
+    //     const coordinates = util.getEdgeCoordinates(topLeftAve, topRightAve, bottomLeftAve);
+    //     const positions = util.getPositions(coordinates)
+    //     console.log(positions)
+    //   }
+    // }
+
+
+    // const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
+    //
+    // if(clickHelper.type === "box" && !props.activeBomb.length){
+    //
+      const closesLine = util.getClosesLine(locationX, locationY, util.centerOfLine);
+
+      if(closesLine){
+        const disabledMapper = util.disabledLineConditions[closesLine];
         const isDisabled = util.getDisabledStatus(disabledMapper, disabledBoxes);
-        if(!isDisabled){
-          setClick(clickHelper)
-        } else if(click !== "false") {
-          setClick(false)
+
+        if((click.index !== closesLine) && !isDisabled){
+          setClick({
+            index: closesLine,
+            type: "line"
+          })
         }
+      } else if(click.index !== closesLine) {
+        setClick({
+          index: closesLine,
+          type: "line"
+        })
       }
-    } else if(click !== "false") {
-      setClick(false)
-    }
+    //
+    // } else {
+    //
+    //   if(clickHelper){
+    //     if(props.activeBomb && clickHelper.type === "box"){
+    //       setClick(clickHelper);
+    //     } else if((click.index !== clickHelper.index && clickHelper.type === "line") && !props.activeBomb){
+    //       const disabledMapper = util.disabledLineConditions[clickHelper.index];
+    //       const isDisabled = util.getDisabledStatus(disabledMapper, disabledBoxes);
+    //       if(!isDisabled){
+    //         setClick(clickHelper)
+    //       } else if(click !== "false") {
+    //         setClick(false)
+    //       }
+    //     }
+    //   } else if(click !== "false") {
+    //     setClick(false)
+    //   }
+    //
+    // }
   }
 
   const clickGameBox = (index) => {
@@ -61,18 +139,11 @@ const GameBoard = (props) => {
   return (<View style={{
       justifyContent: "center",
       alignItems: "center",
-      // borderWidth: 1,
-      // borderRadius: 2,
+
       // borderColor: 'transparent',
-      // borderBottomWidth: 0,
       // shadowColor: '#000',
       // shadowOffset: { width: 0, height: 8 },
-      // shadowOpacity: 0.4,
-      // shadowRadius: 2,
-      // elevation: 1,
-      // marginLeft: 5,
-      // marginRight: 5,
-      // marginTop: 10
+      // shadowOpacity: 0.4
     }}
   >
 
@@ -123,7 +194,7 @@ const GameBoard = (props) => {
           additionalStlyes.opacity = 0.1;
         }
 
-        const hoverStlyes = (click.type === "line" && click.index === index) ? {
+        const hoverStlyes = (click.type === "line" && click.index === index && !props.activeBomb) ? {
           ...styles.hDoubleHeight,
           backgroundColor: "#FFC656",
           opacity: 1,
@@ -139,8 +210,8 @@ const GameBoard = (props) => {
           <TouchableOpacity onPress={() => {
             if(!isDisabled){
               const clickInfo = util.clickSide[index];
-              const click = util.getClick(clickInfo, disabledBoxes);
-              props.clickBorder(click.side, util.getBoxIndex(click.box), "first");
+              const clickBox = util.getClick(clickInfo, disabledBoxes);
+              props.clickBorder(clickBox.side, util.getBoxIndex(clickBox.box), "first");
             }
           }}>
             <View style={styles.hClickBox}>
@@ -169,7 +240,7 @@ const GameBoard = (props) => {
           additionalStlyes.opacity = 0.1;
         }
 
-        const hoverStlyes = (click.type === "line" && click.index === index) ? {
+        const hoverStlyes = (click.type === "line" && click.index === index && !props.activeBomb) ? {
           ...styles.vDoubleHeight,
           backgroundColor: "#FFC656",
           opacity: 1,
@@ -185,8 +256,8 @@ const GameBoard = (props) => {
           <TouchableOpacity onPress={() => {
             if(!isDisabled){
               const clickInfo = util.clickSide[index];
-              const click = util.getClick(clickInfo, disabledBoxes);
-              props.clickBorder(click.side, util.getBoxIndex(click.box), "first");
+              const clickBox = util.getClick(clickInfo, disabledBoxes);
+              props.clickBorder(clickBox.side, util.getBoxIndex(clickBox.box), "first");
             }
           }}>
             <View style={styles.vClickBox}>
@@ -226,27 +297,26 @@ const GameBoard = (props) => {
         width: Dimensions.get('window').width,
         position: "absolute"
       }}
-      onStartShouldSetResponder={e => true}
-      onResponderMove={e => handleSelection(e)}
-      onResponderGrant={e => handleSelection(e)}
-      onResponderRelease={e => {
-        if(click){
-          if(click.type === "line"){
-            const disabledMapper = util.disabledLineConditions[click.index];
-            const isDisabled = util.getDisabledStatus(disabledMapper, disabledBoxes);
-            if(!isDisabled){
-              const clickInfo = util.clickSide[click.index];
-              const thisclick = util.getClick(clickInfo, disabledBoxes);
-              props.clickBorder(thisclick.side, util.getBoxIndex(thisclick.box), "first");
-            }
-          } else if (click.type === "box") {
-            clickGameBox(click.index)
-          }
-        }
-        // reset variables
-        setClick(false)
-      }}
-    ></View>
+      {...getClickResponders()}
+      // this make the empty view clickable
+      collapsable={false}
+    >
+      {/*Object.keys(util.centerOfLine).map((data, index) => <View
+          key={index}
+          style={{
+            position: "absolute",
+            backgroundColor: "red",
+            borderRadius: 10,
+            height: 4,
+            width: 4,
+            top: util.centerOfLine[data][1],
+            left: util.centerOfLine[data][0],
+            padding: 0,
+            margin: 0
+          }}
+        >
+      </View>)*/}
+    </View>
 
   </View>)
 }
