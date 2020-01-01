@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     top: 40,
-    borderWidth: 10,
+    borderWidth: 2,
     borderColor: "#3A1749"
   },
   circleSmallButton: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 1000,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 10,
+    borderWidth: 2,
     borderColor: "#3A1749"
   },
   textSectionStlye: {

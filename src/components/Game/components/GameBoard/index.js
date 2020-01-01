@@ -15,6 +15,7 @@ import util from "./util.js"
 import { images } from "../../util/Images";
 import Stretch from "../Stretch"
 
+
 const GameBoard = (props) => {
 
   const [topLeft, setTopLeft] = useState([]);
@@ -100,7 +101,7 @@ const GameBoard = (props) => {
       //   setClick(false)
       // }
     } else {
-      const closesLine = util.getClosesLine(locationX, locationY, util.centerOfLine);
+      const closesLine = util.getClosesLine(locationX, locationY, util.centerOfLine(Dimensions.get('window').width));
 
       if(closesLine){
         const disabledMapper = util.disabledLineConditions[closesLine];
@@ -318,7 +319,7 @@ const GameBoard = (props) => {
       // this make the empty view clickable
       collapsable={false}
     >
-      {/*Object.keys(util.centerOfLine).map((data, index) => <View
+      {/*Object.keys(util.centerOfLine(Dimensions.get('window').width)).map((data, index) => <View
           key={index}
           style={{
             position: "absolute",
@@ -326,8 +327,8 @@ const GameBoard = (props) => {
             borderRadius: 10,
             height: 4,
             width: 4,
-            top: util.centerOfLine[data][1],
-            left: util.centerOfLine[data][0],
+            top: util.centerOfLine(Dimensions.get('window').width)[data][1],
+            left: util.centerOfLine(Dimensions.get('window').width)[data][0],
             padding: 0,
             margin: 0
           }}
