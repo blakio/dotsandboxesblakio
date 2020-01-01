@@ -86,6 +86,20 @@ const GameBoard = (props) => {
     //
     // if(clickHelper.type === "box" && !props.activeBomb.length){
     //
+
+    if(props.activeBomb && props.activeBomb.length){
+
+      // the click event wont activeate if a bomb is active because the pointerEvents will be set to none
+
+      // debugger
+      // const clickHelper = util.getClickFromPostion(locationX, locationY, lineClickPositions, boxClickPositions);
+      // if(clickHelper){
+      //   clickHelper.type = "box";
+      //   setClick(clickHelper);
+      // } else if(click !== "false") {
+      //   setClick(false)
+      // }
+    } else {
       const closesLine = util.getClosesLine(locationX, locationY, util.centerOfLine);
 
       if(closesLine){
@@ -104,6 +118,8 @@ const GameBoard = (props) => {
           type: "line"
         })
       }
+    }
+
     //
     // } else {
     //
@@ -292,6 +308,7 @@ const GameBoard = (props) => {
     </View>
 
     <View
+      pointerEvents={props.activeBomb && props.activeBomb.length ? "none" : "auto"}
       style={{
         height: Dimensions.get('window').width,
         width: Dimensions.get('window').width,
